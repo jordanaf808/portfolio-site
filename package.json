@@ -9,9 +9,35 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "type-check": "astro check",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint src --ext .ts,.tsx,.astro"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "workerd"]
   },
   "dependencies": {
-    "astro": "^6.3.1"
+    "@astrojs/cloudflare": "^13.5.0",
+    "@astrojs/react": "^5.0.4",
+    "@tailwindcss/vite": "^4.3.0",
+    "astro": "^6.3.1",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "resend": "^6.12.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@typescript-eslint/eslint-plugin": "^8.59.3",
+    "@typescript-eslint/parser": "^8.59.3",
+    "eslint": "^10.3.0",
+    "eslint-plugin-astro": "^1.7.0",
+    "jsdom": "^29.1.1",
+    "vitest": "^4.1.6"
   }
 }
