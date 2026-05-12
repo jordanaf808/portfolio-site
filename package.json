@@ -16,7 +16,10 @@
     "lint": "eslint src --ext .ts,.tsx,.astro"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "workerd"]
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "workerd"
+    ]
   },
   "dependencies": {
     "@astrojs/cloudflare": "^13.5.0",
@@ -25,7 +28,8 @@
     "astro": "^6.3.1",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "resend": "^6.12.3"
+    "resend": "^6.12.3",
+    "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",

@@ -1,0 +1,45 @@
+---
+import '../styles/global.css';
+import LeftPanel from '../components/LeftPanel.astro';
+import TopNav from '../components/TopNav.astro';
+import CartDrawer from '../components/CartDrawer';
+
+interface Props {
+  title: string;
+  activePage?: 'lookbook' | 'archive' | 'project';
+}
+const { title, activePage } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} — The Commerce Boutique</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Work+Sans:wght@400;500&family=Space+Grotesk:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body class="flex h-screen overflow-hidden bg-background">
+  <LeftPanel activePage={activePage} />
+
+  <!-- Right 60% panel -->
+  <div class="ml-[40%] w-[60%] flex flex-col h-full hard-shadow-canvas">
+    <TopNav />
+    <main class="flex-1 overflow-y-auto bg-surface">
+      <slot />
+    </main>
+  </div>
+
+  <CartDrawer client:load />
+
+  <script>
+    document.getElementById('open-cart-drawer')?.addEventListener('click', () => {
+      document.dispatchEvent(new CustomEvent('open-cart-drawer'));
+    });
+  </script>
+</body>
+</html>

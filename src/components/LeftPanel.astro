@@ -1,0 +1,81 @@
+---
+interface Props {
+  activePage?: 'lookbook' | 'archive' | 'project';
+}
+const { activePage = 'lookbook' } = Astro.props;
+---
+<aside class="fixed top-0 left-0 h-full w-[40%] border-r border-primary bg-background flex flex-col z-20">
+  <!-- Brand header -->
+  <div class="p-12 border-b border-primary">
+    <p class="font-mono text-xs uppercase tracking-[0.15em] text-muted mb-2">
+      High-End Shopify & JS/TS Development
+    </p>
+    <h1 class="font-display text-2xl leading-tight text-text">
+      The Commerce<br/>Boutique
+    </h1>
+  </div>
+
+  <!-- 2×2 bento navigation grid -->
+  <div class="grid grid-cols-2 flex-1" style="grid-template-rows: 1fr 1fr;">
+    <a
+      href="/"
+      class:list={[
+        'group flex flex-col justify-between p-8 border-r border-b border-primary transition-colors duration-300',
+        activePage === 'lookbook' ? 'bg-surface-container-high' : 'hover:bg-surface-container-high',
+      ]}
+    >
+      <span class="font-mono text-xs uppercase tracking-[0.1em] text-muted">Portfolio</span>
+      <span class="font-display text-lg text-text">Selected Work</span>
+    </a>
+    <a
+      href="/archive"
+      class:list={[
+        'group flex flex-col justify-between p-8 border-b border-primary transition-colors duration-300',
+        activePage === 'archive' ? 'bg-surface-container-high' : 'hover:bg-surface-container-high',
+      ]}
+    >
+      <span class="font-mono text-xs uppercase tracking-[0.1em] text-muted">Archive</span>
+      <span class="font-display text-lg text-text">All Projects</span>
+    </a>
+    <a
+      href="/#services"
+      class="group flex flex-col justify-between p-8 border-r border-primary transition-colors duration-300 hover:bg-surface-container-high"
+    >
+      <span class="font-mono text-xs uppercase tracking-[0.1em] text-muted">Services</span>
+      <span class="font-display text-lg text-text">What We Build</span>
+    </a>
+    <button
+      id="open-cart-drawer-left"
+      class="group flex flex-col justify-between p-8 transition-colors duration-300 hover:bg-surface-container-high text-left w-full"
+    >
+      <span class="font-mono text-xs uppercase tracking-[0.1em] text-muted">Contact</span>
+      <span class="font-display text-lg text-text">Start a Project</span>
+    </button>
+  </div>
+
+  <!-- Bio + tech tags -->
+  <div class="p-8 border-t border-primary">
+    <p class="text-sm text-muted leading-relaxed mb-4">
+      Crafting performant digital flagships for brands that demand architectural precision.
+    </p>
+    <div class="flex flex-wrap gap-2">
+      {['TypeScript', 'React', 'Liquid', 'Shopify'].map((tag) => (
+        <span class="font-mono text-xs uppercase tracking-[0.1em] border border-primary px-2 py-1 text-muted">
+          {tag}
+        </span>
+      ))}
+    </div>
+  </div>
+
+  <!-- Availability footer -->
+  <div class="p-6 border-t border-primary flex items-center gap-2">
+    <div class="w-2 h-2 rounded-full bg-green-500 flex-shrink-0"></div>
+    <span class="font-mono text-xs text-muted uppercase tracking-[0.1em]">Available Q3 2026</span>
+  </div>
+</aside>
+
+<script>
+  document.getElementById('open-cart-drawer-left')?.addEventListener('click', () => {
+    document.dispatchEvent(new CustomEvent('open-cart-drawer'));
+  });
+</script>
