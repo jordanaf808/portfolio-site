@@ -1,0 +1,46 @@
+---
+import type { Project } from '../types/index.ts';
+
+interface Props {
+  project: Project;
+  index: number;
+}
+const { project, index } = Astro.props;
+const label = String(index + 1).padStart(3, '0');
+---
+<article class="border-b border-primary group">
+  <a href={`/projects/${project.slug}`} class="block">
+    <!-- Image -->
+    <div class="relative aspect-[16/10] overflow-hidden border-b border-primary bg-surface-container-high">
+      <img
+        src={project.images[0]}
+        alt={project.title}
+        class="w-full h-full object-cover grayscale-hover"
+        loading="lazy"
+        onerror="this.style.opacity='0'"
+      />
+      <!-- Category badge -->
+      <div class="absolute top-4 left-4 bg-primary text-surface font-mono text-xs uppercase tracking-[0.1em] px-3 py-1">
+        {label} / {project.category}
+      </div>
+      <!-- Hover overlay -->
+      <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-primary/10">
+        <span class="bg-primary text-surface font-mono text-xs uppercase tracking-[0.15em] px-6 py-3">
+          View Case Study →
+        </span>
+      </div>
+    </div>
+
+    <!-- Card footer -->
+    <div class="flex items-end justify-between p-8">
+      <div>
+        <h2 class="font-display text-3xl text-text mb-1">{project.title}</h2>
+        <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted">{project.subtitle}</p>
+      </div>
+      <div class="text-right flex-shrink-0 ml-8">
+        <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted">{project.status}</p>
+        <p class="font-mono text-xs text-muted">{project.year}</p>
+      </div>
+    </div>
+  </a>
+</article>

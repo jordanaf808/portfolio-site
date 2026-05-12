@@ -1,6 +1,27 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getFeaturedProjects } from '../data/projects.ts';
+
+const projects = getFeaturedProjects();
 ---
 <Layout title="Lookbook" activePage="lookbook">
-  <p class="p-12 font-display text-4xl italic">Hello, Commerce Boutique</p>
+  <!-- Section header -->
+  <div class="p-12 border-b border-primary">
+    <p class="font-mono text-xs uppercase tracking-[0.15em] text-muted mb-2">
+      Selected Work / 2023–2024
+    </p>
+    <h2 class="font-display text-5xl italic text-text">Digital Flagships</h2>
+  </div>
+
+  <!-- Project feed -->
+  <div>
+    {projects.map((project, i) => (
+      <ProjectCard project={project} index={i} />
+    ))}
+  </div>
+
+  <footer class="p-12 border-t border-primary">
+    <p class="font-mono text-xs text-muted">© {new Date().getFullYear()} The Commerce Boutique</p>
+  </footer>
 </Layout>
