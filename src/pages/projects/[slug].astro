@@ -1,0 +1,140 @@
+---
+import '../../styles/global.css';
+import TopNav from '../../components/TopNav.astro';
+import Accordion from '../../components/Accordion.astro';
+import ImageGallery from '../../components/ImageGallery.astro';
+import CartDrawer from '../../components/CartDrawer';
+import { projects, getProjectBySlug } from '../../data/projects.ts';
+
+export function getStaticPaths() {
+  return projects.map((p) => ({ params: { slug: p.slug } }));
+}
+
+const { slug } = Astro.params;
+const project = getProjectBySlug(slug);
+
+if (!project) {
+  return Astro.redirect('/archive');
+}
+
+const archRows: [string, string][] = [
+  ['Frontend', project.tech[0] ?? '—'],
+  ['Commerce', project.tech[1] ?? '—'],
+  ['Animation', project.tech[2] ?? '—'],
+  ['Infra', 'Vercel Edge'],
+];
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{project.title} — The Commerce Boutique</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Work+Sans:wght@400;500&family=Space+Grotesk:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+</head>
+<body class="flex flex-col h-screen overflow-hidden bg-background">
+  <TopNav />
+
+  <!-- 50/50 split below nav -->
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Left: sticky image gallery -->
+    <div class="w-1/2 flex-shrink-0">
+      <ImageGallery images={project.images} title={project.title} />
+    </div>
+
+    <!-- Right: scrollable content -->
+    <div class="w-1/2 overflow-y-auto bg-surface hard-shadow-canvas">
+      <!-- Hero -->
+      <div class="p-12 border-b border-primary">
+        <div class="flex flex-wrap gap-2 mb-6">
+          {project.tech.map((t) => (
+            <span class="font-mono text-xs uppercase tracking-[0.1em] border border-primary px-3 py-1 text-text">
+              {t}
+            </span>
+          ))}
+        </div>
+        <h1 class="font-display text-4xl leading-tight text-text mb-4">{project.title}</h1>
+        <p class="text-sm text-muted leading-relaxed">{project.description}</p>
+      </div>
+
+      <!-- CTA + architecture table -->
+      <div class="p-12 border-b border-primary">
+        <div class="grid grid-cols-2 gap-8 items-start">
+          <button
+            id="open-cart-drawer-project"
+            class="w-full bg-primary text-surface font-mono text-xs uppercase tracking-[0.15em] py-4 hover:opacity-90 active:scale-[0.98] transition-all"
+          >
+            Add to Cart — Hire Me →
+          </button>
+          <div class="border border-primary">
+            <div class="p-4 border-b border-primary">
+              <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted">Technical Architecture</p>
+            </div>
+            <div class="divide-y divide-primary">
+              {archRows.map(([key, val]) => (
+                <div class="flex justify-between px-4 py-2">
+                  <span class="font-mono text-xs uppercase tracking-[0.05em] text-muted">{key}</span>
+                  <span class="font-mono text-xs text-text">{val}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accordions -->
+      <div>
+        <Accordion title="The Challenge">{project.challenge}</Accordion>
+        <Accordion title="The Architecture">{project.architecture}</Accordion>
+        <Accordion title="The Results">{project.results}</Accordion>
+      </div>
+
+      <!-- Gallery grid (only when multiple images) -->
+      {project.images.length > 1 && (
+        <div class="p-12 border-t border-primary">
+          <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted mb-6">Project Gallery</p>
+          <div class="grid grid-cols-2 border-t border-l border-primary">
+            {project.images.map((src, i) => (
+              <div class="aspect-[4/5] overflow-hidden border-b border-r border-primary">
+                <img
+                  src={src}
+                  alt={`${project.title} detail ${i + 1}`}
+                  class="w-full h-full object-cover grayscale-hover"
+                  loading="lazy"
+                  onerror="this.parentElement.style.background='#EFEFEB'"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- Footer nav -->
+      <div class="p-12 flex items-center justify-between border-t border-primary">
+        <a href="/archive" class="font-mono text-xs uppercase tracking-[0.1em] text-muted hover:text-text transition-colors">
+          ← Archive
+        </a>
+        <a href="/" class="font-mono text-xs uppercase tracking-[0.1em] text-muted hover:text-text transition-colors">
+          Lookbook
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <CartDrawer client:load />
+
+  <script>
+    document.getElementById('open-cart-drawer-project')?.addEventListener('click', () => {
+      document.dispatchEvent(new CustomEvent('open-cart-drawer'));
+    });
+    document.getElementById('open-cart-drawer')?.addEventListener('click', () => {
+      document.dispatchEvent(new CustomEvent('open-cart-drawer'));
+    });
+  </script>
+</body>
+</html>
