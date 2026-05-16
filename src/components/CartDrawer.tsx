@@ -9,7 +9,6 @@ export default function CartDrawer(): React.ReactElement | null {
   const [errorMsg, setErrorMsg] = useState('');
   const [form, setForm] = useState<ContactFormData>({
     company: '',
-    budget: '$10k–$25k',
     details: '',
     email: '',
   });
@@ -129,22 +128,6 @@ export default function CartDrawer(): React.ReactElement | null {
                 required
                 className="bg-transparent border-b border-[#111111] py-2 text-sm text-[#222222] placeholder:text-[#888888] focus:outline-none focus:border-b-2 transition-all"
               />
-            </label>
-
-            <label className="flex flex-col gap-1">
-              <span style={{ fontFamily: "'Space Grotesk', monospace" }} className="text-xs uppercase tracking-widest text-[#888888]">
-                Budget Range
-              </span>
-              <select
-                name="budget"
-                value={form.budget}
-                onChange={handleChange}
-                className="bg-transparent border-b border-[#111111] py-2 text-sm text-[#222222] focus:outline-none focus:border-b-2 transition-all appearance-none"
-              >
-                <option value="$10k–$25k">$10k–$25k</option>
-                <option value="$25k–$50k">$25k–$50k</option>
-                <option value="$50k+">$50k+</option>
-              </select>
             </label>
 
             <label className="flex flex-col gap-1">

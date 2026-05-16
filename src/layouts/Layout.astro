@@ -26,9 +26,16 @@ const { title, activePage } = Astro.props;
 <body class="flex h-screen overflow-hidden bg-background">
   <LeftPanel activePage={activePage} />
 
-  <!-- Right 60% panel -->
-  <div class="ml-[40%] w-[60%] flex flex-col h-full hard-shadow-canvas">
-    <TopNav />
+  <!-- Mobile backdrop -->
+  <div
+    id="left-panel-backdrop"
+    class="fixed inset-0 bg-black/40 z-30 hidden"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Right panel: full-width on mobile, 60% on desktop -->
+  <div class="w-full md:ml-[40%] md:w-[60%] flex flex-col h-full hard-shadow-canvas">
+    <TopNav showHamburger />
     <main class="flex-1 overflow-y-auto bg-surface">
       <slot />
     </main>
@@ -37,9 +44,38 @@ const { title, activePage } = Astro.props;
   <CartDrawer client:load />
 
   <script>
+    // Cart drawer
     document.getElementById('open-cart-drawer')?.addEventListener('click', () => {
       document.dispatchEvent(new CustomEvent('open-cart-drawer'));
     });
+
+    // Mobile nav drawer
+    const panel = document.getElementById('left-panel')
+    const backdrop = document.getElementById('left-panel-backdrop')
+    const closeBtn = document.getElementById('close-left-panel')
+    const hamburger = document.getElementById('hamburger-btn')
+
+    function openPanel(): void {
+      panel?.classList.remove('-translate-x-full')
+      backdrop?.classList.remove('hidden')
+      document.body.style.overflow = 'hidden'
+      hamburger?.setAttribute('aria-expanded', 'true')
+    }
+
+    function closePanel(): void {
+      panel?.classList.add('-translate-x-full')
+      backdrop?.classList.add('hidden')
+      document.body.style.overflow = ''
+      hamburger?.setAttribute('aria-expanded', 'false')
+    }
+
+    hamburger?.addEventListener('click', openPanel)
+    closeBtn?.addEventListener('click', closePanel)
+    backdrop?.addEventListener('click', closePanel)
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closePanel()
+    })
   </script>
 </body>
 </html>

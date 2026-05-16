@@ -1,0 +1,42 @@
+---
+interface Props {
+  images: string[]
+  title: string
+}
+const { images, title } = Astro.props
+---
+
+<div
+  class="h-full overflow-y-auto border-r border-primary"
+  id="masonry-gallery"
+  data-images={JSON.stringify(images)}
+>
+  <div class="columns-2 gap-0">
+    {images.map((src, i) => (
+      <button
+        class="block w-full overflow-hidden border-b border-r border-primary cursor-pointer p-0 align-top"
+        data-gallery-index={i}
+        aria-label={`${title} — open image ${i + 1} in slideshow`}
+        type="button"
+      >
+        <img
+          src={src}
+          alt={`${title} ${i + 1}`}
+          class="w-full object-cover grayscale-hover"
+          loading={i === 0 ? 'eager' : 'lazy'}
+          onerror="this.parentElement.style.display='none'"
+        />
+      </button>
+    ))}
+  </div>
+</div>
+
+<script>
+  const gallery = document.getElementById('masonry-gallery')
+  gallery?.querySelectorAll<HTMLElement>('button[data-gallery-index]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const index = Number(btn.dataset.galleryIndex)
+      document.dispatchEvent(new CustomEvent('open-slideshow', { detail: { index } }))
+    })
+  })
+</script>

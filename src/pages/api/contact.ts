@@ -17,23 +17,23 @@ export const POST: APIRoute = async ({ request }) => {
 
   const result = validateContact(body);
   if (!result.valid) {
-    return new Response(JSON.stringify({ error: result.error }), {
+    const firstError = Object.values(result.errors)[0] ?? 'Invalid request';
+    return new Response(JSON.stringify({ error: firstError }), {
       status: 422,
       headers: { 'Content-Type': 'application/json' },
     });
   }
 
-  const { company, budget, details, email } = result.data;
+  const { company, details, email } = result.data;
   const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
   const { error } = await resend.emails.send({
     from: 'Portfolio Inquiry <inquiries@thecommerceboutique.com>',
     to: ['jordanafdev@gmail.com'],
     replyTo: email,
-    subject: `New Inquiry: ${company} — ${budget}`,
+    subject: `New Inquiry: ${company}`,
     html: `
       <p><strong>Company:</strong> ${company}</p>
-      <p><strong>Budget:</strong> ${budget}</p>
       <p><strong>Contact:</strong> ${email}</p>
       <hr/>
       <p>${details.replace(/\n/g, '<br/>')}</p>

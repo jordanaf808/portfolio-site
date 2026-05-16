@@ -1,37 +1,20 @@
-import type { ContactFormData } from '../types/index.ts';
+import { contactSchema } from './contactSchema'
 
-const VALID_BUDGETS: ContactFormData['budget'][] = ['$10k–$25k', '$25k–$50k', '$50k+'];
+export type { ContactData } from './contactSchema'
 
-type ValidationResult =
-  | { valid: true; data: ContactFormData }
-  | { valid: false; error: string };
+export type ValidationResult =
+  | { valid: true; data: import('./contactSchema').ContactData }
+  | { valid: false; errors: Record<string, string> }
 
-export function validateContact(body: unknown): ValidationResult {
-  if (typeof body !== 'object' || body === null) {
-    return { valid: false, error: 'Invalid request body' };
+export function validateContact(raw: unknown): ValidationResult {
+  const result = contactSchema.safeParse(raw)
+  if (result.success) {
+    return { valid: true, data: result.data }
   }
-  const b = body as Record<string, unknown>;
-
-  if (!b.company || typeof b.company !== 'string' || b.company.trim().length < 2) {
-    return { valid: false, error: 'Company name required' };
+  const errors: Record<string, string> = {}
+  for (const issue of result.error.issues) {
+    const key = String(issue.path[0])
+    if (!errors[key]) errors[key] = issue.message
   }
-  if (!b.email || typeof b.email !== 'string' || !b.email.includes('@')) {
-    return { valid: false, error: 'Valid email required' };
-  }
-  if (!b.details || typeof b.details !== 'string' || b.details.trim().length < 10) {
-    return { valid: false, error: 'Project details required (min 10 characters)' };
-  }
-  if (!VALID_BUDGETS.includes(b.budget as ContactFormData['budget'])) {
-    return { valid: false, error: 'Invalid budget range' };
-  }
-
-  return {
-    valid: true,
-    data: {
-      company: (b.company as string).trim(),
-      budget: b.budget as ContactFormData['budget'],
-      details: (b.details as string).trim(),
-      email: (b.email as string).trim().toLowerCase(),
-    },
-  };
+  return { valid: false, errors }
 }

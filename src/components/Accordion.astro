@@ -1,15 +1,46 @@
 ---
 interface Props {
-  title: string;
+  title: string
+  open?: boolean
 }
-const { title } = Astro.props;
+const { title, open = false } = Astro.props
 ---
-<details class="group border-b border-primary">
-  <summary class="flex items-center justify-between p-6 cursor-pointer list-none hover:bg-surface-container-low transition-colors duration-300">
+
+<div class="border-b border-primary" data-accordion>
+  <button
+    class="group flex items-center justify-between w-full p-6 text-left cursor-pointer hover:bg-surface-container-low transition-colors duration-300"
+    aria-expanded={open ? 'true' : 'false'}
+    data-accordion-trigger
+  >
     <span class="font-mono text-xs uppercase tracking-[0.15em] text-text">{title}</span>
-    <span class="font-mono text-xl leading-none text-muted group-open:rotate-45 transition-transform duration-300 inline-block">+</span>
-  </summary>
-  <div class="px-6 pb-6 text-sm text-muted leading-relaxed">
-    <slot />
+    <span
+      class="font-mono text-xl leading-none text-muted transition-transform duration-300 inline-block group-aria-expanded:rotate-45"
+      aria-hidden="true"
+    >+</span>
+  </button>
+  <div
+    class="grid transition-[grid-template-rows] duration-300 ease-in-out"
+    style={`grid-template-rows: ${open ? '1fr' : '0fr'}`}
+    data-accordion-content
+  >
+    <div class="overflow-hidden">
+      <div class="px-6 pb-6 text-sm text-muted leading-relaxed">
+        <slot />
+      </div>
+    </div>
   </div>
-</details>
+</div>
+
+<script>
+  document.querySelectorAll('[data-accordion]').forEach((accordion) => {
+    const trigger = accordion.querySelector<HTMLButtonElement>('[data-accordion-trigger]')
+    const content = accordion.querySelector<HTMLElement>('[data-accordion-content]')
+    if (!trigger || !content) return
+
+    trigger.addEventListener('click', () => {
+      const isOpen = trigger.getAttribute('aria-expanded') === 'true'
+      trigger.setAttribute('aria-expanded', String(!isOpen))
+      content.style.gridTemplateRows = isOpen ? '0fr' : '1fr'
+    })
+  })
+</script>

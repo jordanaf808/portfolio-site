@@ -363,3 +363,163 @@ a95577f  feat: add Project Detail page with image gallery and accordion
 051f6de  chore: add Tailwind v4, React, Cloudflare adapter, ESLint, Vitest
 8f5b0ed  Initial commit from Astro
 ```
+
+---
+---
+
+## Session Update — 2026-05-15
+
+**Branch:** `main`  
+**Status:** Six targeted improvements — UI polish, mobile layout, Zod validation, masonry gallery
+
+---
+
+### Summary
+
+A focused improvement session addressing UX issues found during browser QA, adding mobile responsiveness, upgrading the contact form validation to Zod, and building out the Job Role project page variant with a masonry gallery and slideshow modal.
+
+---
+
+### Architecture Changes
+
+```text
+Layout split (updated):
+  Lookbook + Archive  →  Mobile: full-width content, hamburger drawer for LeftPanel
+                         Desktop: 40/60 unchanged
+  Project Detail      →  Mobile: gallery stacks above content (full-width, 256px tall)
+                         Desktop: 50/50 unchanged
+  Job Role Detail     →  Left column: scrollable MasonryGallery (replaces sliding ImageGallery)
+                         Click image → native <dialog> full-screen slideshow
+
+Validation (updated):
+  /api/contact  →  Zod schema (src/lib/contactSchema.ts) replaces handwritten validateContact.ts
+  Budget field removed from ContactFormData, CartDrawer, API endpoint, and tests
+
+Accordion (updated):
+  Was: native <details>/<summary> (no content animation)
+  Now: custom button + CSS grid-template-rows: 0fr→1fr transition (300ms smooth)
+
+LeftPanel (updated):
+  Was: always-visible fixed sidebar
+  Now: off-screen on mobile (-translate-x-full), slides in as drawer (z-40) with backdrop (z-30)
+```
+
+---
+
+### Changes Made
+
+#### Fix 1 — Grayscale Hover Bug in ProjectCard
+
+**File modified:** `src/components/ProjectCard.astro`
+
+The `absolute inset-0` hover overlay had `pointer-events: auto` (browser default). It sat above the `<img>` and silently consumed all mouse events, preventing `:hover` from reaching the image — so the 400ms `filter: grayscale(0%)` transition never fired on cards that had the overlay rendered.
+
+**Fix:** Added `pointer-events-none` to the overlay div. `group-hover` continues to work because it's driven by the ancestor `<article class="group">`, not the overlay itself.
+
+---
+
+### Fix 2 — Move 'Add to Cart' Button Above Footer-Nav
+
+**File modified:** `src/pages/projects/[slug].astro`
+
+The CTA button was positioned at the top of the right scrollable column, before accordions and gallery content — visitors who scrolled through all the content had to scroll back up to hire. Moved the button (and the Technical Architecture table for project type entries) to just before the footer-nav, so it's the last thing seen after reading all content.
+
+---
+
+### Feature 3 — Animate Accordion Open/Close
+
+**File modified:** `src/components/Accordion.astro`
+
+Replaced the native `<details>`/`<summary>` element with a custom `<button>`-driven accordion. Native `<details>` cannot animate its content area — the browser collapses it before any CSS transition runs.
+
+**Technique:** CSS `grid-template-rows: 0fr → 1fr` trick. The content wrapper uses `display: grid` with `overflow: hidden` on its inner div. Animating `grid-template-rows` transitions the effective height from 0 to auto without needing JavaScript height measurements. The `+` chevron uses `group-aria-expanded:rotate-45` (Tailwind reads the `aria-expanded` attribute directly off the trigger button).
+
+---
+
+### Feature 4 — Zod Contact Form Validation + Remove Budget Field
+
+**Files created:** `src/lib/contactSchema.ts`  
+**Files modified:** `src/lib/validateContact.ts`, `src/types/index.ts`, `src/components/CartDrawer.tsx`, `src/lib/validateContact.test.ts`, `src/pages/api/contact.ts`
+
+**Budget removal:** The budget range selector (`$10k–$25k / $25k–$50k / $50k+`) was removed entirely. Touched: `ContactFormData` interface, CartDrawer state + JSX, validateContact logic, API endpoint email template and subject line, and the test fixture.
+
+**Zod upgrade:** `src/lib/contactSchema.ts` defines a Zod v4 schema using `z.email()` (top-level, replacing the deprecated `z.string().email()`), `z.string().trim().min()` for company and details, and `.transform(v => v.toLowerCase())` for email normalisation.
+
+`validateContact.ts` now wraps `contactSchema.safeParse()` and returns a proper discriminated union (`{ valid: true; data: ContactData } | { valid: false; errors: Record<string, string> }`), replacing the old single-error-string interface. The API endpoint uses `Object.values(result.errors)[0]` to surface the first error message to the client.
+
+**Note:** Zod v4's `.email()` is stricter than the original `contains('@')` check. The trim/lowercase test was updated to not pass spaces in the email field (which is correctly invalid by RFC).
+
+---
+
+### Feature 5 — Job Role Masonry Gallery + Slideshow Modal
+
+**Files created:** `src/components/MasonryGallery.astro`  
+**Files modified:** `src/pages/projects/[slug].astro`
+
+For `type: 'jobRole'` project pages, the left-column sliding `ImageGallery` is replaced with a vertically scrollable masonry grid. The right-column inline gallery grid is now gated to `type: 'project'` only (since job role images live in the left masonry column).
+
+**MasonryGallery.astro:** CSS `columns-2` layout (browser-native masonry column flow) with `overflow-y-auto h-full`. Each image is wrapped in a `<button>` that dispatches an `open-slideshow` CustomEvent with the image index. The full image array is serialised as `data-images` on the container.
+
+**Slideshow modal:** A native `<dialog>` element (`showModal()` / `close()`) conditionally rendered for job role pages. Escape key closes it natively. Prev/Next buttons and left/right arrow keys navigate between slides. Clicking the backdrop (`e.target === modal`) also closes it. No React island — vanilla JS in the existing `<script>` block.
+
+---
+
+### Feature 6 — Mobile Layout (Hamburger Drawer)
+
+**Files modified:** `src/layouts/Layout.astro`, `src/components/LeftPanel.astro`, `src/components/TopNav.astro`, `src/pages/projects/[slug].astro`
+
+**TopNav:** Added optional `showHamburger?: boolean` prop. When true, renders a "Menu" button (`md:hidden`) that dispatches an `open-left-panel` CustomEvent. The desktop Studio/Archive nav links are hidden on mobile (`hidden md:flex`) — navigation happens via the drawer. `Layout.astro` passes `showHamburger` when rendering TopNav; `[slug].astro` does not (no LeftPanel on detail pages).
+
+**LeftPanel:** The `<aside>` now starts off-screen (`-translate-x-full`) on mobile and slides to `translate-x-0` when the drawer opens, using a 300ms ease-in-out transition. Bumped from `z-20` to `z-40` so it sits above the `z-30` backdrop. A "× Close" button (`md:hidden`) is the first child.
+
+**Layout.astro:** Right panel changed from `ml-[40%] w-[60%]` to `w-full md:ml-[40%] md:w-[60%]` so it fills the viewport on mobile. A `z-30` backdrop div is added between `<LeftPanel>` and the right panel. The inline script handles `open-left-panel` event, Escape key, close button, and backdrop click — toggling `-translate-x-full` and `hidden` classes, and locking `document.body.style.overflow` while the drawer is open.
+
+**[slug].astro (project detail):** The 50/50 split container changed to `flex flex-col md:flex-row`. The left gallery column gets `w-full h-64 md:h-auto md:w-1/2` so it appears at 256px tall on mobile and the right content column scrolls beneath it.
+
+---
+
+#### Fix 7 — First Accordion Open by Default
+
+**File modified:** `src/components/Accordion.astro`, `src/pages/projects/[slug].astro`
+
+Added an `open?: boolean` prop to `Accordion.astro`. When true, `aria-expanded` is initialised to `"true"` and `grid-template-rows` starts at `1fr` instead of `0fr`, so the content is visible without requiring a click. The existing JS toggle reads `aria-expanded` on each click, so open/close continues to work correctly regardless of starting state.
+
+In `[slug].astro`, the first accordion in each branch now receives `open`: "The Challenge" for `project` type and "Overview" for `jobRole` type.
+
+---
+
+#### Fix 8 — Slideshow Prev/Next Cursor
+
+**File modified:** `src/pages/projects/[slug].astro`
+
+Added `cursor-pointer` to the `#slideshow-prev` and `#slideshow-next` `<button>` elements inside the `<dialog>` slideshow modal. Tailwind's base reset does not apply `cursor: pointer` to buttons by default, so the cursor remained an arrow on hover.
+
+---
+
+#### Fix 9 — CTA Button Text
+
+**File modified:** `src/pages/projects/[slug].astro`
+
+Changed button label from `Add to Cart — Hire Me →` to `Get In Touch` on both the `project` and `jobRole` variants of the CTA block.
+
+---
+
+#### Feature 10 — Prev/Next Project Navigation in Footer
+
+**File modified:** `src/pages/projects/[slug].astro`
+
+Replaced the static "← Archive / Lookbook" footer nav links with circular prev/next project navigation. `getStaticPaths` now passes `prevEntry` and `nextEntry` as typed props alongside `entry`:
+
+- `prevEntry` uses `all.at(i - 1)` — when `i === 0`, `at(-1)` naturally returns the last element, wrapping to the end of the list.
+- `nextEntry` uses `all[(i + 1) % all.length]` — wraps back to the first entry from the last.
+
+Both props are always `ProjectEntry` (never null), so no conditional rendering is needed. Each link shows the adjacent project's title with a directional arrow.
+
+---
+
+### Checks
+
+```text
+pnpm type-check   →  0 errors, 0 warnings, 0 hints  (22 files checked)
+pnpm test --run   →  7/7 tests pass
+```

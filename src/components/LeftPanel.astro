@@ -4,7 +4,17 @@ interface Props {
 }
 const { activePage = 'lookbook' } = Astro.props;
 ---
-<aside class="fixed top-0 left-0 h-full w-[40%] border-r border-primary bg-background flex flex-col z-20">
+<aside
+  id="left-panel"
+  class="fixed top-0 left-0 h-full w-[80vw] md:w-[40%] border-r border-primary bg-background flex flex-col z-40 -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out"
+>
+  <button
+    id="close-left-panel"
+    class="md:hidden self-end m-4 font-mono text-xs uppercase tracking-widest text-muted hover:text-text transition-colors"
+    aria-label="Close navigation menu"
+  >
+    × Close
+  </button>
   <!-- Brand header -->
   <div class="p-12 border-b border-primary">
     <p class="font-mono text-xs uppercase tracking-[0.15em] text-muted mb-2">

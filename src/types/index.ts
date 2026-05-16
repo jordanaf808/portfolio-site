@@ -30,7 +30,6 @@ export type ProjectEntry = Project | JobRole
 
 export interface ContactFormData {
 	company: string
-	budget: '$10k–$25k' | '$25k–$50k' | '$50k+'
 	details: string
 	email: string
 }

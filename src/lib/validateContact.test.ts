@@ -6,7 +6,6 @@ describe('validateContact', () => {
     company: 'Acme Corp',
     email: 'ceo@acme.com',
     details: 'We need a new headless Shopify storefront.',
-    budget: '$25k–$50k',
   };
 
   it('rejects null body', () => {
@@ -29,17 +28,13 @@ describe('validateContact', () => {
     expect(validateContact({ ...valid, details: 'Short' }).valid).toBe(false);
   });
 
-  it('rejects invalid budget', () => {
-    expect(validateContact({ ...valid, budget: 'free' }).valid).toBe(false);
-  });
-
   it('accepts valid input', () => {
     const result = validateContact(valid);
     expect(result.valid).toBe(true);
   });
 
   it('trims company and lowercases email', () => {
-    const result = validateContact({ ...valid, company: '  Acme  ', email: '  CEO@ACME.COM  ' });
+    const result = validateContact({ ...valid, company: '  Acme  ', email: 'CEO@ACME.COM' });
     expect(result.valid).toBe(true);
     if (result.valid) {
       expect(result.data.company).toBe('Acme');

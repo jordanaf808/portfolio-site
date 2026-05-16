@@ -3,23 +3,31 @@ import '../../styles/global.css';
 import TopNav from '../../components/TopNav.astro';
 import Accordion from '../../components/Accordion.astro';
 import ImageGallery from '../../components/ImageGallery.astro';
+import MasonryGallery from '../../components/MasonryGallery.astro';
 import CartDrawer from '../../components/CartDrawer';
 import { projects } from '../../data/projects.ts';
 import { jobRoles } from '../../data/jobRoles.ts';
 import type { ProjectEntry } from '../../types/index.ts';
 
 export function getStaticPaths() {
-  return [...projects, ...jobRoles].map((entry) => ({
+  const all = [...projects, ...jobRoles];
+  return all.map((entry, i) => ({
     params: { slug: entry.slug },
-    props: { entry },
+    props: {
+      entry,
+      prevEntry: all.at(i - 1) as ProjectEntry,
+      nextEntry: all[(i + 1) % all.length] as ProjectEntry,
+    },
   }));
 }
 
 interface Props {
   entry: ProjectEntry;
+  prevEntry: ProjectEntry;
+  nextEntry: ProjectEntry;
 }
 
-const { entry } = Astro.props;
+const { entry, prevEntry, nextEntry } = Astro.props;
 ---
 <!doctype html>
 <html lang="en">
@@ -37,15 +45,19 @@ const { entry } = Astro.props;
 <body class="flex flex-col h-screen overflow-hidden bg-background">
   <TopNav />
 
-  <!-- 50/50 split below nav -->
-  <div class="flex flex-1 overflow-hidden">
-    <!-- Left: sticky image gallery -->
-    <div class="w-1/2 flex-shrink-0">
-      <ImageGallery images={entry.images} title={entry.title} />
+  <!-- 50/50 split below nav; stacks vertically on mobile -->
+  <div class="flex flex-col md:flex-row flex-1 overflow-hidden">
+    <!-- Left: sticky image gallery (projects) or scrollable masonry (job roles) -->
+    <div class="w-full h-64 md:h-auto md:w-1/2 shrink-0">
+      {entry.type === 'project' ? (
+        <ImageGallery images={entry.images} title={entry.title} />
+      ) : (
+        <MasonryGallery images={entry.images} title={entry.title} />
+      )}
     </div>
 
     <!-- Right: scrollable content -->
-    <div class="w-1/2 overflow-y-auto bg-surface hard-shadow-canvas">
+    <div class="w-full md:w-1/2 flex-1 overflow-y-auto bg-surface hard-shadow-canvas">
       <!-- Hero -->
       <div class="p-12 border-b border-primary">
         <div class="flex flex-wrap gap-2 mb-6">
@@ -61,15 +73,56 @@ const { entry } = Astro.props;
         )}
       </div>
 
-      <!-- CTA section -->
-      <div class="p-12 border-b border-primary">
+      <!-- Accordions -->
+      <div>
+        {entry.type === 'project' ? (
+          <Fragment>
+            <Accordion title="The Challenge" open>{entry.challenge}</Accordion>
+            <Accordion title="The Architecture">{entry.architecture}</Accordion>
+            <Accordion title="The Results">{entry.results}</Accordion>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <Accordion title="Overview" open>{entry.description}</Accordion>
+            {entry.responsibilities && (
+              <Accordion title="Responsibilities">{entry.responsibilities}</Accordion>
+            )}
+            {entry.technologies && (
+              <Accordion title="Technologies">{entry.technologies}</Accordion>
+            )}
+          </Fragment>
+        )}
+      </div>
+
+      <!-- Gallery grid (projects only, when multiple images) -->
+      {entry.type === 'project' && entry.images.length > 1 && (
+        <div class="p-12 border-t border-primary">
+          <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted mb-6">Project Gallery</p>
+          <div class="grid grid-cols-2 border-t border-l border-primary">
+            {entry.images.map((src, i) => (
+              <div class="aspect-[4/5] overflow-hidden border-b border-r border-primary">
+                <img
+                  src={src}
+                  alt={`${entry.title} detail ${i + 1}`}
+                  class="w-full h-full object-cover grayscale-hover"
+                  loading="lazy"
+                  onerror="this.parentElement.style.background='#EFEFEB'"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- CTA -->
+      <div class="p-12 border-t border-primary">
         {entry.type === 'project' ? (
           <div class="grid grid-cols-2 gap-8 items-start">
             <button
               id="open-cart-drawer-project"
               class="w-full bg-primary text-surface font-mono text-xs uppercase tracking-[0.15em] py-4 hover:opacity-90 active:scale-[0.98] transition-all"
             >
-              Add to Cart — Hire Me →
+              Get In Touch
             </button>
             <div class="border border-primary">
               <div class="p-4 border-b border-primary">
@@ -100,58 +153,51 @@ const { entry } = Astro.props;
         )}
       </div>
 
-      <!-- Accordions -->
-      <div>
-        {entry.type === 'project' ? (
-          <Fragment>
-            <Accordion title="The Challenge">{entry.challenge}</Accordion>
-            <Accordion title="The Architecture">{entry.architecture}</Accordion>
-            <Accordion title="The Results">{entry.results}</Accordion>
-          </Fragment>
-        ) : (
-          <Fragment>
-            <Accordion title="Overview">{entry.description}</Accordion>
-            {entry.responsibilities && (
-              <Accordion title="Responsibilities">{entry.responsibilities}</Accordion>
-            )}
-            {entry.technologies && (
-              <Accordion title="Technologies">{entry.technologies}</Accordion>
-            )}
-          </Fragment>
-        )}
-      </div>
-
-      <!-- Gallery grid (only when multiple images) -->
-      {entry.images.length > 1 && (
-        <div class="p-12 border-t border-primary">
-          <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted mb-6">Project Gallery</p>
-          <div class="grid grid-cols-2 border-t border-l border-primary">
-            {entry.images.map((src, i) => (
-              <div class="aspect-[4/5] overflow-hidden border-b border-r border-primary">
-                <img
-                  src={src}
-                  alt={`${entry.title} detail ${i + 1}`}
-                  class="w-full h-full object-cover grayscale-hover"
-                  loading="lazy"
-                  onerror="this.parentElement.style.background='#EFEFEB'"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
       <!-- Footer nav -->
       <div class="p-12 flex items-center justify-between border-t border-primary">
-        <a href="/archive" class="font-mono text-xs uppercase tracking-[0.1em] text-muted hover:text-text transition-colors">
-          ← Archive
+        <a href={`/projects/${prevEntry.slug}`} class="font-mono text-xs uppercase tracking-widest text-muted hover:text-text transition-colors">
+          ← {prevEntry.title}
         </a>
-        <a href="/" class="font-mono text-xs uppercase tracking-[0.1em] text-muted hover:text-text transition-colors">
-          Lookbook
+        <a href={`/projects/${nextEntry.slug}`} class="font-mono text-xs uppercase tracking-widest text-muted hover:text-text transition-colors text-right">
+          {nextEntry.title} →
         </a>
       </div>
     </div>
   </div>
+
+  {entry.type === 'jobRole' && entry.images.length > 0 && (
+    <dialog
+      id="slideshow-modal"
+      class="fixed inset-0 w-screen h-screen max-w-none max-h-none m-0 p-0 bg-black/90 backdrop:bg-transparent"
+      aria-label="Image slideshow"
+    >
+      <div class="flex flex-col h-full">
+        <div class="flex items-center justify-between p-6 border-b border-white/10">
+          <span id="slideshow-counter" class="font-mono text-xs uppercase tracking-widest text-white/50"></span>
+          <button
+            id="slideshow-close"
+            class="font-mono text-xs uppercase tracking-widest text-white/50 hover:text-white transition-colors"
+            aria-label="Close slideshow"
+          >Close ×</button>
+        </div>
+        <div class="flex-1 flex items-center justify-between px-6 gap-6 overflow-hidden">
+          <button
+            id="slideshow-prev"
+            class="shrink-0 cursor-pointer font-mono text-xs uppercase tracking-widest text-white/50 hover:text-white transition-colors"
+            aria-label="Previous image"
+          >← Prev</button>
+          <div class="flex-1 flex items-center justify-center h-full overflow-hidden">
+            <img id="slideshow-img" src="" alt="" class="max-w-full max-h-full object-contain" />
+          </div>
+          <button
+            id="slideshow-next"
+            class="shrink-0 cursor-pointer font-mono text-xs uppercase tracking-widest text-white/50 hover:text-white transition-colors"
+            aria-label="Next image"
+          >Next →</button>
+        </div>
+      </div>
+    </dialog>
+  )}
 
   <CartDrawer client:load />
 
@@ -159,6 +205,43 @@ const { entry } = Astro.props;
     document.getElementById('open-cart-drawer-project')?.addEventListener('click', () => {
       document.dispatchEvent(new CustomEvent('open-cart-drawer'));
     });
+
+    const modal = document.getElementById('slideshow-modal') as HTMLDialogElement | null
+    if (modal) {
+      const gallery = document.getElementById('masonry-gallery')
+      const images: string[] = gallery ? JSON.parse(gallery.dataset.images ?? '[]') : []
+      let current = 0
+
+      const img = document.getElementById('slideshow-img') as HTMLImageElement
+      const counter = document.getElementById('slideshow-counter')
+
+      function showSlide(index: number): void {
+        current = (index + images.length) % images.length
+        img.src = images[current]
+        img.alt = `Image ${current + 1} of ${images.length}`
+        if (counter) {
+          counter.textContent = `${String(current + 1).padStart(2, '0')} / ${String(images.length).padStart(2, '0')}`
+        }
+      }
+
+      document.addEventListener('open-slideshow', (e: Event) => {
+        const { index } = (e as CustomEvent<{ index: number }>).detail
+        showSlide(index)
+        modal.showModal()
+      })
+
+      document.getElementById('slideshow-close')?.addEventListener('click', () => modal.close())
+      document.getElementById('slideshow-prev')?.addEventListener('click', () => showSlide(current - 1))
+      document.getElementById('slideshow-next')?.addEventListener('click', () => showSlide(current + 1))
+
+      modal.addEventListener('click', (e) => { if (e.target === modal) modal.close() })
+
+      document.addEventListener('keydown', (e) => {
+        if (!modal.open) return
+        if (e.key === 'ArrowLeft') showSlide(current - 1)
+        if (e.key === 'ArrowRight') showSlide(current + 1)
+      })
+    }
   </script>
 </body>
 </html>
