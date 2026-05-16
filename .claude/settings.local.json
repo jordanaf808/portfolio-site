@@ -1,0 +1,12 @@
+{
+  "outputStyle": "Explanatory",
+  "enabledMcpjsonServers": [
+    "github",
+    "Astro docs"
+  ],
+  "permissions": {
+    "allow": [
+      "Bash(pnpm test *)"
+    ]
+  }
+}
