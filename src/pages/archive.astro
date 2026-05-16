@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import { projects } from '../data/projects.ts';
 import { jobRoles } from '../data/jobRoles.ts';
 
-const startYear = (y: string): number => parseInt(y.match(/\d{4}/)?.[0] ?? '0')
+const startYear = (y: string): number => parseInt(y.match(/\d{4}/)?.[0] ?? '0', 10)
 const sorted = [...projects, ...jobRoles].sort((a, b) => startYear(b.year) - startYear(a.year))
 ---
 <Layout title="Archive" activePage="archive">
