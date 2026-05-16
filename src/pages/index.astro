@@ -7,6 +7,22 @@ import { getFeaturedJobRoles } from '../data/jobRoles.ts';
 const projects = [...getFeaturedProjects(), ...getFeaturedJobRoles()];
 ---
 <Layout title="Lookbook" activePage="lookbook">
+  <!-- Profile section -->
+  <div class="border-b border-primary min-[1200px]:flex">
+    <div class="w-full aspect-square max-h-120 min-[1200px]:w-1/2 min-[1200px]:shrink-0 min-[1200px]:max-h-none">
+      <img
+        src="/profile-pic.jpg"
+        alt="Jordan A.F."
+        class="w-full h-full object-cover object-top grayscale-hover"
+      />
+    </div>
+    <div class="p-6 bg-surface min-[1200px]:border-l min-[1200px]:border-primary min-[1200px]:flex min-[1200px]:items-center">
+      <p class="text-sm text-muted leading-relaxed">
+        Full-stack developer specialising in Shopify commerce and JS/TS engineering. I build fast, precise digital storefronts for brands that care about craft — from custom theme development to bespoke Storefront API integrations.
+      </p>
+    </div>
+  </div>
+
   <!-- Section header -->
   <div class="p-12 border-b border-primary">
     <h2 class="font-display text-5xl italic text-text">Selected Work</h2>

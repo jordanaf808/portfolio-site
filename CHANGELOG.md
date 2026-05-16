@@ -523,3 +523,67 @@ Both props are always `ProjectEntry` (never null), so no conditional rendering i
 pnpm type-check   →  0 errors, 0 warnings, 0 hints  (22 files checked)
 pnpm test --run   →  7/7 tests pass
 ```
+
+---
+
+## Session Update — 2026-05-16
+
+**Branch:** `main`
+**Status:** Homepage layout polish — left panel tightening, profile section added to right panel
+
+---
+
+### Summary
+
+Focused UI pass on the homepage. Left panel: reduced nav cell size and cleaned up the bio section. Right panel: removed the "The Commerce Boutique" brand link from the top nav, and added a real profile photo section at the top of the homepage (homepage-only, not injected globally via Layout.astro).
+
+---
+
+### Changes Made
+
+#### Fix 1 — Shrink Bento Nav Cells
+
+**File modified:** `src/components/LeftPanel.astro`
+
+Reduced padding on all four 2×2 nav grid cells from `p-8` → `p-5`. Label and title text sizes are unchanged — the cells are visually tighter without changing the type hierarchy.
+
+---
+
+#### Fix 2 — Remove Bio Paragraph from Left Panel Bottom Section
+
+**File modified:** `src/components/LeftPanel.astro`
+
+The bio paragraph ("Crafting performant digital flagships...") was removed from the "Bio + tech tags" section at the bottom of the left panel. The tech tag pills (TypeScript, React, Liquid, Shopify) remain. The description now lives in the right panel profile section instead (see Feature 4).
+
+---
+
+#### Fix 3 — Remove "The Commerce Boutique" Link from TopNav
+
+**File modified:** `src/components/TopNav.astro`
+
+Removed the `<a href="/">The Commerce Boutique</a>` anchor from the left side of the top nav bar. The Studio / Archive links and the Hire Us button are unchanged.
+
+---
+
+#### Feature 4 — Profile Section on Homepage
+
+**File modified:** `src/pages/index.astro`
+
+Added a profile section at the very top of the homepage slot (before "Selected Work"), homepage-only — placed in `index.astro` rather than `Layout.astro` to keep it off the archive and project detail pages.
+
+**Layout:**
+- Default (< 1200px): stacked — square profile image (`aspect-square`, capped at `max-h-120` / 480px) with bio text below on a white `bg-surface` block
+- 1200px+ (`min-[1200px]:`): side-by-side — image occupies `w-1/2` left, stays square (`aspect-square`, uncapped), bio text fills right half with `border-l` separator, vertically centered
+
+**Image:** Real photo at `public/profile-pic.jpg`. Uses `object-cover object-top` to crop to the square viewport with the subject's face preserved. `grayscale-hover` class applied — matches the 400ms desaturation → full-colour transition used on project cards.
+
+**Implementation note:** The image is wrapped in a sizing `<div>` (not applied directly to `<img>`) so that `aspect-square`/`aspect-auto` can be toggled on the container at the breakpoint while the `<img>` always fills it with `w-full h-full object-cover`.
+
+---
+
+### Checks
+
+```text
+pnpm type-check   →  0 errors, 0 warnings, 0 hints  (22 files checked)
+pnpm build        →  Complete — clean build
+```

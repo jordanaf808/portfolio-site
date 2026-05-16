@@ -17,12 +17,15 @@ const { activePage = 'lookbook' } = Astro.props;
   </button>
   <!-- Brand header -->
   <div class="p-12 border-b border-primary">
-    <p class="font-mono text-xs uppercase tracking-[0.15em] text-muted mb-2">
-      High-End Shopify & JS/TS Development
-    </p>
-    <h1 class="font-display text-2xl leading-tight text-text">
-      The Commerce<br/>Boutique
+    <h1 class="font-display italic text-5xl leading-tight text-text">
+      Jordan A.F.
     </h1>
+    <p class="font-mono text-xs uppercase tracking-[0.15em] text-muted mb-2">
+      Shopify & JS/TS Development
+    </p>
+    <!-- <p class="text-sm text-muted leading-relaxed mt-4">
+      Crafting performant digital flagships for brands that demand architectural precision.
+    </p> -->
   </div>
 
   <!-- 2×2 bento navigation grid -->
@@ -30,7 +33,7 @@ const { activePage = 'lookbook' } = Astro.props;
     <a
       href="/"
       class:list={[
-        'group flex flex-col justify-between p-8 border-r border-b border-primary transition-colors duration-300',
+        'group flex flex-col justify-between p-5 border-r border-b border-primary transition-colors duration-300',
         activePage === 'lookbook' ? 'bg-surface-container-high' : 'hover:bg-surface-container-high',
       ]}
     >
@@ -40,7 +43,7 @@ const { activePage = 'lookbook' } = Astro.props;
     <a
       href="/archive"
       class:list={[
-        'group flex flex-col justify-between p-8 border-b border-primary transition-colors duration-300',
+        'group flex flex-col justify-between p-5 border-b border-primary transition-colors duration-300',
         activePage === 'archive' ? 'bg-surface-container-high' : 'hover:bg-surface-container-high',
       ]}
     >
@@ -49,25 +52,22 @@ const { activePage = 'lookbook' } = Astro.props;
     </a>
     <a
       href="/#services"
-      class="group flex flex-col justify-between p-8 border-r border-primary transition-colors duration-300 hover:bg-surface-container-high"
+      class="group flex flex-col justify-between p-5 border-r border-primary transition-colors duration-300 hover:bg-surface-container-high"
     >
       <span class="font-mono text-xs uppercase tracking-[0.1em] text-muted">Services</span>
       <span class="font-display text-lg text-text">What We Build</span>
     </a>
     <button
       id="open-cart-drawer-left"
-      class="group flex flex-col justify-between p-8 transition-colors duration-300 hover:bg-surface-container-high text-left w-full"
+      class="group flex flex-col justify-between p-5 transition-colors duration-300 hover:bg-surface-container-high text-left w-full"
     >
       <span class="font-mono text-xs uppercase tracking-[0.1em] text-muted">Contact</span>
       <span class="font-display text-lg text-text">Start a Project</span>
     </button>
   </div>
 
-  <!-- Bio + tech tags -->
+  <!-- Tech tags -->
   <div class="p-8 border-t border-primary">
-    <p class="text-sm text-muted leading-relaxed mb-4">
-      Crafting performant digital flagships for brands that demand architectural precision.
-    </p>
     <div class="flex flex-wrap gap-2">
       {['TypeScript', 'React', 'Liquid', 'Shopify'].map((tag) => (
         <span class="font-mono text-xs uppercase tracking-[0.1em] border border-primary px-2 py-1 text-muted">
