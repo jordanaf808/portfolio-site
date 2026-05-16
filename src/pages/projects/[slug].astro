@@ -111,8 +111,12 @@ const { entry } = Astro.props;
         ) : (
           <Fragment>
             <Accordion title="Overview">{entry.description}</Accordion>
-            <Accordion title="Responsibilities">{entry.responsibilities}</Accordion>
-            <Accordion title="Technologies">{entry.technologies}</Accordion>
+            {entry.responsibilities && (
+              <Accordion title="Responsibilities">{entry.responsibilities}</Accordion>
+            )}
+            {entry.technologies && (
+              <Accordion title="Technologies">{entry.technologies}</Accordion>
+            )}
           </Fragment>
         )}
       </div>
