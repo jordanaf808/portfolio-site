@@ -1,6 +1,7 @@
 CLAUDE.local.md
 temp/
 docs/
+.wrangler/
 
 # build output
 dist/
