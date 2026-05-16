@@ -1,8 +1,8 @@
 ---
-import type { Project } from '../types/index.ts';
+import type { ProjectEntry } from '../types/index.ts';
 
 interface Props {
-  project: Project;
+  project: ProjectEntry;
   index: number;
 }
 const { project, index } = Astro.props;
@@ -26,7 +26,7 @@ const label = String(index + 1).padStart(3, '0');
       <!-- Hover overlay -->
       <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-primary/10">
         <span class="bg-primary text-surface font-mono text-xs uppercase tracking-[0.15em] px-6 py-3">
-          View Case Study →
+          Learn More →
         </span>
       </div>
     </div>

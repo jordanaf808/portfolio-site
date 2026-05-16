@@ -2,8 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import { getFeaturedProjects } from '../data/projects.ts';
+import { getFeaturedJobRoles } from '../data/jobRoles.ts';
 
-const projects = getFeaturedProjects();
+const projects = [...getFeaturedProjects(), ...getFeaturedJobRoles()];
 ---
 <Layout title="Lookbook" activePage="lookbook">
   <!-- Section header -->
