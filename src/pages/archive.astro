@@ -1,8 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { projects } from '../data/projects.ts';
+import { jobRoles } from '../data/jobRoles.ts';
 
-const sorted = [...projects].sort((a, b) => b.year - a.year);
+const startYear = (y: string): number => parseInt(y.match(/\d{4}/)?.[0] ?? '0')
+const sorted = [...projects, ...jobRoles].sort((a, b) => startYear(b.year) - startYear(a.year))
 ---
 <Layout title="Archive" activePage="archive">
   <!-- Header -->
@@ -28,20 +30,22 @@ const sorted = [...projects].sort((a, b) => b.year - a.year);
         </tr>
       </thead>
       <tbody>
-        {sorted.map((project) => (
+        {sorted.map((entry) => (
           <tr
             class="border-b border-primary hover:bg-accent-taupe/20 transition-colors duration-300 cursor-pointer"
-            onclick={`window.location.href='/projects/${project.slug}'`}
+            onclick={`window.location.href='/projects/${entry.slug}'`}
           >
-            <td class="p-6 font-mono text-xs text-muted">{project.year}</td>
+            <td class="p-6 font-mono text-xs text-muted">{entry.year}</td>
             <td class="p-6">
-              <p class="font-display text-lg text-text">{project.title}</p>
-              <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted mt-0.5">{project.category}</p>
+              <p class="font-display text-lg text-text">{entry.title}</p>
+              <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted mt-0.5">
+                {entry.category} | {entry.type === 'jobRole' ? 'ROLE' : 'PROJECT'}
+              </p>
             </td>
-            <td class="p-6 font-mono text-xs text-muted hidden md:table-cell">{project.client ?? '—'}</td>
+            <td class="p-6 font-mono text-xs text-muted hidden md:table-cell">{entry.client ?? '—'}</td>
             <td class="p-6 hidden lg:table-cell">
               <div class="flex flex-wrap gap-1">
-                {project.tech.slice(0, 3).map((t) => (
+                {entry.tech.slice(0, 3).map((t) => (
                   <span class="font-mono text-xs uppercase tracking-[0.05em] text-muted border border-muted/40 px-1.5 py-0.5">
                     {t}
                   </span>
@@ -50,7 +54,7 @@ const sorted = [...projects].sort((a, b) => b.year - a.year);
             </td>
             <td class="p-6">
               <a
-                href={`/projects/${project.slug}`}
+                href={`/projects/${entry.slug}`}
                 class="font-mono text-xs uppercase tracking-[0.1em] text-text hover:text-muted transition-colors"
               >
                 View →
