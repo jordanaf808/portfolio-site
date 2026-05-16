@@ -113,10 +113,6 @@ export const jobRoles: JobRole[] = [
 	},
 ]
 
-export function getJobRoleBySlug(slug: string): JobRole | undefined {
-	return jobRoles.find((r) => r.slug === slug)
-}
-
 export function getFeaturedJobRoles(): JobRole[] {
 	return jobRoles.filter((r) => r.featured)
 }
