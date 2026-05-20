@@ -15,12 +15,6 @@
     "test:watch": "vitest",
     "lint": "eslint src --ext .ts,.tsx,.astro"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "workerd"
-    ]
-  },
   "dependencies": {
     "@astrojs/cloudflare": "^13.5.0",
     "@astrojs/react": "^5.0.4",
