@@ -6,7 +6,7 @@ const { activePage = 'lookbook' } = Astro.props;
 ---
 <aside
   id="left-panel"
-  class="fixed top-0 left-0 h-full w-[80vw] min-[1000px]:w-[40%] border-r border-primary bg-background flex flex-col z-40 -translate-x-full min-[1000px]:translate-x-0 transition-transform duration-300 ease-in-out"
+  class="fixed top-0 left-0 h-full w-[80vw] min-[1000px]:w-[40%] max-w-lg border-r border-primary bg-background flex flex-col z-40 -translate-x-full min-[1000px]:translate-x-0 transition-transform duration-300 ease-in-out"
 >
   <button
     id="close-left-panel"
@@ -47,36 +47,68 @@ const { activePage = 'lookbook' } = Astro.props;
     <a
       href="/"
       class:list={[
-        'group flex flex-col justify-between p-5 border-b border-primary min-[1000px]:border-r transition-colors duration-300',
-        activePage === 'lookbook' ? 'bg-surface-container-high' : 'hover:bg-surface-container-high',
+        'nav-cell relative flex flex-col justify-between p-5 border-b border-primary min-[1000px]:border-r',
+        activePage === 'lookbook' ? 'bg-surface-container-high' : '',
       ]}
     >
-      <span class="font-mono text-xs uppercase tracking-[0.1em] text-muted">Portfolio</span>
-      <span class="font-display text-lg text-text">Selected Work</span>
+      <div class="marquee-wrap">
+        <div class="marquee-track">
+          <span class="marquee-text">Selected Work</span>
+          <span class="marquee-text">Selected Work</span>
+          <span class="marquee-text">Selected Work</span>
+          <span class="marquee-text">Selected Work</span>
+        </div>
+      </div>
+      <span class="nav-cell-label font-mono text-xs uppercase tracking-[0.1em] text-muted relative z-10">Portfolio</span>
+      <span class="nav-cell-title font-display text-lg text-text relative z-10">Selected Work</span>
     </a>
     <a
       href="/archive"
       class:list={[
-        'group flex flex-col justify-between p-5 border-b border-primary transition-colors duration-300',
-        activePage === 'archive' ? 'bg-surface-container-high' : 'hover:bg-surface-container-high',
+        'nav-cell relative flex flex-col justify-between p-5 border-b border-primary',
+        activePage === 'archive' ? 'bg-surface-container-high' : '',
       ]}
     >
-      <span class="font-mono text-xs uppercase tracking-[0.1em] text-muted">Archive</span>
-      <span class="font-display text-lg text-text">All Projects</span>
+      <div class="marquee-wrap">
+        <div class="marquee-track">
+          <span class="marquee-text">All Projects</span>
+          <span class="marquee-text">All Projects</span>
+          <span class="marquee-text">All Projects</span>
+          <span class="marquee-text">All Projects</span>
+        </div>
+      </div>
+      <span class="nav-cell-label font-mono text-xs uppercase tracking-[0.1em] text-muted relative z-10">Archive</span>
+      <span class="nav-cell-title font-display text-lg text-text relative z-10">All Projects</span>
     </a>
     <a
       href="/#services"
-      class="group flex flex-col justify-between p-5 border-b border-primary min-[1000px]:border-b-0 min-[1000px]:border-r transition-colors duration-300 hover:bg-surface-container-high"
+      class="nav-cell relative flex flex-col justify-between p-5 border-b border-primary min-[1000px]:border-b-0 min-[1000px]:border-r"
     >
-      <span class="font-mono text-xs uppercase tracking-[0.1em] text-muted">Services</span>
-      <span class="font-display text-lg text-text">What We Build</span>
+      <div class="marquee-wrap">
+        <div class="marquee-track">
+          <span class="marquee-text">What We Build</span>
+          <span class="marquee-text">What We Build</span>
+          <span class="marquee-text">What We Build</span>
+          <span class="marquee-text">What We Build</span>
+        </div>
+      </div>
+      <span class="nav-cell-label font-mono text-xs uppercase tracking-[0.1em] text-muted relative z-10">Services</span>
+      <span class="nav-cell-title font-display text-lg text-text relative z-10">What We Build</span>
     </a>
     <button
       id="open-cart-drawer-left"
-      class="group flex flex-col justify-between p-5 transition-colors duration-300 hover:bg-surface-container-high text-left w-full"
+      class="nav-cell relative flex flex-col justify-between p-5 text-left w-full"
     >
-      <span class="font-mono text-xs uppercase tracking-[0.1em] text-muted">Contact</span>
-      <span class="font-display text-lg text-text">Start a Project</span>
+      <div class="marquee-wrap">
+        <div class="marquee-track">
+          <span class="marquee-text">Start a Project</span>
+          <span class="marquee-text">Start a Project</span>
+          <span class="marquee-text">Start a Project</span>
+          <span class="marquee-text">Start a Project</span>
+        </div>
+      </div>
+      <span class="nav-cell-label font-mono text-xs uppercase tracking-[0.1em] text-muted relative z-10">Contact</span>
+      <span class="nav-cell-title font-display text-lg text-text relative z-10">Start a Project</span>
     </button>
   </div>
 
@@ -103,3 +135,72 @@ const { activePage = 'lookbook' } = Astro.props;
     document.dispatchEvent(new CustomEvent('open-cart-drawer'));
   });
 </script>
+
+<style>
+  @keyframes marquee-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .nav-cell {
+    position: relative;
+    outline: none;
+    transition: background-color 400ms ease;
+  }
+
+  .nav-cell:hover,
+  .nav-cell:focus-visible {
+    background-color: #C8B6A6;
+  }
+
+  .marquee-wrap {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 400ms ease;
+  }
+
+  .nav-cell:hover .marquee-wrap,
+  .nav-cell:focus-visible .marquee-wrap {
+    opacity: 1;
+  }
+
+  .marquee-track {
+    display: flex;
+    white-space: nowrap;
+    animation: marquee-scroll 9s linear infinite;
+  }
+
+  .marquee-text {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 96px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.35);
+    padding-right: 48px;
+    user-select: none;
+  }
+
+  .nav-cell-label {
+    transition: color 400ms ease;
+  }
+
+  .nav-cell:hover .nav-cell-label,
+  .nav-cell:focus-visible .nav-cell-label {
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .nav-cell-title {
+    transition: color 400ms ease;
+  }
+
+  .nav-cell:hover .nav-cell-title,
+  .nav-cell:focus-visible .nav-cell-title {
+    color: #ffffff;
+  }
+</style>
