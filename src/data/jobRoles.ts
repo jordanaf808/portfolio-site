@@ -1,4 +1,5 @@
-import type { JobRole } from '../types/index.ts'
+import type {JobRole} from '../types/index.ts'
+import {sortByMostRecent} from './projects.ts'
 
 export const jobRoles: JobRole[] = [
 	{
@@ -87,17 +88,9 @@ export const jobRoles: JobRole[] = [
 		title: 'True Classic',
 		subtitle: 'Shopify Plus Developer',
 		client: 'True Classic',
-		year: 'July 2024 - Aug 2024',
+		year: 'July 2024 - Aug 2025',
 		category: 'SHOPIFY PLUS',
-		tech: [
-			'Shopify Plus',
-			'Liquid',
-			'JS',
-			'React',
-			'Figma',
-			'Cursor',
-			'Devin',
-		],
+		tech: ['Shopify Plus', 'Liquid', 'JS', 'React', 'Figma', 'Cursor', 'Devin'],
 		status: 'COMPLETE',
 		description:
 			"As part of a lean, high-velocity frontend team at True Classic, one of the fastest-growing DTC menswear brands in the U.S., I contributed to a Shopify Plus storefront serving over 80,000 daily visitors across 190 global markets. Working within a 3 to 8 person team, I shipped CRO-driven features under shifting priorities, using A/B test data to validate decisions and maximize conversion at every stage of the funnel. \n\n Key deliverables included a lazy-loading multi-collection product grid built to work around Shopify's platform limitations, a Metaobject-driven multi-level mobile menu with animated accordion navigation and breadcrumbs, and a custom internationalization layer handling locale detection, country and language selection, and multi-language support. On the performance side, I led ongoing codebase modernization efforts covering asset loading optimization, render-blocking resource reduction, and skeleton loading state implementation, resulting in measurable Lighthouse and Core Web Vitals improvements. Third-party integrations spanned TryNow, Monocle, Okendo, Bazaarvoice, Afterpay, Klaviyo, and TrueFit. Beyond individual tasks, I took ownership of production hotfixes, drove features across the finish line, and collaborated closely with teammates to plan, test, and ship work on a fast-moving release cadence.",
@@ -114,5 +107,5 @@ export const jobRoles: JobRole[] = [
 ]
 
 export function getFeaturedJobRoles(): JobRole[] {
-	return jobRoles.filter((r) => r.featured)
+	return sortByMostRecent(jobRoles.filter((r) => r.featured))
 }

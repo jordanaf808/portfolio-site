@@ -9,14 +9,14 @@ const { showHamburger = false } = Astro.props
     {showHamburger && (
       <button
         id="hamburger-btn"
-        class="md:hidden font-mono text-xs uppercase tracking-widest text-muted hover:text-text transition-colors"
+        class="min-[1000px]:hidden font-mono text-xs uppercase tracking-widest text-muted hover:text-text transition-colors"
         aria-label="Open navigation menu"
         aria-expanded="false"
       >
         Menu
       </button>
     )}
-    <div class="hidden md:flex items-center gap-4">
+    <div class="hidden min-[1000px]:flex items-center gap-4">
       <a href="/" class="font-mono text-xs uppercase tracking-widest text-text border-b border-primary pb-px">Studio</a>
       <a href="/archive" class="font-mono text-xs uppercase tracking-widest text-muted hover:text-text transition-colors">Archive</a>
     </div>

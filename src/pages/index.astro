@@ -7,28 +7,31 @@ import { getFeaturedJobRoles } from '../data/jobRoles.ts';
 const projects = [...getFeaturedProjects(), ...getFeaturedJobRoles()];
 ---
 <Layout title="Lookbook" activePage="lookbook">
-  <!-- Profile section -->
-  <div class="border-b border-primary min-[1200px]:flex">
-    <div class="w-full aspect-square max-h-120 min-[1200px]:w-1/2 min-[1200px]:shrink-0 min-[1200px]:max-h-none">
+  <!-- Brand header -->
+  <div class="border-b border-primary grid grid-cols-2 min-[1000px]:hidden">
+    <!-- Title: full-width row 1 by default; col 2 / row 1 at 530px+ -->
+    <div class="col-start-1 col-span-2 row-start-1 p-6 self-start border-b border-primary min-[530px]:col-start-2 min-[530px]:col-span-1">
+      <h1 class="font-display italic text-3xl leading-tight text-text">
+        Jordan A.F.
+      </h1>
+      <p class="font-mono text-xs uppercase tracking-[0.15em] text-muted mt-1">
+        Shopify & JS/TS Development
+      </p>
+    </div>
+    <!-- Image: col 1, row 2 portrait by default; col 1, row-span-2 at 530px+ -->
+    <div class="col-start-1 row-start-2 row-span-1 aspect-2/3 border-r border-primary min-[530px]:row-start-1 min-[530px]:row-span-2 min-[530px]:aspect-auto">
       <img
         src="/profile-pic.jpg"
         alt="Jordan A.F."
         class="w-full h-full object-cover object-top grayscale-hover"
       />
     </div>
-    <div class="p-6 bg-surface min-[1200px]:border-l min-[1200px]:border-primary min-[1200px]:flex min-[1200px]:items-center">
+    <!-- About: col 2, row 2 always -->
+    <div class="col-start-2 row-start-2 p-6 flex flex-col justify-center">
       <p class="text-sm text-muted leading-relaxed">
         Full-stack developer specialising in Shopify commerce and JS/TS engineering. I build fast, precise digital storefronts for brands that care about craft — from custom theme development to bespoke Storefront API integrations.
       </p>
     </div>
-  </div>
-
-  <!-- Section header -->
-  <div class="p-12 border-b border-primary">
-    <h2 class="font-display text-5xl italic text-text">Selected Work</h2>
-    <!-- <p class="font-mono text-xs uppercase tracking-[0.15em] text-muted mb-2">
-      2023–2024
-    </p> -->
   </div>
 
   <!-- Project feed -->

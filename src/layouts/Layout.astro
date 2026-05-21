@@ -34,8 +34,10 @@ const { title, activePage } = Astro.props;
   ></div>
 
   <!-- Right panel: full-width on mobile, 60% on desktop -->
-  <div class="w-full md:ml-[40%] md:w-[60%] flex flex-col h-full hard-shadow-canvas">
-    <TopNav showHamburger />
+  <div class="w-full min-[1000px]:ml-[40%] min-[1000px]:w-[60%] flex flex-col h-full hard-shadow-canvas">
+    <div class="min-[1000px]:hidden">
+      <TopNav showHamburger />
+    </div>
     <main class="flex-1 overflow-y-auto bg-surface">
       <slot />
     </main>

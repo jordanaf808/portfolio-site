@@ -7,9 +7,30 @@ interface Props {
 }
 const { project, index } = Astro.props;
 const label = String(index + 1).padStart(3, '0');
+const statusDot: Record<string, string> = {
+  COMPLETE: 'bg-green-500',
+  ACTIVE: 'bg-yellow-400',
+  ARCHIVED: 'bg-gray-400',
+};
 ---
-<article class="border-b border-primary group">
+<article class="group">
   <a href={`/projects/${project.slug}`} class="block">
+
+    <!-- Card header -->
+    <div class="flex items-stretch justify-between p-6 border-b border-primary">
+      <div>
+        <h2 class="font-display text-3xl text-text mb-1">{project.title}</h2>
+        <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted">{project.subtitle}</p>
+      </div>
+      <div class="flex flex-col justify-between text-right shrink-0 ml-8 p-1">
+        <p class="font-mono text-xs text-muted">{project.year}</p>
+        <span class="flex justify-end items-center gap-2.5">
+          <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted">{project.status}</p>
+          <div class={`w-2 h-2 rounded-full shrink-0 ${statusDot[project.status] ?? 'bg-gray-400'}`}></div>
+        </span>
+      </div>
+    </div>
+
     <!-- Image -->
     <div class="relative aspect-[16/10] overflow-hidden border-b border-primary bg-surface-container-high">
       <img
@@ -19,27 +40,23 @@ const label = String(index + 1).padStart(3, '0');
         loading="lazy"
         onerror="this.style.opacity='0'"
       />
-      <!-- Category badge -->
-      <div class="absolute top-4 left-4 bg-primary text-surface font-mono text-xs uppercase tracking-[0.1em] px-3 py-1">
-        {label} / {project.category}
+      <!-- Counter -->
+      <!-- <div class="absolute bottom-4 right-4 bg-primary text-surface font-mono text-xs uppercase tracking-[0.1em] px-3 py-1">
+        {label} / {project.title}
+      </div> -->
+      <!-- Tech tags -->
+      <div class="absolute bottom-4 left-4 flex flex-wrap justify-end gap-0.5 max-w-[60%]">
+        {project.tech.slice(0, 3).map((t) => (
+          <span class="font-mono text-xs uppercase tracking-[0.05em] text-surface px-3 py-1 bg-primary">
+            {t}
+          </span>
+        ))}
       </div>
       <!-- Hover overlay -->
       <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-primary/10 pointer-events-none">
         <span class="bg-primary text-surface font-mono text-xs uppercase tracking-[0.15em] px-6 py-3">
           Learn More →
         </span>
-      </div>
-    </div>
-
-    <!-- Card footer -->
-    <div class="flex items-end justify-between p-8">
-      <div>
-        <h2 class="font-display text-3xl text-text mb-1">{project.title}</h2>
-        <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted">{project.subtitle}</p>
-      </div>
-      <div class="text-right flex-shrink-0 ml-8">
-        <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted">{project.status}</p>
-        <p class="font-mono text-xs text-muted">{project.year}</p>
       </div>
     </div>
   </a>
