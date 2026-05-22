@@ -46,11 +46,6 @@ const { title, activePage } = Astro.props;
   <CartDrawer client:load />
 
   <script>
-    // Cart drawer
-    document.getElementById('open-cart-drawer')?.addEventListener('click', () => {
-      document.dispatchEvent(new CustomEvent('open-cart-drawer'));
-    });
-
     // Mobile nav drawer
     const panel = document.getElementById('left-panel')
     const backdrop = document.getElementById('left-panel-backdrop')
