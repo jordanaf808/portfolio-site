@@ -48,14 +48,13 @@ Commit at logical checkpoints — not per file, not per session:
 
 ## Pre-Commit Checklist
 
-Before every commit, run:
-```bash
-pnpm type-check
-pnpm lint
-pnpm build
-```
+Before every commit:
+1. Update `CHANGELOG.md` with what changed and why
+2. `pnpm type-check` — must pass (zero type errors)
+3. `pnpm lint` — must pass (zero lint errors)
+4. `pnpm build` — must produce a clean build
 
-All three must pass. Do not commit a broken build.
+Do not commit if any step fails or if the changelog entry is missing.
 
 ## What Never Gets Committed
 
@@ -93,6 +92,7 @@ Aim for one meaningful commit per ROADMAP.md task, or one per phase for small ta
 ## Claude Code Git Behaviour
 
 - Claude Code should **commit after completing each ROADMAP.md task**, not after every file edit
+- Always update `CHANGELOG.md` before committing — describe the change, affected files, and rationale
 - Always run the pre-commit checklist before committing
 - Claude Code should **never push to main directly** — commit to the current feature branch only
 - If asked to "save progress", commit with a `chore: WIP —` prefix and note what's incomplete in the body

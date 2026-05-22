@@ -71,3 +71,11 @@ Fonts: **Newsreader** (display/headings), **Work Sans** (body/UI), **Space Grote
 - The Cart Drawer (contact form) is a slide-in overlay, not a page
 - `RESEND_API_KEY` is server-only — never reference it in `.astro` templates (it would bundle into client JS)
 - Security headers go in `public/_headers` (Cloudflare Pages static header injection)
+
+## Changelog
+
+`CHANGELOG.md` in the project root is the active build log. Update it as part of every commit:
+
+- **When:** Before running the pre-commit checklist, for any commit that changes code, styles, data, or config.
+- **Format:** Add an entry under a `## YYYY-MM-DD` heading (or append to today's entry if one exists). Include: what changed, why, files touched, and the commit hash once known.
+- **Skip:** `chore:` commits and dependency-only updates do not need changelog entries.
