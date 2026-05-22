@@ -689,3 +689,61 @@ Nav cell labels also updated: "What We Build" → "What I Do", "Start a Project"
 pnpm type-check   →  0 errors
 pnpm build        →  Complete — clean build
 ```
+
+---
+
+## Session Update — 2026-05-22
+
+**Branch:** `main`
+**Status:** Two-column project grid, card header colour polish, TopNav cart drawer fix
+
+---
+
+### Summary
+
+Visual and interaction polish session. Added a two-column layout for project cards on wide viewports, swapped and refined card/section header background colours with a hover tint, and fixed the "Hire Us" button in `TopNav` which was not opening the contact drawer on project detail pages.
+
+---
+
+### Changes Made
+
+#### Feature 1 — Two-Column Project Grid at 1400px+
+
+**File modified:** `src/pages/index.astro`
+
+Project cards now display in two columns at viewports ≥ 1400px. The card map is wrapped in a `.project-grid` CSS grid container (`grid-cols-1` default, `min-[1400px]:grid-cols-2`).
+
+Column divider uses the gap-as-divider pattern: `column-gap: 1px` + `background-color: var(--color-primary)` on the grid container. This avoids the layout side-effect of `border-right` (which narrows the left card's content area, causing a fractional-pixel misalignment in the `aspect-[16/10]` image height across the two columns).
+
+---
+
+#### Style 2 — Card Header Colour Updates
+
+**Files modified:** `src/pages/index.astro`, `src/components/ProjectCard.astro`
+
+Background colours swapped between the "Selected Work" section header and the project card header:
+
+- "Selected Work" header: `bg-background` (`#F4F4F0`)
+- Card header default: `bg-surface` (`#FFFFFF`)
+- Card header on hover: `#ede5dd` (warm tint), with `transition-colors duration-300`
+
+The hover colour is applied via a scoped `<style>` block in `ProjectCard.astro` using `.group:hover .card-header` — required because the `<article>` (carrying the `group` class) and `.card-header` are in the same component, so Astro's scope hash applies correctly to both without needing `:global()`.
+
+---
+
+#### Fix 3 — TopNav "Hire Us" Button Now Opens Contact Drawer on All Pages
+
+**Files modified:** `src/components/TopNav.astro`, `src/layouts/Layout.astro`
+
+**Bug:** The `open-cart-drawer` click → CustomEvent wiring lived in `Layout.astro`'s `<script>`. On project detail pages, `TopNav` is imported directly (without `Layout`), so the script never ran and the button did nothing.
+
+**Fix:** Moved the event wiring into `TopNav.astro` as a self-contained `<script>`. Astro deduplicates component scripts, so this is safe regardless of how many times `TopNav` appears in the page tree. The redundant listener was removed from `Layout.astro`.
+
+---
+
+### Checks
+
+```text
+pnpm type-check   →  0 errors, 0 warnings, 0 hints  (22 files checked)
+pnpm build        →  Complete — clean build
+```

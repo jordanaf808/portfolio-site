@@ -6,6 +6,15 @@ import { getFeaturedJobRoles } from '../data/jobRoles.ts';
 
 const projects = [...getFeaturedProjects(), ...getFeaturedJobRoles()];
 ---
+<style>
+  @media (min-width: 1400px) {
+    .project-grid {
+      column-gap: 1px;
+      background-color: var(--color-primary);
+    }
+  }
+</style>
+
 <Layout title="Lookbook" activePage="lookbook">
   <!-- Brand header -->
   <div class="border-b border-primary grid grid-cols-2 min-[1000px]:hidden">
@@ -37,18 +46,20 @@ const projects = [...getFeaturedProjects(), ...getFeaturedJobRoles()];
   <!-- Project feed -->
   <div>
     <!-- Section header -->
-    <div class="p-7 border-b border-primary min-[1000px]:min-h-27">
+    <div class="p-7 border-b border-primary min-[1000px]:min-h-27 bg-background">
       <h2 class="font-display text-5xl italic text-text">Selected Work</h2>
       <!-- <p class="font-mono text-xs uppercase tracking-[0.15em] text-muted mb-2">
         2023–2024
       </p> -->
     </div>
-    {projects.map((project, i) => (
-      <ProjectCard project={project} index={i} />
-    ))}
+    <div class="project-grid grid grid-cols-1 min-[1400px]:grid-cols-2">
+      {projects.map((project, i) => (
+        <ProjectCard project={project} index={i} />
+      ))}
+    </div>
   </div>
 
-  <footer class="p-12 border-t border-primary">
+  <footer class="p-6">
     <p class="font-mono text-xs text-muted">© {new Date().getFullYear()} The Commerce Boutique</p>
   </footer>
 </Layout>

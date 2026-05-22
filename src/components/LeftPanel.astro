@@ -18,7 +18,7 @@ const { activePage = 'lookbook' } = Astro.props;
   <!-- Brand header -->
   <div class="border-b border-primary grid grid-cols-2">
     <!-- Title: full-width row 1 by default; col 2 / row 1 at 1300px+ -->
-    <div class="col-start-1 col-span-2 row-start-1 p-6 self-start border-primary min-[1000px]:border-b min-[1000px]:min-h-27 min-[1300px]:col-start-2 min-[1300px]:col-span-1">
+    <div class="col-start-1 col-span-2 row-start-1 p-6 self-start border-primary min-[1000px]:border-b min-[1000px]:min-h-27">
       <h1 class="font-display italic text-3xl leading-tight text-text">
         Jordan A.F.
       </h1>
@@ -27,7 +27,7 @@ const { activePage = 'lookbook' } = Astro.props;
       </p>
     </div>
     <!-- Image: col 1, row 2, portrait by default; col 1, row-span-2 at 1300px+ -->
-    <div class="hidden min-[1000px]:block col-start-1 row-start-2 row-span-1 aspect-2/3 border-r border-primary min-[1300px]:row-start-1 min-[1300px]:row-span-2 min-[1300px]:aspect-auto">
+    <div class="hidden min-[1000px]:block col-start-1 row-start-2 row-span-1 aspect-2/3 border-r border-primary">
       <img
         src="/profile-pic.jpg"
         alt="Jordan A.F."
