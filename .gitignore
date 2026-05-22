@@ -2,6 +2,7 @@ CLAUDE.local.md
 temp/
 docs/
 .wrangler/
+.superpowers/
 
 # build output
 dist/

@@ -13,9 +13,9 @@ export const jobRoles: JobRole[] = [
 		tech: [
 			'Shopify',
 			'Liquid',
+			'JS',
 			'HTML',
 			'CSS',
-			'JS',
 			'API Integration',
 			'Adobe',
 			'GSAP',
@@ -38,11 +38,11 @@ export const jobRoles: JobRole[] = [
 		type: 'jobRole',
 		slug: 'staze',
 		title: 'Staze',
-		subtitle: 'Maintain Shopify Storefront',
+		subtitle: 'Shopify Developer',
 		client: 'Staze',
 		year: 'Nov 2021 - Aug 2024',
 		category: 'Shopify',
-		tech: ['Shopify', 'Liquid', 'HTML', 'CSS', 'JS', 'Illustrator'],
+		tech: ['Shopify', 'Liquid', 'JS', 'HTML', 'CSS', 'Illustrator'],
 		status: 'COMPLETE',
 		description:
 			'Maintained and rebuilt the Shopify theme for Staze, a boutique herbal storage brand, translating a fresh redesign into a fully functional storefront. Developed custom templates, sections, and interactive features including pop-ups, dropdowns, and animations to enhance UX/UI and responsiveness using HTML, CSS, JavaScript, and Liquid. Rounded out the role with third-party app integration, performance optimization, SEO improvements, and ongoing technical troubleshooting to keep the store running smoothly.',
@@ -65,10 +65,10 @@ export const jobRoles: JobRole[] = [
 		tech: [
 			'Shopify Plus',
 			'Liquid',
+			'JS',
 			'Storefront API',
 			'HTML',
 			'CSS',
-			'JS',
 			'Figma',
 		],
 		status: 'COMPLETE',
@@ -76,10 +76,7 @@ export const jobRoles: JobRole[] = [
 			"As one of two Shopify developers on the e-commerce team at Simplehuman I helped maintain an international Shopify Plus store built on a custom theme and CMS system. I was a full-time, on-site contractor collaborating closely with our copywriters, designers, and marketing team to launch new products, build out site features, and keep content fresh across all regions. \n\n Responsibilities ranged from updating product data, to integrating Shopify's search app, and building a custom product configuration form on the PDP. This site used the Slate toolkit for building and compiling Shopify themes and a custom CMS system leveraging metafields. Using Liquid, JavaScript, jQuery, Figma and SCSS I improved site performance, SEO, translations, and metafield management to deliver a unique and enjoyable shopping experience for tens of thousands of daily visitors.",
 		responsibilities: '',
 		technologies: '',
-		images: [
-			'/projects/chronos-identity/01.jpg',
-			'/projects/chronos-identity/02.jpg',
-		],
+		images: ['/projects/simplehuman/Simplehuman-product-configuration.jpg'],
 		featured: true,
 	},
 	{

@@ -587,3 +587,105 @@ Added a profile section at the very top of the homepage slot (before "Selected W
 pnpm type-check   →  0 errors, 0 warnings, 0 hints  (22 files checked)
 pnpm build        →  Complete — clean build
 ```
+
+---
+
+## Session Update — 2026-05-20
+
+**Branch:** `main`  
+**Status:** pnpm v10→v11 migration + profile section moved into left panel
+
+---
+
+### Summary
+
+Two changes: a tooling migration to pnpm v11 and a significant layout refactor moving the profile section from the homepage into the `LeftPanel` brand header, with updated breakpoints and responsive behaviour across the layout.
+
+---
+
+### Changes Made
+
+#### Chore 1 — pnpm v10→v11 Migration
+
+**Files modified:** `package.json`, `pnpm-workspace.yaml` (created)
+
+Ran `pnpx codemod run pnpm-v10-to-v11`. Moved workspace and catalog config out of `package.json` into the dedicated `pnpm-workspace.yaml` file, which is the pnpm v11 convention. No functional changes to dependencies or scripts.
+
+---
+
+#### Feature 2 — Profile Section Moved into LeftPanel
+
+**Files modified:** `src/components/LeftPanel.astro`, `src/components/ProjectCard.astro`, `src/components/TopNav.astro`, `src/layouts/Layout.astro`, `src/pages/index.astro`, `src/data/jobRoles.ts`, `src/data/projects.ts`
+
+Profile photo and bio relocated from `index.astro` into the `LeftPanel` brand header. The brand header is now a 2-column CSS grid: the portrait image and about text occupy the lower-left cell below 1300px; at narrower widths (below 1000px) the panel collapses to title-only (image and about are hidden).
+
+Nav grid collapses from 2×2 to a single column below 1000px with corrected borders. All breakpoints across `Layout.astro`, `LeftPanel.astro`, and `TopNav.astro` were updated from `md` (768px) to `min-[1000px]`.
+
+`TopNav` is now hidden above 1000px (the left panel is always visible at desktop widths). The close button was repositioned as `absolute` on mobile to avoid affecting the header grid layout. A duplicate mobile-only brand header was added to `index.astro` (hidden above 1000px) to keep the lookbook heading visible on mobile where `LeftPanel` is off-screen as a drawer.
+
+`ProjectCard` tech tag pills were inverted to dark background / light text to improve contrast at the bottom of the card.
+
+---
+
+### Checks
+
+```text
+pnpm type-check   →  0 errors
+pnpm build        →  Complete — clean build
+```
+
+---
+
+## Session Update — 2026-05-21
+
+**Branch:** `main`  
+**Status:** Right panel layout fix + marquee nav hover effect + panel header height alignment
+
+---
+
+### Summary
+
+Three targeted improvements: a layout bug fix for large viewports where the two panels fell out of sync, a marquee hover animation added to the bento nav grid, and a min-height constraint ensuring the left and right panel headers share the same bottom border Y position.
+
+---
+
+### Changes Made
+
+#### Fix 1 — Right Panel Gap on Large Screens
+
+**File modified:** `src/layouts/Layout.astro`
+
+**Bug:** `LeftPanel` uses `min-[1000px]:w-[40%] max-w-lg`, which caps its width at 512px (32rem) on large screens. The right panel was using `ml-[40%] w-[60%]` (pure percentage), so it continued growing past 512px — leaving a visible gap between the panels on wide viewports.
+
+**Fix:** Right panel margin changed to `ml-[min(40%,32rem)]` and width to `w-[calc(100%-min(40%,32rem))]`. The CSS `min()` function mirrors the left panel's effective rendered width exactly at every viewport size, eliminating the gap.
+
+---
+
+#### Feature 2 — Marquee Hover Effect on Nav Grid
+
+**File modified:** `src/components/LeftPanel.astro`
+
+Each of the four bento nav cells now contains a hidden marquee strip. On hover, a CSS `@keyframes` animation slides a repeating row of title text horizontally across the cell background, creating an editorial ticker effect.
+
+Nav cells refactored to use a `.nav-cell` class. The Tailwind `hover:bg-surface-container-high` class was removed from each cell; hover background is now handled by the `.nav-cell:hover` CSS rule using semi-transparent accent taupe (`#c8b6a66e`). `max-w-lg` added to the `<aside>` element to cap the panel width at 512px, consistent with the Layout.astro fix above.
+
+---
+
+#### Fix 3 — Align Panel Header Heights at Desktop Breakpoints
+
+**Files modified:** `src/components/LeftPanel.astro`, `src/pages/index.astro`
+
+**Problem:** The `LeftPanel` title row and the "Selected Work" section header in the right panel had no minimum height, so their bottom borders landed at different Y positions depending on content at different viewport widths.
+
+**Fix:** Added `min-[1000px]:min-h-27` (108px) to both the `LeftPanel` title `<div>` and a new "Selected Work" section header `<div>` in `index.astro`. Both horizontal borders now align at the same Y coordinate for all viewports ≥ 1000px.
+
+Nav cell labels also updated: "What We Build" → "What I Do", "Start a Project" → "Get In Touch" — matching the first-person voice used in the brand header.
+
+---
+
+### Checks
+
+```text
+pnpm type-check   →  0 errors
+pnpm build        →  Complete — clean build
+```

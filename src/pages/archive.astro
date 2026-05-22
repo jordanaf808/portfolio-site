@@ -32,7 +32,7 @@ const sorted = [...projects, ...jobRoles].sort((a, b) => startYear(b.year) - sta
       <tbody>
         {sorted.map((entry) => (
           <tr
-            class="border-b border-primary hover:bg-accent-taupe/20 transition-colors duration-300 cursor-pointer"
+            class="border-b border-primary hover:bg-accent-taupe/30 transition-colors duration-300 cursor-pointer"
             onclick={`window.location.href='/projects/${entry.slug}'`}
           >
             <td class="p-6 font-mono text-xs text-muted">{entry.year}</td>
