@@ -36,6 +36,13 @@ const projects = [...getFeaturedProjects(), ...getFeaturedJobRoles()];
 
   <!-- Project feed -->
   <div>
+    <!-- Section header -->
+    <div class="p-7 border-b border-primary min-[1000px]:min-h-27">
+      <h2 class="font-display text-5xl italic text-text">Selected Work</h2>
+      <!-- <p class="font-mono text-xs uppercase tracking-[0.15em] text-muted mb-2">
+        2023–2024
+      </p> -->
+    </div>
     {projects.map((project, i) => (
       <ProjectCard project={project} index={i} />
     ))}

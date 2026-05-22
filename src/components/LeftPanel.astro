@@ -18,7 +18,7 @@ const { activePage = 'lookbook' } = Astro.props;
   <!-- Brand header -->
   <div class="border-b border-primary grid grid-cols-2">
     <!-- Title: full-width row 1 by default; col 2 / row 1 at 1300px+ -->
-    <div class="col-start-1 col-span-2 row-start-1 p-6 self-start border-primary min-[1000px]:border-b min-[1300px]:col-start-2 min-[1300px]:col-span-1">
+    <div class="col-start-1 col-span-2 row-start-1 p-6 self-start border-primary min-[1000px]:border-b min-[1000px]:min-h-27 min-[1300px]:col-start-2 min-[1300px]:col-span-1">
       <h1 class="font-display italic text-3xl leading-tight text-text">
         Jordan A.F.
       </h1>
@@ -86,14 +86,14 @@ const { activePage = 'lookbook' } = Astro.props;
     >
       <div class="marquee-wrap">
         <div class="marquee-track">
-          <span class="marquee-text">What We Build</span>
-          <span class="marquee-text">What We Build</span>
-          <span class="marquee-text">What We Build</span>
-          <span class="marquee-text">What We Build</span>
+          <span class="marquee-text">What I Do</span>
+          <span class="marquee-text">What I Do</span>
+          <span class="marquee-text">What I Do</span>
+          <span class="marquee-text">What I Do</span>
         </div>
       </div>
       <span class="nav-cell-label font-mono text-xs uppercase tracking-[0.1em] text-muted relative z-10">Services</span>
-      <span class="nav-cell-title font-display text-lg text-text relative z-10">What We Build</span>
+      <span class="nav-cell-title font-display text-lg text-text relative z-10">What I Do</span>
     </a>
     <button
       id="open-cart-drawer-left"
@@ -101,14 +101,14 @@ const { activePage = 'lookbook' } = Astro.props;
     >
       <div class="marquee-wrap">
         <div class="marquee-track">
-          <span class="marquee-text">Start a Project</span>
-          <span class="marquee-text">Start a Project</span>
-          <span class="marquee-text">Start a Project</span>
-          <span class="marquee-text">Start a Project</span>
+          <span class="marquee-text">Get In Touch</span>
+          <span class="marquee-text">Get In Touch</span>
+          <span class="marquee-text">Get In Touch</span>
+          <span class="marquee-text">Get In Touch</span>
         </div>
       </div>
       <span class="nav-cell-label font-mono text-xs uppercase tracking-[0.1em] text-muted relative z-10">Contact</span>
-      <span class="nav-cell-title font-display text-lg text-text relative z-10">Start a Project</span>
+      <span class="nav-cell-title font-display text-lg text-text relative z-10">Get In Touch</span>
     </button>
   </div>
 
@@ -150,7 +150,9 @@ const { activePage = 'lookbook' } = Astro.props;
 
   .nav-cell:hover,
   .nav-cell:focus-visible {
-    background-color: #C8B6A6;
+    /* background-color: #C8B6A6; */
+    /* background-color: color-mix(in oklab, var(--color-accent-taupe) 30%, transparent); */
+    background-color: #c8b6a66e;
   }
 
   .marquee-wrap {
