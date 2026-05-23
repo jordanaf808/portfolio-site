@@ -741,6 +741,21 @@ The hover colour is applied via a scoped `<style>` block in `ProjectCard.astro` 
 
 ---
 
+#### Style 4 — Responsive About Text in LeftPanel
+
+**File modified:** `src/components/LeftPanel.astro`
+
+The About bio paragraph in the brand header was a fixed `text-sm` (14px) with `p-6` padding, leaving the cell visibly under-filled relative to its sibling `aspect-2/3` image (which dictates the row height).
+
+Bumped to responsive sizing scaled to the cell:
+
+- **1000–1279px** (narrow panel, ~300px row height): `text-base` (16px), `leading-snug`, `p-3`
+- **1280px+** (panel at max-w-lg cap, ~384px row height): `text-lg` (18px), `leading-normal`, `p-6`
+
+Tighter padding at the narrow breakpoint reclaims horizontal room so `text-base` doesn't wrap into a tower; at the wider breakpoint there's room for both larger text and relaxed padding/leading.
+
+---
+
 ### Checks
 
 ```text
