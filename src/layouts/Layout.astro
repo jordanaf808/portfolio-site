@@ -23,7 +23,7 @@ const { title, activePage } = Astro.props;
     rel="stylesheet"
   />
 </head>
-<body class="flex h-screen overflow-hidden bg-background min-[1000px]:grid min-[1000px]:grid-cols-[480px_1fr]">
+<body class="flex h-screen overflow-hidden bg-background min-[1000px]:grid min-[1000px]:grid-cols-[480px_1fr] min-[1000px]:grid-rows-[1fr]">
   <LeftPanel activePage={activePage} />
 
   <!-- Mobile backdrop -->
@@ -34,7 +34,7 @@ const { title, activePage } = Astro.props;
   ></div>
 
   <!-- Right panel: full-width on mobile, grid column 1fr on desktop -->
-  <div class="w-full flex flex-col h-full hard-shadow-canvas">
+  <div class="w-full flex flex-col h-full min-h-0 hard-shadow-canvas">
     <div class="min-[1000px]:hidden">
       <TopNav showHamburger />
     </div>

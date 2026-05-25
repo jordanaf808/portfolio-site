@@ -2,6 +2,21 @@
 
 ## 2026-05-25
 
+### fix: restore full-height panels and right-panel scrolling after grid refactor
+
+The previous grid refactor commit broke two behaviors at ≥1000px: panels no longer filled the viewport height, and the right panel's `<main>` could no longer scroll. Root cause was the grid container's implicit row sizing — without explicit `grid-template-rows`, items push the row past the viewport because grid items have a default `min-height: auto` that resists shrinking below content size.
+
+Changes:
+
+- `src/layouts/Layout.astro`: Added `min-[1000px]:grid-rows-[1fr]` to body (constrains row to viewport height) and `min-h-0` to the right panel grid item (lets it shrink to the row size)
+- `src/components/LeftPanel.astro`: Added `min-[1000px]:min-h-0` (respects grid row size) and `min-[1000px]:overflow-y-auto` (so its content scrolls internally if it exceeds viewport height — e.g. on shorter laptop screens)
+
+Why: This restores the previous height chain (body 100vh → grid row 100vh → panel 100vh → `<main>` flex-1) that `overflow-y-auto` depends on for the right panel's independent scrolling.
+
+### content: update LeftPanel about copy
+
+Replaced the placeholder full-stack copy with a more specific bio (L.A.-based, 5+ years, e-commerce focus, CRO/Core Web Vitals emphasis). Old copy retained as a comment for reference.
+
 ### style: refactor layout to CSS Grid for desktop (≥1000px)
 
 Replaced fixed position + margin-offset pattern with CSS Grid to provide cleaner separation between left and right panels. The grid column `1fr` naturally fills remaining space without needing `calc()` offsets.
