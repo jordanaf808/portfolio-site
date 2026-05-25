@@ -7,18 +7,19 @@ const startYear = (y: string): number => parseInt(y.match(/\d{4}/)?.[0] ?? '0', 
 const sorted = [...projects, ...jobRoles].sort((a, b) => startYear(b.year) - startYear(a.year))
 ---
 <Layout title="Archive" activePage="archive">
+  <div class="flex flex-col min-h-full">
   <!-- Header -->
-  <div class="p-12 border-b border-primary">
-    <p class="font-mono text-xs uppercase tracking-[0.15em] text-muted mb-2">The Index</p>
+  <div class="p-7 border-b border-primary min-[1000px]:min-h-27">
+    <!-- <p class="font-mono text-xs uppercase tracking-[0.15em] text-muted mb-2">The Index</p> -->
     <h2 class="font-display text-5xl italic text-text">Archive</h2>
-    <p class="text-sm text-muted mt-4 max-w-md">
+    <!-- <p class="text-sm text-muted mt-4 max-w-md">
       A raw chronological ledger of architectural digital builds, technical experiments,
       and commercial deployments.
-    </p>
+    </p> -->
   </div>
 
   <!-- Table -->
-  <div class="overflow-x-auto">
+  <div class="overflow-x-auto flex-1">
     <table class="w-full border-collapse">
       <thead>
         <tr class="border-b border-primary">
@@ -69,4 +70,5 @@ const sorted = [...projects, ...jobRoles].sort((a, b) => startYear(b.year) - sta
   <footer class="p-12 border-t border-primary">
     <p class="font-mono text-xs text-muted">© {new Date().getFullYear()} The Commerce Boutique</p>
   </footer>
+  </div>
 </Layout>

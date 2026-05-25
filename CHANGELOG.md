@@ -1,5 +1,22 @@
 # The Commerce Boutique — Build Log
 
+## 2026-05-25
+
+### style: refactor layout to CSS Grid for desktop (≥1000px)
+
+Replaced fixed position + margin-offset pattern with CSS Grid to provide cleaner separation between left and right panels. The grid column `1fr` naturally fills remaining space without needing `calc()` offsets.
+
+Changes:
+
+- `src/layouts/Layout.astro`: Added `min-[1000px]:grid min-[1000px]:grid-cols-[480px_1fr]` to body, removed margin/width calc classes from right panel
+- `src/components/LeftPanel.astro`: Added `min-[1000px]:static` to override `position: fixed` at desktop widths, enabling grid participation
+
+Why: The previous margin-offset approach had the right panel's offset out of sync with the left panel's actual width. Grid approach is architecturally cleaner, eliminates the need for calculated widths, and provides a single source of truth for the 480px column width.
+
+**Verification:** Desktop layout verified at 1440px (left panel fixed width, right panel fills remaining space), mobile layout confirmed unchanged at 375px (full-width right panel, hamburger drawer).
+
+---
+
 **Date:** 2026-05-11  
 **Branch:** `feat/portfolio-site`  
 **Status:** Foundation complete — ready for content and visual QA
