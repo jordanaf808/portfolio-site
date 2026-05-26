@@ -8,6 +8,8 @@
 [🚧] - Create better about me copy.
 [🚧] - Get icons for tech labels
 [ ] - Make sure to add Icons8 reference link: `icons by <a target="_blank" href="https://icons8.com">Icons8</a>`
+[ ] - Author /public/og-default.jpg (1200×630) for link previews. Suggested: crop of profile-pic.jpg with the wordmark + "Shopify & JS/TS Developer" overlaid. Referenced by src/components/SEOHead.astro as the default og:image.
+[ ] - Replace placeholder `site: 'https://thecommerceboutique.com'` in astro.config.mjs with the actual production URL before deploy.
 
 [✅] - work on homepage layout. I think I want to move image and description to left-col with title, but keep it in right-col on mobile layout, just add the title and subtitle above the description.
 

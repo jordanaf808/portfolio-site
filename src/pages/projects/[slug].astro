@@ -5,6 +5,7 @@ import Accordion from '../../components/Accordion.astro';
 import ImageGallery from '../../components/ImageGallery.astro';
 import MasonryGallery from '../../components/MasonryGallery.astro';
 import CartDrawer from '../../components/CartDrawer';
+import SEOHead from '../../components/SEOHead.astro';
 import { projects } from '../../data/projects.ts';
 import { jobRoles } from '../../data/jobRoles.ts';
 import type { ProjectEntry } from '../../types/index.ts';
@@ -34,7 +35,11 @@ const { entry, prevEntry, nextEntry } = Astro.props;
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{entry.title} — The Commerce Boutique</title>
+  <SEOHead
+    title={`${entry.title} — Jordan A.F. | Shopify & JS/TS Developer`}
+    description={entry.description}
+    ogImage={entry.images?.[0]}
+  />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link

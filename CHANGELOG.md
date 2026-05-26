@@ -862,3 +862,29 @@ The availability footer in the LeftPanel was hard-coded to "Available Q3 2026", 
 
 Why: the static label is misleading the moment the quarter rolls over. Computing client-side keeps the static build cacheable while the displayed text stays accurate.
 
+### feat: SEO and social metadata for all pages
+
+Before this commit the site shipped without `<meta name="description">`, without Open Graph or Twitter Card tags, and with a generic title (`Lookbook — The Commerce Boutique`) that omitted Jordan's name and role. Sharing any page on LinkedIn / Slack / iMessage produced a bare link preview, and the homepage was effectively invisible to recruiters searching "Jordan AF Shopify".
+
+**New shared component:**
+
+- `src/components/SEOHead.astro` (new) — single source of truth for `<title>`, `<meta name="description">`, canonical link, full Open Graph block (`og:type`, `og:title`, `og:description`, `og:image`, `og:url`), and Twitter card (`summary_large_image` with title/description/image). Takes a `title` prop (required) plus optional `description` and `ogImage` with sensible defaults. Uses `Astro.site` to resolve absolute URLs.
+
+**Wiring:**
+
+- `src/layouts/Layout.astro` — replaces the inline `<title>` with `<SEOHead>`. Layout's Props now accepts optional `description` and `ogImage` that pass through. `title` is now a complete title string rather than a fragment the layout suffixes; the previous "— The Commerce Boutique" auto-suffix is removed in favour of each page composing its own title.
+- `src/pages/projects/[slug].astro` — bypasses Layout (uses its own 50/50 shell) so `<SEOHead>` is imported and used directly inside the page's `<head>`. The project's first image is passed as `ogImage` so social previews show project artwork instead of the default.
+- `src/pages/index.astro` — title now `"Jordan A.F. — Shopify & JS/TS Developer | Lookbook"` (was `"Lookbook"`); description summarizes role + experience.
+- `src/pages/archive.astro` — title now `"Archive — Jordan A.F. | Shopify & JS/TS Developer"`; description describes the archive's purpose.
+
+**Config:**
+
+- `astro.config.mjs` — added `site: 'https://thecommerceboutique.com'` (placeholder; production URL to be confirmed) so `Astro.site` resolves and `new URL(pathname, Astro.site)` produces absolute canonical and og:image URLs. TODO comment in-file flags the placeholder.
+
+**Follow-ups left in TODO.md:**
+
+- Author `/public/og-default.jpg` (1200×630) as the default `og:image`. Currently referenced but the file doesn't yet exist.
+- Confirm and replace the production URL placeholder in `astro.config.mjs`.
+
+Why: this is the single largest external-facing fix in the UI/UX plan — zero visual change but the link-preview experience on every social platform goes from broken to branded, and the homepage `<title>` now contains the keywords a recruiter actually searches. Verified in dev at `/`, `/archive`, and `/projects/true-classic`; all three return complete, distinct metadata blocks.
+

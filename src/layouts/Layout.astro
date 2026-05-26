@@ -3,19 +3,22 @@ import '../styles/global.css';
 import LeftPanel from '../components/LeftPanel.astro';
 import TopNav from '../components/TopNav.astro';
 import CartDrawer from '../components/CartDrawer';
+import SEOHead from '../components/SEOHead.astro';
 
 interface Props {
   title: string;
+  description?: string;
+  ogImage?: string;
   activePage?: 'lookbook' | 'archive' | 'project';
 }
-const { title, activePage } = Astro.props;
+const { title, description, ogImage, activePage } = Astro.props;
 ---
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{title} — The Commerce Boutique</title>
+  <SEOHead title={title} description={description} ogImage={ogImage} />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
