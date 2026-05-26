@@ -1,0 +1,163 @@
+- generic [active] [ref=e1]:
+  - complementary [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]:
+        - heading "Jordan A.F." [level=1] [ref=e5]
+        - paragraph [ref=e6]: Shopify & JS/TS Development
+      - img "Jordan A.F." [ref=e8]
+      - paragraph [ref=e10]: I'm a Shopify and JavaScript developer based in L.A. For the past 5+ years I've been building e-commerce storefronts for everyone from boutique shops to enterprise brands serving 1M+ monthly visitors, with a consistent focus on CRO-driven feature work, improving Core Web Vitals, and quality user experience.
+    - generic [ref=e11]:
+      - link "Selected Work Selected Work Selected Work Selected Work Portfolio Selected Work" [ref=e12] [cursor=pointer]:
+        - /url: /
+        - generic:
+          - generic:
+            - generic: Selected Work
+            - generic: Selected Work
+            - generic: Selected Work
+            - generic: Selected Work
+        - generic [ref=e13]: Portfolio
+        - generic [ref=e14]: Selected Work
+      - link "All Projects All Projects All Projects All Projects Archive All Projects" [ref=e15] [cursor=pointer]:
+        - /url: /archive
+        - generic:
+          - generic:
+            - generic: All Projects
+            - generic: All Projects
+            - generic: All Projects
+            - generic: All Projects
+        - generic [ref=e16]: Archive
+        - generic [ref=e17]: All Projects
+      - link "What I Do What I Do What I Do What I Do Services What I Do" [ref=e18] [cursor=pointer]:
+        - /url: /#services
+        - generic:
+          - generic:
+            - generic: What I Do
+            - generic: What I Do
+            - generic: What I Do
+            - generic: What I Do
+        - generic [ref=e19]: Services
+        - generic [ref=e20]: What I Do
+      - button "Get In Touch Get In Touch Get In Touch Get In Touch Contact Get In Touch" [ref=e21]:
+        - generic:
+          - generic:
+            - generic: Get In Touch
+            - generic: Get In Touch
+            - generic: Get In Touch
+            - generic: Get In Touch
+        - generic [ref=e22]: Contact
+        - generic [ref=e23]: Get In Touch
+    - generic [ref=e25]:
+      - generic [ref=e26]: TypeScript
+      - generic [ref=e27]: React
+      - generic [ref=e28]: Liquid
+      - generic [ref=e29]: Shopify
+    - generic [ref=e32]: Available Q3 2026
+  - main [ref=e34]:
+    - generic [ref=e35]:
+      - heading "Selected Work" [level=2] [ref=e37]
+      - generic [ref=e38]:
+        - article [ref=e39]:
+          - link "True Classic Shopify Plus Developer July 2024 - Aug 2025 COMPLETE True Classic 001 Learn More →" [ref=e40] [cursor=pointer]:
+            - /url: /projects/true-classic
+            - generic [ref=e41]:
+              - generic [ref=e42]:
+                - heading "True Classic" [level=2] [ref=e43]
+                - paragraph [ref=e44]: Shopify Plus Developer
+              - generic [ref=e45]:
+                - paragraph [ref=e46]: July 2024 - Aug 2025
+                - paragraph [ref=e48]: COMPLETE
+            - generic [ref=e50]:
+              - img "True Classic" [ref=e51]
+              - generic [ref=e52]: "001"
+              - generic:
+                - generic: Learn More →
+        - article [ref=e53]:
+          - link "Staze Shopify Developer Nov 2021 - Aug 2024 COMPLETE Staze 002 Learn More →" [ref=e54] [cursor=pointer]:
+            - /url: /projects/staze
+            - generic [ref=e55]:
+              - generic [ref=e56]:
+                - heading "Staze" [level=2] [ref=e57]
+                - paragraph [ref=e58]: Shopify Developer
+              - generic [ref=e59]:
+                - paragraph [ref=e60]: Nov 2021 - Aug 2024
+                - paragraph [ref=e62]: COMPLETE
+            - generic [ref=e64]:
+              - img "Staze" [ref=e65]
+              - generic [ref=e66]: "002"
+              - generic:
+                - generic: Learn More →
+        - article [ref=e67]:
+          - link "Simplehuman Shopify Plus Developer Dec 2023 - May 2024 COMPLETE Simplehuman 003 Learn More →" [ref=e68] [cursor=pointer]:
+            - /url: /projects/simplehuman
+            - generic [ref=e69]:
+              - generic [ref=e70]:
+                - heading "Simplehuman" [level=2] [ref=e71]
+                - paragraph [ref=e72]: Shopify Plus Developer
+              - generic [ref=e73]:
+                - paragraph [ref=e74]: Dec 2023 - May 2024
+                - paragraph [ref=e76]: COMPLETE
+            - generic [ref=e78]:
+              - img "Simplehuman" [ref=e79]
+              - generic [ref=e80]: "003"
+              - generic:
+                - generic: Learn More →
+        - article [ref=e81]:
+          - link "Undefined Agency Agency Web Developer July 2021 - July 2023 COMPLETE Undefined Agency 004 Learn More →" [ref=e82] [cursor=pointer]:
+            - /url: /projects/undefined-agency
+            - generic [ref=e83]:
+              - generic [ref=e84]:
+                - heading "Undefined Agency" [level=2] [ref=e85]
+                - paragraph [ref=e86]: Agency Web Developer
+              - generic [ref=e87]:
+                - paragraph [ref=e88]: July 2021 - July 2023
+                - paragraph [ref=e90]: COMPLETE
+            - generic [ref=e92]:
+              - img "Undefined Agency" [ref=e93]
+              - generic [ref=e94]: "004"
+              - generic:
+                - generic: Learn More →
+    - paragraph [ref=e96]: © 2026 The Commerce Boutique
+  - dialog "Request Engagement" [ref=e98]:
+    - generic [ref=e99]:
+      - generic [ref=e100]:
+        - paragraph [ref=e101]: Request Engagement
+        - paragraph [ref=e102]: Checkout
+      - button "Close ✕" [ref=e103]
+    - generic [ref=e105]:
+      - generic [ref=e106]:
+        - generic [ref=e107]: Item
+        - generic [ref=e108]: Qty
+      - generic [ref=e109]:
+        - generic [ref=e110]:
+          - paragraph [ref=e111]: Freelance Developer Engagement
+          - paragraph [ref=e112]: Specialized Shopify & JS/TS Services
+        - generic [ref=e113]: 1×
+    - generic [ref=e114]:
+      - generic [ref=e115]:
+        - generic [ref=e116]: Company Name
+        - textbox "Company Name" [ref=e117]:
+          - /placeholder: Enter your organization
+      - generic [ref=e118]:
+        - generic [ref=e119]: Project Details
+        - textbox "Project Details" [ref=e120]:
+          - /placeholder: Briefly describe your technical objectives
+      - generic [ref=e121]:
+        - generic [ref=e122]: Contact Email
+        - textbox "Contact Email" [ref=e123]:
+          - /placeholder: email@domain.com
+      - generic [ref=e124]:
+        - button "Place Order" [ref=e125]
+        - paragraph [ref=e126]: Final scoping and legal contract will follow upon acceptance.
+  - generic [ref=e129]:
+    - button "Menu" [ref=e130]:
+      - img [ref=e132]
+      - generic: Menu
+    - button "Inspect" [ref=e136]:
+      - img [ref=e138]
+      - generic: Inspect
+    - button "Audit" [ref=e140]:
+      - img [ref=e142]
+      - generic: Audit
+    - button "Settings" [ref=e145]:
+      - img [ref=e147]
+      - generic: Settings

@@ -2,6 +2,29 @@
 
 ## 2026-05-25
 
+### style: mobile layout refinements for index page
+
+**Brand header vertical stack (`src/pages/index.astro`)**
+
+- Below 540px: title, image, and about text now stack vertically in DOM order (Title → Image → About) via a single-column grid; auto-placement handles ordering with no explicit `col-start`/`row-start` needed
+- Image gets a fixed `h-72` (288px) at mobile — avoids an oversized portrait that the previous `aspect-2/3` would produce at full width
+- At 540px+: 2-column layout restored (image left spanning both rows, title + about stacked on the right)
+- "Selected Work" heading is smaller/centered below 540px, larger/left-aligned at 540px+
+
+**Hide TopNav nav links on index page below 1000px (`src/components/TopNav.astro`, `src/layouts/Layout.astro`)**
+
+- Added `hideMenuItems?: boolean` prop to TopNav; applies `hidden` to `.menu-items` when true
+- Layout passes `hideMenuItems={activePage === 'lookbook'}` — the Brand Header already surfaces navigation on the index page at mobile, making the duplicate TopNav links redundant
+- Button copy "Hire Us" → "Hire Me"
+
+**LeftPanel About cell typography (`src/components/LeftPanel.astro`)**
+
+- Adjusted padding (`p-4`) and body text size/leading (`text-md leading-7`) for better visual balance at desktop widths
+
+**Project detail hero reorder (`src/pages/projects/[slug].astro`)**
+
+- Title moved above tech tag pills for cleaner visual hierarchy — headline first, metadata second
+
 ### fix: restore full-height panels and right-panel scrolling after grid refactor
 
 The previous grid refactor commit broke two behaviors at ≥1000px: panels no longer filled the viewport height, and the right panel's `<main>` could no longer scroll. Root cause was the grid container's implicit row sizing — without explicit `grid-template-rows`, items push the row past the viewport because grid items have a default `min-height: auto` that resists shrinking below content size.

@@ -36,7 +36,7 @@ const { title, activePage } = Astro.props;
   <!-- Right panel: full-width on mobile, grid column 1fr on desktop -->
   <div class="w-full flex flex-col h-full min-h-0 hard-shadow-canvas">
     <div class="min-[1000px]:hidden">
-      <TopNav showHamburger />
+      <TopNav showHamburger hideMenuItems={activePage === 'lookbook'} />
     </div>
     <main class="flex-1 overflow-y-auto bg-surface">
       <slot />

@@ -60,17 +60,17 @@ const { entry, prevEntry, nextEntry } = Astro.props;
     <div class="w-full md:w-1/2 flex-1 overflow-y-auto bg-surface hard-shadow-canvas">
       <!-- Hero -->
       <div class="p-12 border-b border-primary">
-        <div class="flex flex-wrap gap-2 mb-6">
+        <h1 class="font-display text-4xl leading-tight text-text mb-6">{entry.title}</h1>
+        {entry.type === 'project' && (
+          <p class="text-sm text-muted leading-relaxed">{entry.description}</p>
+        )}
+        <div class="flex flex-wrap gap-2">
           {entry.tech.map((t) => (
             <span class="font-mono text-xs uppercase tracking-[0.1em] border border-primary px-3 py-1 text-text">
               {t}
             </span>
           ))}
         </div>
-        <h1 class="font-display text-4xl leading-tight text-text mb-4">{entry.title}</h1>
-        {entry.type === 'project' && (
-          <p class="text-sm text-muted leading-relaxed">{entry.description}</p>
-        )}
       </div>
 
       <!-- Accordions -->
