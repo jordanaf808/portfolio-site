@@ -1,93 +1,5 @@
 # The Commerce Boutique — Build Log
 
-## 2026-05-26
-
-### style: unify contact CTAs and polish typography
-
-Tightening the language and visual rhythm of the contact funnel. The site had a mix of "Hire Me" / "Hire Us" / "Add to Cart — Hire Me" / "Checkout" labels for what is effectively a single action: open the contact drawer. Consolidated to "Contact" everywhere.
-
-**Contact CTA rebrand:**
-
-- `src/components/TopNav.astro` — button text: "Hire Me" → "Contact Me"; now accepts an `activePage` prop so Home/Archive links show the active-state underline on the mobile TopNav (previously hard-coded to Home as active).
-- `src/components/CartDrawer.tsx` — drawer heading "Checkout" → "Contact"; minor spacing nudges to compensate (`pb-5`, `leading-6`, `mt-2`).
-- `src/pages/projects/[slug].astro` — project-detail CTA "Add to Cart — Hire Me →" → "Contact Me →"; removed redundant top border on the CTA section.
-- `src/layouts/Layout.astro` — passes `activePage` through to the mobile TopNav for the new active-state logic.
-
-**Typography polish:**
-
-- `src/components/LeftPanel.astro` — bio block: `text-md` → `text-[.9rem]`, `leading-7` → `leading-7.5`, added hanging indent (`indent-3`), tightened right padding (`pr-4` → `pr-3.5`); copy: "I'm" → "I am", "e-commerce" → "eCommerce".
-- `src/pages/index.astro` — added `indent-8` to the mobile/tablet About block to match the desktop indent rhythm.
-
-**Visual:**
-
-- `src/styles/global.css` — scrollbar track now uses `--color-surface-container-low` instead of `transparent`, giving the right panel a faint visible track on white surfaces.
-
-Why: a unified "Contact" verb maps better to the cart-drawer-as-contact-form metaphor and removes label inconsistency across nav surfaces. The typography nudges align the LeftPanel bio's optical weight with the surrounding elements.
-
-### feat: dynamic quarter availability label
-
-The availability footer in the LeftPanel was hard-coded to "Available Q3 2026", which would silently go stale. Replaced with a runtime computation so the label always reflects the current calendar quarter.
-
-**Files:**
-
-- `src/utils/date.ts` (new) — exports `getCurrentQuarterLabel(date?)`, returns e.g. `"Q2 2026"`.
-- `src/components/LeftPanel.astro` — availability `<span>` now has `id="availability-label"`; inline `<script>` imports the helper and overwrites the text on mount.
-
-Why: the static label is misleading the moment the quarter rolls over. Computing client-side keeps the static build cacheable while the displayed text stays accurate.
-
-## 2026-05-25
-
-### style: mobile layout refinements for index page
-
-**Brand header vertical stack (`src/pages/index.astro`)**
-
-- Below 540px: title, image, and about text now stack vertically in DOM order (Title → Image → About) via a single-column grid; auto-placement handles ordering with no explicit `col-start`/`row-start` needed
-- Image gets a fixed `h-72` (288px) at mobile — avoids an oversized portrait that the previous `aspect-2/3` would produce at full width
-- At 540px+: 2-column layout restored (image left spanning both rows, title + about stacked on the right)
-- "Selected Work" heading is smaller/centered below 540px, larger/left-aligned at 540px+
-
-**Hide TopNav nav links on index page below 1000px (`src/components/TopNav.astro`, `src/layouts/Layout.astro`)**
-
-- Added `hideMenuItems?: boolean` prop to TopNav; applies `hidden` to `.menu-items` when true
-- Layout passes `hideMenuItems={activePage === 'lookbook'}` — the Brand Header already surfaces navigation on the index page at mobile, making the duplicate TopNav links redundant
-- Button copy "Hire Us" → "Hire Me"
-
-**LeftPanel About cell typography (`src/components/LeftPanel.astro`)**
-
-- Adjusted padding (`p-4`) and body text size/leading (`text-md leading-7`) for better visual balance at desktop widths
-
-**Project detail hero reorder (`src/pages/projects/[slug].astro`)**
-
-- Title moved above tech tag pills for cleaner visual hierarchy — headline first, metadata second
-
-### fix: restore full-height panels and right-panel scrolling after grid refactor
-
-The previous grid refactor commit broke two behaviors at ≥1000px: panels no longer filled the viewport height, and the right panel's `<main>` could no longer scroll. Root cause was the grid container's implicit row sizing — without explicit `grid-template-rows`, items push the row past the viewport because grid items have a default `min-height: auto` that resists shrinking below content size.
-
-Changes:
-
-- `src/layouts/Layout.astro`: Added `min-[1000px]:grid-rows-[1fr]` to body (constrains row to viewport height) and `min-h-0` to the right panel grid item (lets it shrink to the row size)
-- `src/components/LeftPanel.astro`: Added `min-[1000px]:min-h-0` (respects grid row size) and `min-[1000px]:overflow-y-auto` (so its content scrolls internally if it exceeds viewport height — e.g. on shorter laptop screens)
-
-Why: This restores the previous height chain (body 100vh → grid row 100vh → panel 100vh → `<main>` flex-1) that `overflow-y-auto` depends on for the right panel's independent scrolling.
-
-### content: update LeftPanel about copy
-
-Replaced the placeholder full-stack copy with a more specific bio (L.A.-based, 5+ years, e-commerce focus, CRO/Core Web Vitals emphasis). Old copy retained as a comment for reference.
-
-### style: refactor layout to CSS Grid for desktop (≥1000px)
-
-Replaced fixed position + margin-offset pattern with CSS Grid to provide cleaner separation between left and right panels. The grid column `1fr` naturally fills remaining space without needing `calc()` offsets.
-
-Changes:
-
-- `src/layouts/Layout.astro`: Added `min-[1000px]:grid min-[1000px]:grid-cols-[480px_1fr]` to body, removed margin/width calc classes from right panel
-- `src/components/LeftPanel.astro`: Added `min-[1000px]:static` to override `position: fixed` at desktop widths, enabling grid participation
-
-Why: The previous margin-offset approach had the right panel's offset out of sync with the left panel's actual width. Grid approach is architecturally cleaner, eliminates the need for calculated widths, and provides a single source of truth for the 480px column width.
-
-**Verification:** Desktop layout verified at 1440px (left panel fixed width, right panel fills remaining space), mobile layout confirmed unchanged at 375px (full-width right panel, hamburger drawer).
-
 ---
 
 **Date:** 2026-05-11  
@@ -455,6 +367,7 @@ a95577f  feat: add Project Detail page with image gallery and accordion
 ```
 
 ---
+
 ---
 
 ## Session Update — 2026-05-15
@@ -662,6 +575,7 @@ Removed the `<a href="/">The Commerce Boutique</a>` anchor from the left side of
 Added a profile section at the very top of the homepage slot (before "Selected Work"), homepage-only — placed in `index.astro` rather than `Layout.astro` to keep it off the archive and project detail pages.
 
 **Layout:**
+
 - Default (< 1200px): stacked — square profile image (`aspect-square`, capped at `max-h-120` / 480px) with bio text below on a white `bg-surface` block
 - 1200px+ (`min-[1200px]:`): side-by-side — image occupies `w-1/2` left, stays square (`aspect-square`, uncapped), bio text fills right half with `border-l` separator, vertically centered
 
@@ -852,3 +766,99 @@ Tighter padding at the narrow breakpoint reclaims horizontal room so `text-base`
 pnpm type-check   →  0 errors, 0 warnings, 0 hints  (22 files checked)
 pnpm build        →  Complete — clean build
 ```
+
+---
+
+## Session Update - 2026-05-25
+
+**Branch:** `main`
+
+---
+
+### style: mobile layout refinements for index page
+
+**Brand header vertical stack (`src/pages/index.astro`)**
+
+- Below 540px: title, image, and about text now stack vertically in DOM order (Title → Image → About) via a single-column grid; auto-placement handles ordering with no explicit `col-start`/`row-start` needed
+- Image gets a fixed `h-72` (288px) at mobile — avoids an oversized portrait that the previous `aspect-2/3` would produce at full width
+- At 540px+: 2-column layout restored (image left spanning both rows, title + about stacked on the right)
+- "Selected Work" heading is smaller/centered below 540px, larger/left-aligned at 540px+
+
+**Hide TopNav nav links on index page below 1000px (`src/components/TopNav.astro`, `src/layouts/Layout.astro`)**
+
+- Added `hideMenuItems?: boolean` prop to TopNav; applies `hidden` to `.menu-items` when true
+- Layout passes `hideMenuItems={activePage === 'lookbook'}` — the Brand Header already surfaces navigation on the index page at mobile, making the duplicate TopNav links redundant
+- Button copy "Hire Us" → "Hire Me"
+
+**LeftPanel About cell typography (`src/components/LeftPanel.astro`)**
+
+- Adjusted padding (`p-4`) and body text size/leading (`text-md leading-7`) for better visual balance at desktop widths
+
+**Project detail hero reorder (`src/pages/projects/[slug].astro`)**
+
+- Title moved above tech tag pills for cleaner visual hierarchy — headline first, metadata second
+
+### fix: restore full-height panels and right-panel scrolling after grid refactor
+
+The previous grid refactor commit broke two behaviors at ≥1000px: panels no longer filled the viewport height, and the right panel's `<main>` could no longer scroll. Root cause was the grid container's implicit row sizing — without explicit `grid-template-rows`, items push the row past the viewport because grid items have a default `min-height: auto` that resists shrinking below content size.
+
+Changes:
+
+- `src/layouts/Layout.astro`: Added `min-[1000px]:grid-rows-[1fr]` to body (constrains row to viewport height) and `min-h-0` to the right panel grid item (lets it shrink to the row size)
+- `src/components/LeftPanel.astro`: Added `min-[1000px]:min-h-0` (respects grid row size) and `min-[1000px]:overflow-y-auto` (so its content scrolls internally if it exceeds viewport height — e.g. on shorter laptop screens)
+
+Why: This restores the previous height chain (body 100vh → grid row 100vh → panel 100vh → `<main>` flex-1) that `overflow-y-auto` depends on for the right panel's independent scrolling.
+
+### content: update LeftPanel about copy
+
+Replaced the placeholder full-stack copy with a more specific bio (L.A.-based, 5+ years, e-commerce focus, CRO/Core Web Vitals emphasis). Old copy retained as a comment for reference.
+
+### style: refactor layout to CSS Grid for desktop (≥1000px)
+
+Replaced fixed position + margin-offset pattern with CSS Grid to provide cleaner separation between left and right panels. The grid column `1fr` naturally fills remaining space without needing `calc()` offsets.
+
+Changes:
+
+- `src/layouts/Layout.astro`: Added `min-[1000px]:grid min-[1000px]:grid-cols-[480px_1fr]` to body, removed margin/width calc classes from right panel
+- `src/components/LeftPanel.astro`: Added `min-[1000px]:static` to override `position: fixed` at desktop widths, enabling grid participation
+
+Why: The previous margin-offset approach had the right panel's offset out of sync with the left panel's actual width. Grid approach is architecturally cleaner, eliminates the need for calculated widths, and provides a single source of truth for the 480px column width.
+
+**Verification:** Desktop layout verified at 1440px (left panel fixed width, right panel fills remaining space), mobile layout confirmed unchanged at 375px (full-width right panel, hamburger drawer).
+
+---
+## Session Update - 2026-05-26
+
+### style: unify contact CTAs and polish typography
+
+Tightening the language and visual rhythm of the contact funnel. The site had a mix of "Hire Me" / "Hire Us" / "Add to Cart — Hire Me" / "Checkout" labels for what is effectively a single action: open the contact drawer. Consolidated to "Contact" everywhere.
+
+**Contact CTA rebrand:**
+
+- `src/components/TopNav.astro` — button text: "Hire Me" → "Contact Me"; now accepts an `activePage` prop so Home/Archive links show the active-state underline on the mobile TopNav (previously hard-coded to Home as active).
+- `src/components/CartDrawer.tsx` — drawer heading "Checkout" → "Contact"; minor spacing nudges to compensate (`pb-5`, `leading-6`, `mt-2`).
+- `src/pages/projects/[slug].astro` — project-detail CTA "Add to Cart — Hire Me →" → "Contact Me →"; removed redundant top border on the CTA section.
+- `src/layouts/Layout.astro` — passes `activePage` through to the mobile TopNav for the new active-state logic.
+
+**Typography polish:**
+
+- `src/components/LeftPanel.astro` — bio block: `text-md` → `text-[.9rem]`, `leading-7` → `leading-7.5`, added hanging indent (`indent-3`), tightened right padding (`pr-4` → `pr-3.5`); copy: "I'm" → "I am", "e-commerce" → "eCommerce".
+- `src/pages/index.astro` — added `indent-8` to the mobile/tablet About block to match the desktop indent rhythm.
+
+**Visual:**
+
+- `src/styles/global.css` — scrollbar track now uses `--color-surface-container-low` instead of `transparent`, giving the right panel a faint visible track on white surfaces.
+
+Why: a unified "Contact" verb maps better to the cart-drawer-as-contact-form metaphor and removes label inconsistency across nav surfaces. The typography nudges align the LeftPanel bio's optical weight with the surrounding elements.
+
+### feat: dynamic quarter availability label
+
+The availability footer in the LeftPanel was hard-coded to "Available Q3 2026", which would silently go stale. Replaced with a runtime computation so the label always reflects the current calendar quarter.
+
+**Files:**
+
+- `src/utils/date.ts` (new) — exports `getCurrentQuarterLabel(date?)`, returns e.g. `"Q2 2026"`.
+- `src/components/LeftPanel.astro` — availability `<span>` now has `id="availability-label"`; inline `<script>` imports the helper and overwrites the text on mount.
+
+Why: the static label is misleading the moment the quarter rolls over. Computing client-side keeps the static build cacheable while the displayed text stays accurate.
+
