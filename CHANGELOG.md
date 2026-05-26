@@ -888,3 +888,11 @@ Before this commit the site shipped without `<meta name="description">`, without
 
 Why: this is the single largest external-facing fix in the UI/UX plan — zero visual change but the link-preview experience on every social platform goes from broken to branded, and the homepage `<title>` now contains the keywords a recruiter actually searches. Verified in dev at `/`, `/archive`, and `/projects/true-classic`; all three return complete, distinct metadata blocks.
 
+### content: tighten homepage title
+
+Dropped the `| Lookbook` suffix from the homepage title. `<title>`, `og:title`, and `twitter:title` are now `"Jordan A.F. — Shopify & JS/TS Developer"` — the page-name suffix was diluting the keyword density of the name + role. Single-source change in `SEOHead.astro`'s `title` prop cascades to all three meta fields.
+
+**Files:**
+
+- `src/pages/index.astro` — title prop on `<Layout>`.
+
