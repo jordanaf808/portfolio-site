@@ -2,8 +2,16 @@
 interface Props {
   showHamburger?: boolean
   hideMenuItems?: boolean
+  activePage?: 'lookbook' | 'archive' | 'project'
 }
-const { showHamburger = false, hideMenuItems = false } = Astro.props
+const { showHamburger = false, hideMenuItems = false, activePage } = Astro.props
+
+const BASE = 'font-mono text-xs uppercase tracking-widest cursor-pointer'
+const ACTIVE = 'text-text border-b border-primary pb-px'
+const INACTIVE = 'text-muted hover:text-text transition-colors'
+
+const homeClass = `${BASE} ${activePage === 'lookbook' ? ACTIVE : INACTIVE}`
+const archiveClass = `${BASE} ${activePage === 'archive' ? ACTIVE : INACTIVE}`
 ---
 <nav class="flex items-center justify-between border-b border-primary h-12 px-6 bg-surface sticky top-0 z-10">
   <div class="flex items-center gap-6">
@@ -18,8 +26,8 @@ const { showHamburger = false, hideMenuItems = false } = Astro.props
       </button>
     )}
     <div class:list={['menu-items flex items-center gap-4', hideMenuItems && 'hidden']}>
-      <a href="/" class="font-mono text-xs uppercase tracking-widest text-text border-b border-primary pb-px cursor-pointer">Home</a>
-      <a href="/archive" class="font-mono text-xs uppercase tracking-widest text-muted hover:text-text transition-colors cursor-pointer">Archive</a>
+      <a href="/" class={homeClass}>Home</a>
+      <a href="/archive" class={archiveClass}>Archive</a>
     </div>
   </div>
   <div class="flex items-center gap-3">
@@ -27,7 +35,7 @@ const { showHamburger = false, hideMenuItems = false } = Astro.props
       id="open-cart-drawer"
       class="font-mono text-xs uppercase tracking-widest bg-primary text-surface px-4 py-2 hover:opacity-90 active:scale-95 transition-all cursor-pointer"
     >
-      Hire Me
+      Contact Me
     </button>
   </div>
 </nav>

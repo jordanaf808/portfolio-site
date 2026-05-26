@@ -2,6 +2,28 @@
 
 ## 2026-05-26
 
+### style: unify contact CTAs and polish typography
+
+Tightening the language and visual rhythm of the contact funnel. The site had a mix of "Hire Me" / "Hire Us" / "Add to Cart — Hire Me" / "Checkout" labels for what is effectively a single action: open the contact drawer. Consolidated to "Contact" everywhere.
+
+**Contact CTA rebrand:**
+
+- `src/components/TopNav.astro` — button text: "Hire Me" → "Contact Me"; now accepts an `activePage` prop so Home/Archive links show the active-state underline on the mobile TopNav (previously hard-coded to Home as active).
+- `src/components/CartDrawer.tsx` — drawer heading "Checkout" → "Contact"; minor spacing nudges to compensate (`pb-5`, `leading-6`, `mt-2`).
+- `src/pages/projects/[slug].astro` — project-detail CTA "Add to Cart — Hire Me →" → "Contact Me →"; removed redundant top border on the CTA section.
+- `src/layouts/Layout.astro` — passes `activePage` through to the mobile TopNav for the new active-state logic.
+
+**Typography polish:**
+
+- `src/components/LeftPanel.astro` — bio block: `text-md` → `text-[.9rem]`, `leading-7` → `leading-7.5`, added hanging indent (`indent-3`), tightened right padding (`pr-4` → `pr-3.5`); copy: "I'm" → "I am", "e-commerce" → "eCommerce".
+- `src/pages/index.astro` — added `indent-8` to the mobile/tablet About block to match the desktop indent rhythm.
+
+**Visual:**
+
+- `src/styles/global.css` — scrollbar track now uses `--color-surface-container-low` instead of `transparent`, giving the right panel a faint visible track on white surfaces.
+
+Why: a unified "Contact" verb maps better to the cart-drawer-as-contact-form metaphor and removes label inconsistency across nav surfaces. The typography nudges align the LeftPanel bio's optical weight with the surrounding elements.
+
 ### feat: dynamic quarter availability label
 
 The availability footer in the LeftPanel was hard-coded to "Available Q3 2026", which would silently go stale. Replaced with a runtime computation so the label always reflects the current calendar quarter.

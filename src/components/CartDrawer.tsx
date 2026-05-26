@@ -68,13 +68,13 @@ export default function CartDrawer(): React.ReactElement | null {
         style={{ boxShadow: '-8px 0 0 0 rgba(17,17,17,0.08)' }}
       >
         {/* Header */}
-        <div className="flex items-start justify-between p-6 border-b border-[#111111] flex-shrink-0">
+        <div className="flex items-start justify-between p-6 pb-5 border-b border-[#111111] flex-shrink-0">
           <div>
             <p style={{ fontFamily: "'Space Grotesk', monospace" }} className="text-xs uppercase tracking-widest text-[#888888]">
               Request Engagement
             </p>
-            <p style={{ fontFamily: "'Newsreader', serif" }} className="text-2xl text-[#222222] mt-1">
-              Checkout
+            <p style={{ fontFamily: "'Newsreader', serif" }} className="text-2xl leading-6 text-[#222222] mt-2">
+              Contact
             </p>
           </div>
           <button
