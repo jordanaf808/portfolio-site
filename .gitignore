@@ -3,6 +3,7 @@ temp/
 docs/
 .wrangler/
 .superpowers/
+.claude/settings.local.json
 
 # build output
 dist/
