@@ -129,14 +129,21 @@ const { activePage = 'lookbook' } = Astro.props;
   <!-- Availability footer -->
   <div class="p-6 border-t border-primary flex items-center gap-2">
     <div class="w-2 h-2 rounded-full bg-green-500 flex-shrink-0"></div>
-    <span class="font-mono text-xs text-muted uppercase tracking-[0.1em]">Available Q3 2026</span>
+    <span id="availability-label" class="font-mono text-xs text-muted uppercase tracking-[0.1em]">Available Q3 2026</span>
   </div>
 </aside>
 
 <script>
+  import { getCurrentQuarterLabel } from '@/utils/date';
+
   document.getElementById('open-cart-drawer-left')?.addEventListener('click', () => {
     document.dispatchEvent(new CustomEvent('open-cart-drawer'));
   });
+
+  const availabilityEl = document.getElementById('availability-label');
+  if (availabilityEl) {
+    availabilityEl.textContent = `Available ${getCurrentQuarterLabel()}`;
+  }
 </script>
 
 <style>

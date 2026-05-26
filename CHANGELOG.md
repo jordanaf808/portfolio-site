@@ -1,5 +1,18 @@
 # The Commerce Boutique — Build Log
 
+## 2026-05-26
+
+### feat: dynamic quarter availability label
+
+The availability footer in the LeftPanel was hard-coded to "Available Q3 2026", which would silently go stale. Replaced with a runtime computation so the label always reflects the current calendar quarter.
+
+**Files:**
+
+- `src/utils/date.ts` (new) — exports `getCurrentQuarterLabel(date?)`, returns e.g. `"Q2 2026"`.
+- `src/components/LeftPanel.astro` — availability `<span>` now has `id="availability-label"`; inline `<script>` imports the helper and overwrites the text on mount.
+
+Why: the static label is misleading the moment the quarter rolls over. Computing client-side keeps the static build cacheable while the displayed text stays accurate.
+
 ## 2026-05-25
 
 ### style: mobile layout refinements for index page
