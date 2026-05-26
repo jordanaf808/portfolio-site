@@ -54,7 +54,7 @@ const { activePage = 'lookbook' } = Astro.props;
         activePage === 'lookbook' ? 'bg-surface-container-high' : '',
       ]}
     >
-      <div class="marquee-wrap">
+      <div class="marquee-wrap" aria-hidden="true">
         <div class="marquee-track">
           <span class="marquee-text">Selected Work</span>
           <span class="marquee-text">Selected Work</span>
@@ -72,7 +72,7 @@ const { activePage = 'lookbook' } = Astro.props;
         activePage === 'archive' ? 'bg-surface-container-high' : '',
       ]}
     >
-      <div class="marquee-wrap">
+      <div class="marquee-wrap" aria-hidden="true">
         <div class="marquee-track">
           <span class="marquee-text">All Projects</span>
           <span class="marquee-text">All Projects</span>
@@ -87,7 +87,7 @@ const { activePage = 'lookbook' } = Astro.props;
       href="/#services"
       class="nav-cell relative flex flex-col justify-between p-5 border-b border-primary min-[1000px]:border-b-0 min-[1000px]:border-r"
     >
-      <div class="marquee-wrap">
+      <div class="marquee-wrap" aria-hidden="true">
         <div class="marquee-track">
           <span class="marquee-text">What I Do</span>
           <span class="marquee-text">What I Do</span>
@@ -102,7 +102,7 @@ const { activePage = 'lookbook' } = Astro.props;
       id="open-cart-drawer-left"
       class="nav-cell relative flex flex-col justify-between p-5 text-left w-full"
     >
-      <div class="marquee-wrap">
+      <div class="marquee-wrap" aria-hidden="true">
         <div class="marquee-track">
           <span class="marquee-text">Get In Touch</span>
           <span class="marquee-text">Get In Touch</span>

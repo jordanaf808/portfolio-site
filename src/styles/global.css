@@ -59,6 +59,29 @@
 	}
 }
 
+@layer base {
+	.skip-link {
+		position: absolute;
+		left: 0;
+		top: 0;
+		padding: 12px 16px;
+		background: var(--color-text);
+		color: var(--color-background);
+		font-family: var(--font-mono);
+		font-size: 12px;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		transform: translateY(-200%);
+		transition: transform 150ms ease;
+		z-index: 100;
+	}
+	.skip-link:focus-visible {
+		transform: translateY(0);
+		outline: 2px solid var(--color-accent-taupe);
+		outline-offset: 2px;
+	}
+}
+
 @layer utilities {
 	.grayscale-hover {
 		filter: grayscale(100%);

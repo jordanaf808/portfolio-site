@@ -44,7 +44,9 @@ const statusDot: Record<string, string> = {
         src={project.images[0]}
         alt={project.title}
         class="w-full h-full object-cover grayscale-hover"
-        loading="lazy"
+        loading={index === 0 ? 'eager' : 'lazy'}
+        decoding="async"
+        fetchpriority={index === 0 ? 'high' : 'auto'}
         onerror="this.style.opacity='0'"
       />
       <!-- Counter -->

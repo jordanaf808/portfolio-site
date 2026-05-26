@@ -27,6 +27,7 @@ const { title, description, ogImage, activePage } = Astro.props;
   />
 </head>
 <body class="flex h-screen overflow-hidden bg-background min-[1000px]:grid min-[1000px]:grid-cols-[480px_1fr] min-[1000px]:grid-rows-[1fr]">
+  <a href="#main" class="skip-link">Skip to work</a>
   <LeftPanel activePage={activePage} />
 
   <!-- Mobile backdrop -->
@@ -41,7 +42,7 @@ const { title, description, ogImage, activePage } = Astro.props;
     <div class="min-[1000px]:hidden">
       <TopNav showHamburger activePage={activePage} hideMenuItems={activePage === 'lookbook'} />
     </div>
-    <main class="flex-1 overflow-y-auto bg-surface">
+    <main id="main" class="flex-1 overflow-y-auto bg-surface">
       <slot />
     </main>
   </div>

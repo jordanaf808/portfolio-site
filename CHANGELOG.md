@@ -896,3 +896,43 @@ Dropped the `| Lookbook` suffix from the homepage title. `<title>`, `og:title`, 
 
 - `src/pages/index.astro` — title prop on `<Layout>`.
 
+### a11y: skip link, h1/img dedup, decorative marquee aria-hidden, image fetch priorities
+
+Phase 2 of the UI/UX plan — four discrete accessibility wins on a single branch.
+
+**1. Skip-to-work link** (`src/layouts/Layout.astro`, `src/styles/global.css`)
+
+Keyboard users previously had to tab through the entire LeftPanel (close button, four marquee nav cells, tech-tag pills) before reaching the work feed. Added a `<a href="#main" class="skip-link">Skip to work</a>` as the first child of `<body>`, paired with `id="main"` on the `<main>` element. CSS keeps the link translated off-screen until `:focus-visible` reveals it — visible only on keyboard nav, not pointer focus.
+
+**2. Duplicate `<h1>` and profile image removed** (`src/pages/index.astro`)
+
+DOM inspection found two `<h1>Jordan A.F.</h1>` nodes (one in LeftPanel, one in the mobile-only index brand header) and two `<img alt="Jordan A.F.">` tags. Screen readers announced both. Resolution:
+
+- The mobile-only brand header's `<h1>` became a styled `<p>` marked `aria-hidden="true"` (decorative; LeftPanel's heading is the canonical h1 at every viewport).
+- The mobile brand header's `<img>` got `alt=""` so the alt text is conveyed exactly once by the LeftPanel image.
+
+Trade-off accepted: at mobile widths the LeftPanel is positioned off-screen via `transform: translateX(-100%)` but remains in the accessibility tree, so screen readers still hear "Jordan A.F." as the page heading. A future improvement is to toggle `inert` on the closed mobile drawer — flagged but out of scope for quick wins.
+
+**3. Decorative marquee tracks muted** (`src/components/LeftPanel.astro`)
+
+Each nav cell contains four duplicate `<span class="marquee-text">` copies that animate on hover. Previously the link's accessible name was announced as `"Selected Work Selected Work Selected Work Selected Work PORTFOLIO Selected Work"`. Each `.marquee-wrap` now carries `aria-hidden="true"`, so the link's name resolves to just the visible label + title pair.
+
+**4. Project image fetch priorities** (`src/components/ProjectCard.astro`)
+
+The first project card is the LCP candidate; cards 2–4 are below the fold. Updated to:
+
+- First card (`index === 0`): `loading="eager" fetchpriority="high" decoding="async"`
+- Subsequent cards: `loading="lazy" fetchpriority="auto" decoding="async"`
+
+`decoding="async"` was missing previously; added on all.
+
+**Verified live in dev:**
+
+- `document.querySelectorAll('h1').length` → 1 (was 2)
+- Profile image alts → `["Jordan A.F.", ""]` (was `["Jordan A.F.", "Jordan A.F."]`)
+- 4 of 4 `.marquee-wrap` elements have `aria-hidden="true"`
+- First focusable element is the skip link; `<main>` has `id="main"`
+- Skip link transforms in via `:focus-visible` only (programmatic `.focus()` correctly does not reveal it — matches keyboard-only intent)
+
+Why: each item is small individually but together they meaningfully improve the screen-reader and keyboard-navigation experience, and the image hint changes give the index page a perceptible LCP improvement at no design cost.
+
