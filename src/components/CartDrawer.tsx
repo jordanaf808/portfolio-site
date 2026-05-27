@@ -65,9 +65,9 @@ export default function CartDrawer(): React.ReactElement | null {
 				aria-modal='true'
 				aria-label='Request Engagement'
 				className={`fixed top-0 right-0 h-full w-[480px] max-w-full bg-white border-l border-[#111111] z-50 flex flex-col transition-transform duration-300 ease-in-out ${
-					isOpen ? 'translate-x-0' : 'translate-x-full'
+					isOpen ? 'translate-x-0' : 'translate-x-[calc(100%+32px)]'
 				}`}
-				style={{boxShadow: '-8px 0 0 0 rgba(17,17,17,0.08)'}}
+				style={{boxShadow: '-8px 0 24px -4px rgba(17,17,17,0.18)'}}
 			>
 				{/* Header */}
 				<div className='flex items-start justify-between p-6 pb-5 border-b border-[#111111] flex-shrink-0'>

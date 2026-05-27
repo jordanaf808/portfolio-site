@@ -93,9 +93,6 @@
 	.hard-shadow {
 		box-shadow: 8px 8px 0px 0px rgba(17, 17, 17, 0.1);
 	}
-	.hard-shadow-canvas {
-		box-shadow: 8px 0px 0px 0px rgba(17, 17, 17, 0.1);
-	}
 	.font-display {
 		font-family: var(--font-display);
 	}

@@ -968,3 +968,32 @@ Replaced the closing microcopy under the PLACE ORDER button. Was: "Final scoping
 
 Why: the cart-drawer-as-contact-form gag is what makes the contact UX feel native to a Shopify-focused portfolio. The previous microcopy broke character (legal-engagement vocabulary in what's pretending to be a checkout). The new line keeps the gag intact — it's literal Shopify cart copy ("Add discount code or gift card") repurposed as a wink that doubles as a soft commercial nudge: rates are negotiable, let's talk.
 
+---
+
+## Session Update - 2026-05-27
+
+### fix: eliminate 8px gray bar at right edge of viewport (cart drawer shadow bleed)
+
+A faint ~8px light-gray vertical bar was visible at the viewport's right edge on every page, with the custom `<main>` scrollbar (4px dark thumb on white track) visually overlaid on top of it. Root cause was the CartDrawer's left-side box-shadow leaking into the viewport when the drawer was closed.
+
+**Root cause:**
+
+`src/components/CartDrawer.tsx` line 70 declares an inline `box-shadow: -8px 0 0 0 rgba(17,17,17,0.08)` on the drawer `<aside>`. The `<aside>` is `position: fixed; right: 0; width: 480px` and translates off-screen with `translate-x-full` when closed — putting its left edge precisely at the viewport's right edge. The `-8px` x-offset shadow then paints 8px *to the left* of that edge, i.e. 8px into the visible viewport. Because the `<aside>` is fixed-positioned, ancestor `overflow: hidden` on `<html>`/`<body>` does not clip it — fixed descendants escape ancestor overflow clipping entirely.
+
+**Fix:**
+
+- `src/components/CartDrawer.tsx`:
+  - Replaced the sharp shadow `-8px 0 0 0 rgba(17,17,17,0.08)` with a properly blurred soft fade: `-8px 0 24px -4px rgba(17,17,17,0.18)`. The original had zero blur and zero spread, so it painted as a flat solid bar; the new values give the open drawer a true gaussian-fade shadow on the page content behind it.
+  - When closed, translate the drawer to `translate-x-[calc(100%+32px)]` instead of `translate-x-full`. The 32px buffer covers the new shadow's visible extent (`|offset| + blur + max(spread, 0)` ≈ 8 + 24 + 0 = 32px), so the entire shadow now lives off-screen when the drawer is closed.
+
+Chose the translate-buffer approach over a conditional `boxShadow` style (e.g. `boxShadow: isOpen ? ... : 'none'`) because it keeps the shadow declaration unconditional and stateless. The transform animation is already GPU-composited via `transition-transform`, so no perf cost; no branching to reason about; and the shadow precedes the drawer's edge by a few ms during opening, which is physically accurate.
+
+**Tangential cleanup applied while diagnosing:**
+
+- `src/styles/global.css` — removed the `.hard-shadow-canvas` utility (`box-shadow: 8px 0 0 0 rgba(17,17,17,0.1)`).
+- `src/layouts/Layout.astro` — removed `hard-shadow-canvas` from the right-panel wrapper.
+
+The `.hard-shadow-canvas` utility was applied to wrappers whose right edge always sat exactly at the viewport boundary, so its 8px-rightward shadow had nowhere useful to render — invisible by design but consuming a class slot and adding noise to the cascade. Removing it is correct on its own merits, but it was *not* the source of the gray bar (initial misdiagnosis). The bar persisted after removal, which is what led to inspecting fixed-positioned descendants and finding the CartDrawer shadow.
+
+Why this matters: any `position: fixed` element near a viewport edge with an outset shadow can bleed shadow into the viewport. This is the second time this pattern has bitten this codebase (first was `.hard-shadow-canvas` on the right panel wrapper — same shape, different mechanism). Worth a project note: outset shadows on edge-adjacent elements need either inset offsets, conditional rendering, or a translate buffer.
+
