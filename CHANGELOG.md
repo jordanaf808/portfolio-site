@@ -997,3 +997,54 @@ The `.hard-shadow-canvas` utility was applied to wrappers whose right edge alway
 
 Why this matters: any `position: fixed` element near a viewport edge with an outset shadow can bleed shadow into the viewport. This is the second time this pattern has bitten this codebase (first was `.hard-shadow-canvas` on the right panel wrapper — same shape, different mechanism). Worth a project note: outset shadows on edge-adjacent elements need either inset offsets, conditional rendering, or a translate buffer.
 
+### style: project detail — promote hero out of 50/50 split, relocate gallery grid into left column
+
+The project detail page had the hero (title + description + tech pills) buried inside the right scrollable column. That meant the title only rendered once a reader's eye had already crossed the gallery to reach the right half — the page's most important piece of content was structurally subordinate to the gallery. Reworked the layout so the hero is now a full-width row directly under `TopNav`, with the 50/50 image-gallery + accordion split happening beneath it.
+
+**Files:**
+
+- `src/pages/projects/[slug].astro`:
+  - `<body>` background `bg-background` → `bg-surface` so the new full-width hero sits on the same canvas color as the content below it (no horizontal seam between hero and panels).
+  - **Hero promoted out of the split:** moved out of the right column into its own row above the 50/50 container. Typography upgraded to match: `text-4xl leading-tight mb-6` → `text-5xl leading-none mb-6 max-w-125`; tech pills now also capped at `max-w-125` so the row reads as a single column of meta-info.
+  - **Project Gallery grid relocated into the left column** (below `ImageGallery` / `MasonryGallery`) instead of below the accordions in the right column. The gallery is visual; the right column is now exclusively the textual case-study read (accordions → CTA). Cleaner separation of imagery vs reading.
+  - Right column simplified — only accordions + CTA now. (The `hard-shadow-canvas` class was also removed during this restructure; coincidentally matches the utility-deletion in this session's fix commit.)
+  - Stubbed a commented-out prev/next footer-nav block in the header area for future use.
+
+### style: archive — header alignment with brand baseline, footer cleanup
+
+Two distinct polish passes on `/archive`:
+
+- **Header now baseline-aligned with the LeftPanel brand cell.** Padding `p-7` → `p-8`, min-height `min-h-27` → `min-h-37`, added `flex items-center` so vertical centering is explicit. Heading is now responsive: `text-4xl` at mobile, `text-5xl` at 540px+, `text-center` below 1000px and `text-left` at 1000px+. Added `translate-y-0.5` for sub-pixel baseline nudge against the LeftPanel `<h1>`.
+- **Footer simplified.** `p-12 border-t border-primary` → `p-6` (no border). Copyright text updated from "The Commerce Boutique" → "JordanAF-Dev" to match the brand transition.
+
+Also: re-indented the entire page body by +2 spaces to match the `flex flex-col min-h-full` wrapper introduced in a prior session (was previously dedented).
+
+### content: bio copy revisions + tech stack updates
+
+Refining the at-a-glance signals the portfolio sends about role and tooling.
+
+**Bio copy:**
+
+- `src/components/LeftPanel.astro` — "Shopify **and** JavaScript developer with 5+ years" → "Shopify **/** JavaScript developer with **over** 5 years". The slash reads as a credential combo (more concise than "and"), and "over 5 years" hedges the precise number gracefully as the count creeps up.
+- `src/pages/index.astro` — same Shopify-and → Shopify-slash edit on the mobile brand header. Restructured into two sentences ("...monthly visitors. I focus on...") instead of one long run-on. Style refresh: `text-muted` → `text-text font-mono text-justify` — the mobile bio now reads as a typewritten dossier instead of a soft caption. Removed `pr-5.5` since the new font-mono setting reflows the line lengths.
+- `src/pages/index.astro` — "Selected Work" `<h2>` got a `translate-y-0.5` baseline nudge to match the archive header treatment.
+
+**Tech stack:**
+
+- `src/components/LeftPanel.astro` — tech-tag chips expanded from `[TypeScript, React, Liquid, Shopify]` to `[Shopify Plus, Liquid, JS, TypeScript, React, Next]`. Promotes Shopify to "Shopify Plus" (clearer enterprise signal), surfaces vanilla JS alongside TS, and adds Next.js. Order intentionally puts the eCommerce stack first.
+- `src/data/jobRoles.ts`:
+  - **Simplehuman:** dropped `Storefront API, CSS`, added `Rest API, SCSS`. Aligns with the actual integration work (REST endpoints rather than the Storefront GraphQL API) and the actual style preprocessor used on the project.
+  - **True Classic:** expanded `[Shopify Plus, Liquid, JS, React, Figma, Cursor, Devin]` to also include `REST API, HTML, SCSS, GraphQL`. The original list undersold the breadth of integration and styling work on the role.
+
+### style: assorted polish — TopNav hover underline, skip-link, CartDrawer heading, scrollbar revert
+
+Five micro-tweaks rolled into one entry:
+
+- `src/components/TopNav.astro` — added `underline-offset-4 hover:underline` to the BASE nav-link class. Home/Archive links now show a hover underline (offset 4px) for a clearer affordance — previously only the active link had any visual treatment.
+- `src/layouts/Layout.astro` — skip link text "Skip to work" → "Skip to main". "Main" matches the `id="main"` anchor target and is the conventional WAI-ARIA wording; "work" was project-specific and ambiguous.
+- `src/components/CartDrawer.tsx`:
+  - Drawer heading "Contact" sized up: `text-2xl leading-6 mt-2` → `text-4xl leading-8 mt-4`. The previous size felt underweight against the drawer's wide column; the new size matches the visual scale of the rest of the brand-side headings.
+  - Microcopy under PLACE ORDER: "apply discounts at checkout" → "discounts applied at checkout". Imperative→indicative phrasing reads as a Shopify line-item helper (descriptive) rather than a CTA, which fits the cart-as-passive-context metaphor better.
+- `src/styles/global.css` — reverted scrollbar track color from `var(--color-surface-container-low)` back to `white`. The faint-tracked variant from the 2026-05-26 entry showed up as an unintended vertical bar on every page with a white main; reverting kills that. Added a commented-out `.scroll-track-gray::-webkit-scrollbar-track { background: var(--color-surface-container-low) }` rule so individual scroll containers can opt into the visible-track styling on a per-element basis without bringing back the global bar.
+- `src/components/MasonryGallery.astro` — opted the masonry gallery into the new (commented-out, but ready) `.scroll-track-gray` class. When that rule is uncommented in `global.css`, the gallery alone gets the faint visible track without affecting `<main>` or any other scroll container.
+

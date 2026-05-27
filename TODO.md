@@ -1,5 +1,6 @@
 # To-Do:
 
+[ ] - Use the Astro Image component?
 [ ] - Fix Project Page layout on mobile, improve layout,
 [ ] - add paragraph separator.
 [ ] - Create Services Page

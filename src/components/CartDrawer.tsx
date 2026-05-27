@@ -80,7 +80,7 @@ export default function CartDrawer(): React.ReactElement | null {
 						</p>
 						<p
 							style={{fontFamily: "'Newsreader', serif"}}
-							className='text-2xl leading-6 text-[#222222] mt-2'
+							className='text-4xl leading-8 text-[#222222] mt-4'
 						>
 							Contact
 						</p>
@@ -240,7 +240,7 @@ export default function CartDrawer(): React.ReactElement | null {
 								style={{fontFamily: "'Space Grotesk', monospace"}}
 								className='text-xs text-[#888888] text-center'
 							>
-								apply discounts at checkout
+								discounts applied at checkout
 							</p>
 						</div>
 					</form>

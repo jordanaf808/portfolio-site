@@ -52,8 +52,11 @@
 		width: 4px;
 	}
 	::-webkit-scrollbar-track {
-		background: var(--color-surface-container-low);
+		background: white;
 	}
+	/* .scroll-track-gray::-webkit-scrollbar-track {
+		background: var(--color-surface-container-low);
+	} */
 	::-webkit-scrollbar-thumb {
 		background: var(--color-primary);
 	}
