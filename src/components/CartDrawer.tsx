@@ -240,7 +240,7 @@ export default function CartDrawer(): React.ReactElement | null {
 								style={{fontFamily: "'Space Grotesk', monospace"}}
 								className='text-xs text-[#888888] text-center'
 							>
-								Final scoping and legal contract will follow upon acceptance.
+								apply discounts at checkout
 							</p>
 						</div>
 					</form>

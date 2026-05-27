@@ -958,3 +958,13 @@ The inline `<script>` in `LeftPanel.astro` used to target one element via `getEl
 
 Why: portfolio's "first 5 seconds" job is to answer (1) what does this person do, (2) is this person available, (3) is this person any good. Availability is the second-highest-value signal but was previously the last thing in the LeftPanel. Promoting it past the brand tagline puts it in the path of even a half-second scan.
 
+### content: cart drawer microcopy leans into the metaphor
+
+Replaced the closing microcopy under the PLACE ORDER button. Was: "Final scoping and legal contract will follow upon acceptance." Now: "apply discounts at checkout".
+
+**Files:**
+
+- `src/components/CartDrawer.tsx` — single string change.
+
+Why: the cart-drawer-as-contact-form gag is what makes the contact UX feel native to a Shopify-focused portfolio. The previous microcopy broke character (legal-engagement vocabulary in what's pretending to be a checkout). The new line keeps the gag intact — it's literal Shopify cart copy ("Add discount code or gift card") repurposed as a wink that doubles as a soft commercial nudge: rates are negotiable, let's talk.
+
