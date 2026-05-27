@@ -6,7 +6,7 @@ const { activePage = 'lookbook' } = Astro.props;
 ---
 <aside
   id="left-panel"
-  class="fixed top-0 left-0 h-full w-[80vw] max-w-lg min-[1000px]:static min-[1000px]:w-[480px] min-[1000px]:max-w-none min-[1000px]:min-h-0 min-[1000px]:overflow-y-auto border-r border-primary bg-background flex flex-col z-40 -translate-x-full min-[1000px]:translate-x-0 transition-transform duration-300 ease-in-out"
+  class="fixed top-0 left-0 h-full w-[80vw] max-w-lg min-[1000px]:static min-[1000px]:w-[500px] min-[1000px]:max-w-none min-[1000px]:min-h-0 min-[1000px]:overflow-y-auto border-r border-primary bg-background flex flex-col z-40 -translate-x-full min-[1000px]:translate-x-0 transition-transform duration-300 ease-in-out"
 >
   <button
     id="close-left-panel"
@@ -18,13 +18,17 @@ const { activePage = 'lookbook' } = Astro.props;
   <!-- Brand header -->
   <div class="border-b border-primary grid grid-cols-2">
     <!-- Title: full-width row 1 by default; col 2 / row 1 at 1300px+ -->
-    <div class="col-start-1 col-span-2 row-start-1 p-6 self-start border-primary min-[1000px]:border-b min-[1000px]:min-h-27">
-      <h1 class="font-display italic text-3xl leading-tight text-text">
+    <div class="col-start-1 col-span-2 row-start-1 p-6 self-start border-primary min-[1000px]:border-b min-[1000px]:min-h-37">
+      <h1 class="font-display italic text-[40px] leading-[50px] text-text">
         Jordan A.F.
       </h1>
-      <p class="font-mono text-xs uppercase tracking-[0.15em] text-muted mt-1">
+      <p class="font-mono text-xs uppercase tracking-[0.15em] text-muted">
         Shopify & JS/TS Development
       </p>
+      <div class="flex items-center gap-1.5 mt-3">
+        <span class="w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0" aria-hidden="true"></span>
+        <span data-availability-label class="font-mono text-xs uppercase tracking-[0.15em] text-muted">Available Q3 2026</span>
+      </div>
     </div>
     <!-- Image: col 1, row 2, portrait by default; col 1, row-span-2 at 1300px+ -->
     <div class="hidden min-[1000px]:block col-start-1 row-start-2 row-span-1 aspect-2/3 border-r border-primary">
@@ -35,12 +39,12 @@ const { activePage = 'lookbook' } = Astro.props;
       />
     </div>
     <!-- About: col 2, row 2 always -->
-    <div class="hidden min-[1000px]:flex col-start-2 row-start-2 p-4 pr-3.5 flex-col justify-center">
+    <div class="hidden min-[1000px]:flex col-start-2 row-start-2 p-5 pr-3.5 flex-col justify-center">
       <!-- <p class="text-base min-[1000px]:text-base/8 text-muted leading-snug ">
         Full-stack developer specialising in Shopify commerce and JS/TS engineering. I build fast, precise digital storefronts for brands that care about craft — from custom theme development to bespoke Storefront API integrations.
       </p> -->
-      <p class="text-base min-[1000px]:text-[.9rem] text-muted leading-7.5 indent-3">
-        I am a Shopify and JavaScript developer based in L.A. For the past 5+ years I've been building eCommerce storefronts for everyone from boutique shops to enterprise brands serving 1M+ monthly visitors, with a consistent focus on CRO-driven feature work, improving Core Web Vitals, and quality user experience.
+      <p class="text-base min-[1000px]:text-[1rem] text-text leading-8 indent-3">
+        I am a Shopify and JavaScript developer with 5+ years of experience building eCommerce storefronts for everyone from boutique shops to enterprise brands serving 1M+ monthly visitors, with a consistent focus on CRO-driven feature work, improving Core Web Vitals, and quality user experience.
       </p>
     </div>
   </div>
@@ -126,11 +130,6 @@ const { activePage = 'lookbook' } = Astro.props;
     </div>
   </div>
 
-  <!-- Availability footer -->
-  <div class="p-6 border-t border-primary flex items-center gap-2">
-    <div class="w-2 h-2 rounded-full bg-green-500 flex-shrink-0"></div>
-    <span id="availability-label" class="font-mono text-xs text-muted uppercase tracking-[0.1em]">Available Q3 2026</span>
-  </div>
 </aside>
 
 <script>
@@ -140,10 +139,10 @@ const { activePage = 'lookbook' } = Astro.props;
     document.dispatchEvent(new CustomEvent('open-cart-drawer'));
   });
 
-  const availabilityEl = document.getElementById('availability-label');
-  if (availabilityEl) {
-    availabilityEl.textContent = `Available ${getCurrentQuarterLabel()}`;
-  }
+  const label = `Available ${getCurrentQuarterLabel()}`;
+  document.querySelectorAll<HTMLElement>('[data-availability-label]').forEach((el) => {
+    el.textContent = label;
+  });
 </script>
 
 <style>

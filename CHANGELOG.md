@@ -936,3 +936,25 @@ The first project card is the LCP candidate; cards 2–4 are below the fold. Upd
 
 Why: each item is small individually but together they meaningfully improve the screen-reader and keyboard-navigation experience, and the image hint changes give the index page a perceptible LCP improvement at no design cost.
 
+### style: promote availability into brand header, retire footer chip
+
+Phase 3 of the UI/UX plan. The "AVAILABLE Q3 2026" signal was previously buried at the bottom of the LeftPanel below the bento nav and tech-tag pills — likely missed in the first 5 seconds of a recruiter's scan. Promoted it to sit directly under the tagline in both the desktop LeftPanel brand header and the mobile/tablet brand header in `index.astro`.
+
+**Layout typography & sizing pass (companion to the chip promotion):**
+
+- `src/layouts/Layout.astro` — desktop grid column `480px` → `500px`.
+- `src/components/LeftPanel.astro` — panel width matched to `500px`; brand title cell `min-h-27` → `min-h-37`; `<h1>` from `text-3xl leading-tight` to `text-[40px] leading-[50px]` for more presence; tagline `mt-1` removed (consumed by the new chip spacing); availability chip with `mt-3`; About cell padding `p-4` → `p-5`; bio copy now `text-text` (was `text-muted`) at `text-[1rem] leading-8` — promotes the bio from secondary detail to primary read.
+- `src/pages/index.astro` — mobile brand header gets the same chip (green dot + dynamic `data-availability-label` span) below the tagline; Selected Work section header re-padded to `p-8` and given `min-h-37` plus `flex items-center` so its baseline aligns with the LeftPanel brand cell on desktop.
+- Bio copy on both desktop and mobile updated to "with 5+ years of experience building eCommerce storefronts..." (smoother phrasing).
+- Footer text in `src/pages/index.astro` changed from `© 2026 The Commerce Boutique` to `© 2026 JordanAF-Dev`.
+
+**Bottom availability chip removed:**
+
+The existing `<div class="p-6 border-t border-primary flex items-center gap-2"> ... </div>` block at the bottom of the LeftPanel is gone. The tech-tag pills (`TYPESCRIPT REACT LIQUID SHOPIFY`) are now the panel's terminal element.
+
+**Single source of truth for the dynamic label:**
+
+The inline `<script>` in `LeftPanel.astro` used to target one element via `getElementById('availability-label')`. Now it queries `document.querySelectorAll<HTMLElement>('[data-availability-label]')` and updates all matches. Both the LeftPanel chip and the index mobile chip carry the `data-availability-label` attribute, so a single call to `getCurrentQuarterLabel()` writes both. The script lives in LeftPanel; LeftPanel is rendered on every Layout-using page, so the script always runs once per page load. Verified live: both chips read "AVAILABLE Q2 2026" on 2026-05-26.
+
+Why: portfolio's "first 5 seconds" job is to answer (1) what does this person do, (2) is this person available, (3) is this person any good. Availability is the second-highest-value signal but was previously the last thing in the LeftPanel. Promoting it past the brand tagline puts it in the path of even a half-second scan.
+
