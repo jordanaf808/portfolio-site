@@ -2,6 +2,26 @@
 
 ---
 
+**Date:** 2026-05-27  
+**Branch:** `main`  
+**Commit:** (pending)  
+**Change:** Layout refinement — sticky CTA + Footer Nav on project detail pages
+
+**Files touched:** `src/pages/projects/[slug].astro`
+
+**What changed:** Project detail right column now uses CSS Grid (`grid-rows-[1fr_auto]`) to pin the CTA button and prev/next footer navigation to the bottom of the viewport. The Accordions region above fills available space and scrolls independently, keeping primary CTAs visible as readers browse accordion content. Previously the entire right column scrolled as one unit, causing the CTA to disappear below the fold.
+
+**Why:** Improves discoverability of the "Get In Touch" / "Contact Me →" buttons. On longer projects with expanded accordion sections, users no longer need to scroll back to the bottom to see the call-to-action.
+
+**How it works:**
+- Right column parent: `grid grid-rows-[1fr_auto] overflow-hidden`
+- Scrollable accordions row: `overflow-y-auto min-h-0` (the `min-h-0` is critical — it allows the row to shrink below its content height and trigger internal scroll)
+- Pinned CTA + footer row: `border-t border-primary` (intrinsic height via CSS Grid's `auto` track)
+
+Tested on project and job-role detail pages; layout applies at all breakpoints.
+
+---
+
 **Date:** 2026-05-11  
 **Branch:** `feat/portfolio-site`  
 **Status:** Foundation complete — ready for content and visual QA
