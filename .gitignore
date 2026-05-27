@@ -34,3 +34,7 @@ pnpm-debug.log*
 
 *.log
 *.tsbuildinfo
+
+# browser-automation verification artifacts (Playwright / Chrome DevTools MCP)
+.playwright-mcp/
+/*.png
