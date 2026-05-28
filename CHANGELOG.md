@@ -3,6 +3,18 @@
 ---
 
 **Date:** 2026-05-27  
+**Branch:** `docs/sync-design-md`  
+**Change:** Sync `DESIGN.md` with the implemented site
+
+**Files touched:** `DESIGN.md`
+
+**What changed:** Rewrote `DESIGN.md` to reflect the actual build rather than the pre-build spec. Drift fixed across ~10 sections — frontmatter brand name rebranded (`The Commerce Boutique` → `Jordan A.F.`), frontmatter color palette pruned from ~50 Material-3 tokens down to the 8 in `global.css`, body typography section corrected (`Instrument Serif` / `Switzer` → `Newsreader` / `Work Sans` / `Space Grotesk`), Design Tokens CSS block updated with real custom-property names, Key Flows rewritten (no more "Add to Cart — Hire Me" → "Proceed to Checkout" flow; the Cart Drawer is now correctly described as the entire contact path), Lookbook screen spec rewritten to describe brand-header + 2×2 bento nav + dynamic-quarter availability chip, Product Detail spec captures the full-width hero + grid-rows sticky CTA, Cart Drawer spec fully rewritten with current field list (Company Name / Project Details / Contact Email), header copy, success state, and "discounts applied at checkout" microcopy. Build Guide step 4 no longer references the un-built standalone Checkout page. New "Implemented but not in original spec" section captures the skip-link, SEOHead component, marquee hover, dynamic-quarter helper, slideshow modal, TopNav active-page indicator, and image fetch-priority pattern. Added an "as-of 2026-05-27" timestamp at the top.
+
+**Why:** the doc had drifted enough that it no longer functioned as a working reference — recruiters / future contributors reading source material would get conflicting copy (font names disagreed between frontmatter and body; flow descriptions referenced buttons that don't exist). Plan for the sync is in `~/.claude/plans/drifting-conjuring-wren.md` for retroactive context.
+
+---
+
+**Date:** 2026-05-27  
 **Branch:** `main`  
 **Commit:** (pending)  
 **Change:** Layout refinement — sticky CTA + Footer Nav on project detail pages
