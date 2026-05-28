@@ -19,14 +19,14 @@ const { activePage = 'lookbook' } = Astro.props;
   <div class="border-b border-primary grid grid-cols-2">
     <!-- Title: full-width row 1 by default; col 2 / row 1 at 1300px+ -->
     <div class="col-start-1 col-span-2 row-start-1 p-6 self-start border-primary min-[1000px]:border-b min-[1000px]:min-h-37">
-      <h1 class="font-display italic text-[40px] leading-[50px] text-text">
+      <h1 class="font-display italic text-[40px] leading-12.5 text-text">
         Jordan A.F.
       </h1>
       <p class="font-mono text-xs uppercase tracking-[0.15em] text-muted">
         Shopify & JS/TS Development
       </p>
       <div class="flex items-center gap-1.5 mt-3">
-        <span class="w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0" aria-hidden="true"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-green-500 shrink-0" aria-hidden="true"></span>
         <span data-availability-label class="font-mono text-xs uppercase tracking-[0.15em] text-muted">Available Q3 2026</span>
       </div>
     </div>
@@ -66,8 +66,8 @@ const { activePage = 'lookbook' } = Astro.props;
           <span class="marquee-text">Selected Work</span>
         </div>
       </div>
-      <span class="nav-cell-label font-mono text-xs uppercase tracking-[0.1em] text-muted relative z-10">Portfolio</span>
-      <span class="nav-cell-title font-display text-lg text-text relative z-10">Selected Work</span>
+      <span class="nav-cell-label font-mono text-sm uppercase tracking-[0.1em] text-muted relative z-10">Portfolio</span>
+      <span class="nav-cell-title font-display text-3xl text-text relative z-10">Selected Work</span>
     </a>
     <a
       href="/archive"
@@ -84,8 +84,8 @@ const { activePage = 'lookbook' } = Astro.props;
           <span class="marquee-text">All Projects</span>
         </div>
       </div>
-      <span class="nav-cell-label font-mono text-xs uppercase tracking-[0.1em] text-muted relative z-10">Archive</span>
-      <span class="nav-cell-title font-display text-lg text-text relative z-10">All Projects</span>
+      <span class="nav-cell-label font-mono text-sm uppercase tracking-[0.1em] text-muted relative z-10">Archive</span>
+      <span class="nav-cell-title font-display text-3xl text-text relative z-10">All Projects</span>
     </a>
     <a
       href="/#services"
@@ -99,8 +99,8 @@ const { activePage = 'lookbook' } = Astro.props;
           <span class="marquee-text">What I Do</span>
         </div>
       </div>
-      <span class="nav-cell-label font-mono text-xs uppercase tracking-[0.1em] text-muted relative z-10">Services</span>
-      <span class="nav-cell-title font-display text-lg text-text relative z-10">What I Do</span>
+      <span class="nav-cell-label font-mono text-sm uppercase tracking-[0.1em] text-muted relative z-10">Services</span>
+      <span class="nav-cell-title font-display text-3xl text-text relative z-10">What I Do</span>
     </a>
     <button
       id="open-cart-drawer-left"
@@ -114,8 +114,8 @@ const { activePage = 'lookbook' } = Astro.props;
           <span class="marquee-text">Get In Touch</span>
         </div>
       </div>
-      <span class="nav-cell-label font-mono text-xs uppercase tracking-[0.1em] text-muted relative z-10">Contact</span>
-      <span class="nav-cell-title font-display text-lg text-text relative z-10">Get In Touch</span>
+      <span class="nav-cell-label font-mono text-sm uppercase tracking-[0.1em] text-muted relative z-10">Contact</span>
+      <span class="nav-cell-title font-display text-3xl text-text relative z-10">Get In Touch</span>
     </button>
   </div>
 

@@ -23,20 +23,21 @@ const projects = [...getFeaturedProjects(), ...getFeaturedJobRoles()];
   <!-- Brand header -->
   <div class="border-b border-primary grid grid-cols-1 min-[540px]:grid-cols-2 min-[1000px]:hidden">
     <!-- Title: stacked row 1 below 540px; col 2 / row 1 at 540px+ -->
-    <div class="p-6 self-start border-b border-primary min-[540px]:col-start-2 min-[540px]:col-span-1 min-[540px]:row-start-1">
-      <p class="font-display italic text-3xl leading-tight text-text" aria-hidden="true">
+    <div class="p-8 self-start border-b border-primary min-[540px]:col-start-2 min-[540px]:col-span-1 min-[540px]:row-start-1">
+      <p class="font-display italic text-[40px] leading-12.5 text-text" aria-hidden="true">
         Jordan A.F.
       </p>
       <p class="font-mono text-xs uppercase tracking-[0.15em] text-muted mt-1">
         Shopify & JS/TS Development
       </p>
       <div class="flex items-center gap-1.5 mt-2">
-        <span class="w-1.5 h-1.5 rounded-full bg-green-500 flex-shrink-0" aria-hidden="true"></span>
+        <span class="w-1.5 h-1.5 rounded-full bg-green-500 shrink-0" aria-hidden="true"></span>
         <span data-availability-label class="font-mono text-xs uppercase tracking-[0.15em] text-muted">Available Q3 2026</span>
       </div>
     </div>
+
     <!-- Image: stacked row 2 below 540px; col 1, row-span-2 at 540px+ -->
-    <div class="h-72 border-b border-primary min-[540px]:h-auto min-[540px]:col-start-1 min-[540px]:row-start-1 min-[540px]:row-span-2 min-[540px]:aspect-auto min-[540px]:border-r min-[540px]:border-b-0">
+    <div class="max-[540px]:max-h-138 min-[640px]:max-h-154 border-b border-primary min-[540px]:col-start-1 min-[540px]:row-start-1 min-[540px]:row-span-2 min-[540px]:aspect-auto min-[540px]:border-r min-[540px]:border-b-0">
       <img
         src="/profile-pic.jpg"
         alt=""
@@ -44,11 +45,11 @@ const projects = [...getFeaturedProjects(), ...getFeaturedJobRoles()];
       />
     </div>
     <!-- About: stacked row 3 below 540px; col 2, row 2 at 540px+ -->
-    <div class="p-6 flex flex-col justify-start indent-8 min-[540px]:col-start-2 min-[540px]:row-start-2">
+    <div class="w-full p-6 py-8 md:py-10 flex flex-col items-center indent-8 min-[540px]:col-start-2 min-[540px]:row-start-2">
       <!-- <p class="text-lg/10 text-muted leading-relaxed">
         Full-stack developer specialising in Shopify commerce and JS/TS engineering. I build fast, precise digital storefronts for brands that care about craft — from custom theme development to bespoke Storefront API integrations.
       </p> -->
-      <p class="text-lg text-text font-mono text-justify leading-8">
+      <p class="min-[670px]:max-w-80 md:text-lg text-text font-mono text-justify leading-10">
         I am a Shopify / JavaScript developer with 5+ years of experience building eCommerce storefronts for everyone from boutique shops to enterprise brands serving 1M+ monthly visitors. I focus on CRO-driven feature work, improving Core Web Vitals, and building a quality user experience.
       </p>
       <!-- <p class="text-lg text-muted leading-8">
@@ -60,8 +61,8 @@ const projects = [...getFeaturedProjects(), ...getFeaturedJobRoles()];
   <!-- Project feed -->
   <div>
     <!-- Section header -->
-    <div class="p-8 border-b border-primary min-[1000px]:min-h-37 flex items-center">
-      <h2 class="w-full font-display text-4xl text-center min-[540px]:text-5xl min-[1000px]:text-left italic text-text translate-y-0.5">Selected Work</h2>
+    <div class="p-6 border-b border-primary min-[1000px]:min-h-37 flex items-center">
+      <h2 class="w-full font-display text-[36px] text-center min-[540px]:text-5xl min-[1000px]:text-left italic text-text translate-y-0.5">Selected Work</h2>
       <!-- <p class="font-mono text-xs uppercase tracking-[0.15em] text-muted mb-2">
         2023–2024
       </p> -->
