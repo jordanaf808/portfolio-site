@@ -4,6 +4,18 @@
 
 **Date:** 2026-05-29
 **Branch:** `style/slug-single-column-layout`
+**Change:** Refine mobile brand-header spacing on the lookbook
+
+**Files touched:** `src/pages/index.astro`
+
+**What changed:** Adjusted the `<1000px` brand-header block on the lookbook. Title/subtitle/availability chip are now centered in a flex column with a shared `min-[670px]:max-w-76` constraint; the About paragraph dropped its grid-column placement, tightened to `p-8 py-6` with `max-w-75` and `leading-9`. No behavioural change — layout/spacing only.
+
+**Why:** The mobile header read unevenly — the title column and About paragraph used mismatched widths and spacing. Aligning their max-widths and centering produces a more balanced stacked header below the desktop breakpoint.
+
+---
+
+**Date:** 2026-05-29
+**Branch:** `style/slug-single-column-layout`
 **Change:** Render multi-paragraph content in Accordion via `parseParagraphs`
 
 **Files touched:** `src/lib/parseParagraphs.ts`, `src/components/Accordion.astro`, `src/types/index.ts`, `src/data/jobRoles.ts`
