@@ -3,6 +3,18 @@
 ---
 
 **Date:** 2026-05-29
+**Branch:** `style/slug-single-column-layout`
+**Change:** Render multi-paragraph content in Accordion via `parseParagraphs`
+
+**Files touched:** `src/lib/parseParagraphs.ts`, `src/components/Accordion.astro`, `src/types/index.ts`, `src/data/jobRoles.ts`
+
+**What changed:** Added `src/lib/parseParagraphs.ts`, a utility that normalizes content (literal `\n`/`\r` escapes, `<br>` tags, CRLF) and splits on blank lines into an array of paragraphs. `Accordion.astro` now accepts an optional `content: string | string[]` prop and, when provided, renders the parsed paragraphs (with optional single-newline-to-`<br>` conversion) instead of the default slot. Widened `description`/`challenge`/`architecture`/`results`/`responsibilities`/`technologies` in `src/types/index.ts` to `string | string[]`, and converted the three long job-role descriptions in `jobRoles.ts` from single `\n`-delimited strings into clean paragraph arrays.
+
+**Why:** The job-role descriptions were single strings with embedded `\n` separators that rendered as one undifferentiated block. Parsing into discrete `<p>` elements gives proper paragraph spacing and lets content authors write either a string or an array without changing the component.
+
+---
+
+**Date:** 2026-05-29
 **Branch:** `refactor/body-scroll-model`
 **Change:** Migrate to native body scroll + sticky LeftPanel (Option B)
 

@@ -1,9 +1,13 @@
 ---
+import { parseParagraphs } from '../lib/parseParagraphs.ts'
 interface Props {
   title: string
   open?: boolean
+  content?: string | string[]
+  convertSingleNewlineToBr?: boolean
 }
-const { title, open = false } = Astro.props
+const { title, open = false, content, convertSingleNewlineToBr = true } = Astro.props
+const paragraphsLines = parseParagraphs(content).map((p) => p.split('\n'))
 ---
 
 <div class="border-b border-primary" data-accordion>
@@ -25,7 +29,17 @@ const { title, open = false } = Astro.props
   >
     <div class="overflow-hidden">
       <div class="px-6 pb-6 text-sm text-muted leading-relaxed">
-        <slot />
+        {content ? (
+          paragraphsLines.map((lines) => (
+              lines.map((line, i) => (
+                <p class="mb-6 last:mb-0">
+                  {line}{convertSingleNewlineToBr && i < lines.length - 1 ? <br /> : null}
+                </p>
+              ))
+          ))
+        ) : (
+          <slot />
+        )}
       </div>
     </div>
   </div>

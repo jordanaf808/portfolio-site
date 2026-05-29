@@ -7,7 +7,7 @@ interface BaseEntry {
 	category: string
 	tech: string[]
 	status: 'ACTIVE' | 'COMPLETE' | 'ARCHIVED'
-	description: string
+	description: string | string[]
 	images: string[]
 	featured: boolean
 	externalLink?: string
@@ -15,15 +15,15 @@ interface BaseEntry {
 
 export interface Project extends BaseEntry {
 	type: 'project'
-	challenge: string
-	architecture: string
-	results: string
+	challenge: string | string[]
+	architecture: string | string[]
+	results: string | string[]
 }
 
 export interface JobRole extends BaseEntry {
 	type: 'jobRole'
-	responsibilities: string
-	technologies: string
+	responsibilities: string | string[]
+	technologies: string | string[]
 }
 
 export type ProjectEntry = Project | JobRole
