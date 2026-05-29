@@ -6,7 +6,7 @@ const { activePage = 'lookbook' } = Astro.props;
 ---
 <aside
   id="left-panel"
-  class="fixed top-0 left-0 h-full w-[80vw] max-w-lg min-[1000px]:static min-[1000px]:w-[500px] min-[1000px]:max-w-none min-[1000px]:min-h-0 min-[1000px]:overflow-y-auto border-r border-primary bg-background flex flex-col z-40 -translate-x-full min-[1000px]:translate-x-0 transition-transform duration-300 ease-in-out"
+  class="fixed top-0 left-0 h-full w-[80vw] max-w-lg min-[1000px]:sticky min-[1000px]:top-0 min-[1000px]:h-screen min-[1000px]:w-[500px] min-[1000px]:max-w-none min-[1000px]:overflow-y-auto border-r border-primary bg-background flex flex-col z-40 -translate-x-full min-[1000px]:translate-x-0 transition-transform duration-300 ease-in-out"
 >
   <button
     id="close-left-panel"

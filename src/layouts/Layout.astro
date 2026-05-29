@@ -26,7 +26,7 @@ const { title, description, ogImage, activePage } = Astro.props;
     rel="stylesheet"
   />
 </head>
-<body class="flex h-screen overflow-hidden bg-background min-[1000px]:grid min-[1000px]:grid-cols-[500px_1fr] min-[1000px]:grid-rows-[1fr]">
+<body class="flex min-h-screen bg-background min-[1000px]:grid min-[1000px]:grid-cols-[500px_1fr]">
   <a href="#main" class="skip-link">Skip to main</a>
   
   <LeftPanel activePage={activePage} />
@@ -39,11 +39,11 @@ const { title, description, ogImage, activePage } = Astro.props;
   ></div>
 
   <!-- Right panel: full-width on mobile, grid column 1fr on desktop -->
-  <div class="w-full flex flex-col h-full min-h-0">
+  <div class="w-full flex flex-col">
     <div class="min-[1000px]:hidden">
       <TopNav showHamburger activePage={activePage} hideMenuItems={activePage === 'lookbook'} />
     </div>
-    <main id="main" class="flex-1 overflow-y-auto bg-surface">
+    <main id="main" class="flex-1 bg-surface">
       <slot />
     </main>
   </div>

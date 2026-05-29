@@ -2,6 +2,18 @@
 
 ---
 
+**Date:** 2026-05-29
+**Branch:** `refactor/body-scroll-model`
+**Change:** Migrate to native body scroll + sticky LeftPanel (Option B)
+
+**Files touched:** `src/styles/global.css`, `src/layouts/Layout.astro`, `src/components/LeftPanel.astro`
+
+**What changed:** Removed `overflow: hidden` from `html, body` in `global.css` and changed `height: 100%` to `min-height: 100%` so the browser owns the scroll context. Body is now the natural scroll container. In `Layout.astro`, removed `h-screen overflow-hidden` from `<body>`, removed `h-full min-h-0` from the right-panel wrapper div, and removed `overflow-y-auto` from `<main>`. In `LeftPanel.astro`, switched from `min-[1000px]:static` to `min-[1000px]:sticky min-[1000px]:top-0 min-[1000px]:h-screen` so the panel floats in place while the right column scrolls. Kept `min-[1000px]:overflow-y-auto` on LeftPanel as a safety valve for small viewports. Mobile drawer behaviour (fixed off-canvas) is unchanged.
+
+**Why:** The previous model broke iOS Safari tap-status-bar-scroll-to-top, `window.scrollY`, and browser scroll restoration on back-nav because `<main>` was the only scroll container rather than `<body>`. The slug page (`projects/[slug].astro`) still uses its own scroll model — deferred to a separate session.
+
+---
+
 **Date:** 2026-05-27  
 **Branch:** `docs/sync-design-md`  
 **Change:** Sync `DESIGN.md` with the implemented site
@@ -26,6 +38,7 @@
 **Why:** Improves discoverability of the "Get In Touch" / "Contact Me →" buttons. On longer projects with expanded accordion sections, users no longer need to scroll back to the bottom to see the call-to-action.
 
 **How it works:**
+
 - Right column parent: `grid grid-rows-[1fr_auto] overflow-hidden`
 - Scrollable accordions row: `overflow-y-auto min-h-0` (the `min-h-0` is critical — it allows the row to shrink below its content height and trigger internal scroll)
 - Pinned CTA + footer row: `border-t border-primary` (intrinsic height via CSS Grid's `auto` track)
@@ -859,6 +872,7 @@ Why: The previous margin-offset approach had the right panel's offset out of syn
 **Verification:** Desktop layout verified at 1440px (left panel fixed width, right panel fills remaining space), mobile layout confirmed unchanged at 375px (full-width right panel, hamburger drawer).
 
 ---
+
 ## Session Update - 2026-05-26
 
 ### style: unify contact CTAs and polish typography
@@ -1010,7 +1024,7 @@ A faint ~8px light-gray vertical bar was visible at the viewport's right edge on
 
 **Root cause:**
 
-`src/components/CartDrawer.tsx` line 70 declares an inline `box-shadow: -8px 0 0 0 rgba(17,17,17,0.08)` on the drawer `<aside>`. The `<aside>` is `position: fixed; right: 0; width: 480px` and translates off-screen with `translate-x-full` when closed — putting its left edge precisely at the viewport's right edge. The `-8px` x-offset shadow then paints 8px *to the left* of that edge, i.e. 8px into the visible viewport. Because the `<aside>` is fixed-positioned, ancestor `overflow: hidden` on `<html>`/`<body>` does not clip it — fixed descendants escape ancestor overflow clipping entirely.
+`src/components/CartDrawer.tsx` line 70 declares an inline `box-shadow: -8px 0 0 0 rgba(17,17,17,0.08)` on the drawer `<aside>`. The `<aside>` is `position: fixed; right: 0; width: 480px` and translates off-screen with `translate-x-full` when closed — putting its left edge precisely at the viewport's right edge. The `-8px` x-offset shadow then paints 8px _to the left_ of that edge, i.e. 8px into the visible viewport. Because the `<aside>` is fixed-positioned, ancestor `overflow: hidden` on `<html>`/`<body>` does not clip it — fixed descendants escape ancestor overflow clipping entirely.
 
 **Fix:**
 
@@ -1025,7 +1039,7 @@ Chose the translate-buffer approach over a conditional `boxShadow` style (e.g. `
 - `src/styles/global.css` — removed the `.hard-shadow-canvas` utility (`box-shadow: 8px 0 0 0 rgba(17,17,17,0.1)`).
 - `src/layouts/Layout.astro` — removed `hard-shadow-canvas` from the right-panel wrapper.
 
-The `.hard-shadow-canvas` utility was applied to wrappers whose right edge always sat exactly at the viewport boundary, so its 8px-rightward shadow had nowhere useful to render — invisible by design but consuming a class slot and adding noise to the cascade. Removing it is correct on its own merits, but it was *not* the source of the gray bar (initial misdiagnosis). The bar persisted after removal, which is what led to inspecting fixed-positioned descendants and finding the CartDrawer shadow.
+The `.hard-shadow-canvas` utility was applied to wrappers whose right edge always sat exactly at the viewport boundary, so its 8px-rightward shadow had nowhere useful to render — invisible by design but consuming a class slot and adding noise to the cascade. Removing it is correct on its own merits, but it was _not_ the source of the gray bar (initial misdiagnosis). The bar persisted after removal, which is what led to inspecting fixed-positioned descendants and finding the CartDrawer shadow.
 
 Why this matters: any `position: fixed` element near a viewport edge with an outset shadow can bleed shadow into the viewport. This is the second time this pattern has bitten this codebase (first was `.hard-shadow-canvas` on the right panel wrapper — same shape, different mechanism). Worth a project note: outset shadows on edge-adjacent elements need either inset offsets, conditional rendering, or a translate buffer.
 
@@ -1080,3 +1094,28 @@ Five micro-tweaks rolled into one entry:
 - `src/styles/global.css` — reverted scrollbar track color from `var(--color-surface-container-low)` back to `white`. The faint-tracked variant from the 2026-05-26 entry showed up as an unintended vertical bar on every page with a white main; reverting kills that. Added a commented-out `.scroll-track-gray::-webkit-scrollbar-track { background: var(--color-surface-container-low) }` rule so individual scroll containers can opt into the visible-track styling on a per-element basis without bringing back the global bar.
 - `src/components/MasonryGallery.astro` — opted the masonry gallery into the new (commented-out, but ready) `.scroll-track-gray` class. When that rule is uncommented in `global.css`, the gallery alone gets the faint visible track without affecting `<main>` or any other scroll container.
 
+---
+
+## Session Update - 2026-05-28
+
+### Parse Paragraphs
+
+**What changed:** Extracted paragraph parsing into parseParagraphs.ts; `Accordion` now accepts `content` as `string | string[]` and renders semantic paragraphs with optional single-line breaks. Types updated to accept arrays for long-form fields and several job role descriptions converted to paragraph arrays. SEO/hero content now uses the first paragraph for concise meta text.
+
+**Files touched:** src/lib/parseParagraphs.ts, src/components/Accordion.astro, src/types/index.ts, src/pages/projects/[slug].astro, jobRoles.ts
+
+**Why:** Ensure consistent, semantic paragraph rendering and make content easier to author.
+
+### JAF DEV Logo
+
+Create logo for JAF DEV
+
+nanobanana had ok results, canva had horrible options, and chatgpt came up with a decent direction after some prompting.
+
+ended up with a isometric block-style version
+
+#### Update favicon
+
+replace Astro favicon.ico with new logo using 3 different png sizes.
+
+---
