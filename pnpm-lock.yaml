@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  devalue: ^5.8.1
+  ws: ^8.20.1
+  yaml: ^2.8.3
+
 importers:
 
   .:
@@ -1678,8 +1683,8 @@ packages:
     resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
     engines: {node: '>=8'}
 
-  devalue@5.8.0:
-    resolution: {integrity: sha512-2zA9pFEsnp7vWBZbXF5JAgAq0fsUIt/1XPbRiAmRV3lp/2C3upzH+sADiyy66aFCihoLEsrQHxNM5w1gIDfsBg==}
+  devalue@5.8.1:
+    resolution: {integrity: sha512-4CXDYRBGqN+57wVJkuXBYmpAVUSg3L6JAQa/DFqm238G73E1wuyc/JhGQJzN7vUf/CMphYau2zXbfWzDR5aTEw==}
 
   devlop@1.1.0:
     resolution: {integrity: sha512-RWmIqhcFf1lRYBvNmr7qTNuyCt/7/ns2jbpp1+PalgE/rDQcBT0fioSMUpJ93irlUhC5hrg4cYqe6U+0ImW0rA==}
@@ -2960,7 +2965,7 @@ packages:
       sugarss: ^5.0.0
       terser: ^5.16.0
       tsx: ^4.8.1
-      yaml: ^2.4.2
+      yaml: ^2.8.3
     peerDependenciesMeta:
       '@types/node':
         optional: true
@@ -3182,8 +3187,8 @@ packages:
     resolution: {integrity: sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==}
     engines: {node: '>=10'}
 
-  ws@8.18.0:
-    resolution: {integrity: sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==}
+  ws@8.21.0:
+    resolution: {integrity: sha512-Vsp28b7DRcimFQvrqu2Wek3z1iYxDCWqHYB8Qsnk/S4RfaCQzPGPyBNuVjJV3cd6UiKtUtp6sNM77gWvzcCH+g==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
@@ -3213,11 +3218,6 @@ packages:
 
   yaml-language-server@1.20.0:
     resolution: {integrity: sha512-qhjK/bzSRZ6HtTvgeFvjNPJGWdZ0+x5NREV/9XZWFjIGezew2b4r5JPy66IfOhd5OA7KeFwk1JfmEbnTvev0cA==}
-    hasBin: true
-
-  yaml@2.7.1:
-    resolution: {integrity: sha512-10ULxpnOCQXxJvBgxsn9ptjq6uviG/htZKk9veJGhlqn3w/DxQ631zFF+nlQXLwmImeS5amR2dl2U8sg6U9jsQ==}
-    engines: {node: '>= 14'}
     hasBin: true
 
   yaml@2.9.0:
@@ -3385,7 +3385,7 @@ snapshots:
       '@types/react': 19.2.14
       '@types/react-dom': 19.2.3(@types/react@19.2.14)
       '@vitejs/plugin-react': 5.2.0(vite@7.3.3(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.9.0))
-      devalue: 5.8.0
+      devalue: 5.8.1
       react: 19.2.6
       react-dom: 19.2.6(react@19.2.6)
       ultrahtml: 1.6.0
@@ -3567,7 +3567,7 @@ snapshots:
       unenv: 2.0.0-rc.24
       vite: 7.3.3(jiti@2.7.0)(lightningcss@1.32.0)(yaml@2.9.0)
       wrangler: 4.90.0
-      ws: 8.18.0
+      ws: 8.21.0
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -4566,7 +4566,7 @@ snapshots:
       clsx: 2.1.1
       common-ancestor-path: 2.0.0
       cookie: 1.1.1
-      devalue: 5.8.0
+      devalue: 5.8.1
       diff: 8.0.4
       dset: 3.1.4
       es-module-lexer: 2.1.0
@@ -4793,7 +4793,7 @@ snapshots:
 
   detect-libc@2.1.2: {}
 
-  devalue@5.8.0: {}
+  devalue@5.8.1: {}
 
   devlop@1.1.0:
     dependencies:
@@ -5725,7 +5725,7 @@ snapshots:
       sharp: 0.34.5
       undici: 7.24.8
       workerd: 1.20260507.1
-      ws: 8.18.0
+      ws: 8.21.0
       youch: 4.1.0-beta.10
     transitivePeerDependencies:
       - bufferutil
@@ -6536,7 +6536,7 @@ snapshots:
       string-width: 4.2.3
       strip-ansi: 6.0.1
 
-  ws@8.18.0: {}
+  ws@8.21.0: {}
 
   xml-name-validator@5.0.0: {}
 
@@ -6560,9 +6560,7 @@ snapshots:
       vscode-languageserver-textdocument: 1.0.12
       vscode-languageserver-types: 3.17.5
       vscode-uri: 3.1.0
-      yaml: 2.7.1
-
-  yaml@2.7.1: {}
+      yaml: 2.9.0
 
   yaml@2.9.0: {}
 

@@ -2,6 +2,22 @@
 
 ---
 
+**Date:** 2026-05-30
+**Branch:** `fix/dev-server-workerd-sharp`
+**Change:** Fix `astro dev` workerd crash from `imageService: 'compile'` + patch 3 `pnpm audit` advisories
+
+**Files touched:** `astro.config.mjs`, `pnpm-workspace.yaml`, `pnpm-lock.yaml`
+
+**What changed:** Made the Cloudflare adapter's `imageService` command-conditional in `astro.config.mjs` — `'passthrough'` under `astro dev`, `'compile'` for build/check (`const isDev = process.argv.includes('dev')`). Added an `overrides` block to `pnpm-workspace.yaml` pinning patched floors for three transitive advisories: `devalue ^5.8.1` (high, GHSA-77vg-94rm-hx3p, via `astro`), `ws ^8.20.1` (moderate, GHSA-58qx-3vcg-4xpx, via `@cloudflare/vite-plugin`), `yaml ^2.8.3` (moderate, GHSA-48c2-rrv3-qjmp, via `@astrojs/check`). Overrides live in `pnpm-workspace.yaml` because pnpm v11 no longer reads the `package.json` `pnpm` field; `pnpm install --force` was required to re-resolve since adding an override does not invalidate pnpm's "up to date" check.
+
+**Why:** Yesterday's image migration set `imageService: 'compile'` + added `sharp`. `pnpm build` passed (prerendering runs in Node, where Sharp's native CommonJS module loads), but `pnpm dev` crashed at startup with `module is not defined` — `@astrojs/cloudflare` v13 runs the dev server inside `workerd` (via `@cloudflare/vite-plugin`), an ESM-only runtime with no CommonJS `module` global, and the adapter externalizes Sharp only for the build bundle, not the dev server. `passthrough` in dev serves unoptimized originals (no Sharp in workerd) while build keeps full Sharp optimization. The `ws` advisory noted in the 2026-05-29 entry is now resolved along with the `devalue`/`yaml` ones surfaced by `pnpm audit`.
+
+**Verified:** `pnpm dev` starts clean (no crash, `passthrough` active); `pnpm build` clean with `_astro/*.webp` variants (compile/Sharp still optimizes); `pnpm audit` → "No known vulnerabilities found" (was 1 high + 2 moderate); `astro check` → 0 errors/warnings/hints.
+
+**Note:** The `overrides` are pinned floors — revisit and remove once `astro`, `@cloudflare/vite-plugin`, and `@astrojs/check` ship the patched versions upstream so they don't hold back future resolutions.
+
+---
+
 **Date:** 2026-05-29
 **Branch:** `perf/astro-image-migration`
 **Change:** Migrate images to `src/assets` and optimize with `astro:assets`

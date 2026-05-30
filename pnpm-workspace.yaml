@@ -2,3 +2,10 @@ allowBuilds:
   esbuild: true
   sharp: true
   workerd: true
+
+# Patched floors for transitive advisories flagged by `pnpm audit`.
+# Remove once the parent packages ship these versions upstream.
+overrides:
+  devalue: '^5.8.1' # high — GHSA-77vg-94rm-hx3p (via astro)
+  ws: '^8.20.1' # mod — GHSA-58qx-3vcg-4xpx (via @cloudflare/vite-plugin)
+  yaml: '^2.8.3' # mod — GHSA-48c2-rrv3-qjmp (via @astrojs/check)
