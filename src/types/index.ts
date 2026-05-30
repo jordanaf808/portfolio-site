@@ -1,3 +1,5 @@
+import type { ImageMetadata } from 'astro'
+
 export interface BaseEntry {
 	slug: string
 	title: string
@@ -8,7 +10,8 @@ export interface BaseEntry {
 	tech: string[]
 	status: 'ACTIVE' | 'COMPLETE' | 'ARCHIVED'
 	description: string | string[]
-	images: string[]
+	/** Imported image modules — optimized by astro:assets at build time. */
+	images: ImageMetadata[]
 	featured: boolean
 	externalLink?: string
 }

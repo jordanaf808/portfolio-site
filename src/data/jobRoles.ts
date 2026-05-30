@@ -1,5 +1,18 @@
-import type {JobRole} from '../types/index.ts'
-import {sortByMostRecent} from './projects.ts'
+import type {JobRole} from '@/types'
+import {sortByMostRecent} from '@/data/projects.ts'
+
+// Images are imported as modules so Astro can optimize them at build time
+// (AVIF/WebP, responsive srcset, intrinsic dimensions). See astro.config.mjs.
+import atitlanBootPicker from '@/assets/projects/undefined-agency/Atitlan-Leather_Custom-Boot-picker.jpg'
+import commandCoffee from '@/assets/projects/undefined-agency/Command-Coffee-Home-CoffeeCalc.jpg'
+import stazeCustomTrio from '@/assets/projects/undefined-agency/Staze--Custom_Trio--opt.jpeg'
+import stazeHomepage from '@/assets/projects/staze/homepage.jpg'
+import stazeProductDetails from '@/assets/projects/staze/product-details_custom-trio.jpeg'
+import simplehumanConfig from '@/assets/projects/simplehuman/Simplehuman-product-configuration.jpg'
+import trueClassicProductCards from '@/assets/projects/true-classic/product-cards+loyalty.jpeg'
+import trueClassicMegaMenu from '@/assets/projects/true-classic/mega-menu-5.jpeg'
+import trueClassicQuickAdd from '@/assets/projects/true-classic/QuickAddModal.jpeg'
+import trueClassicOldQuickAdd from '@/assets/projects/true-classic/old-quick-add.jpeg'
 
 export const jobRoles: JobRole[] = [
 	{
@@ -29,11 +42,7 @@ export const jobRoles: JobRole[] = [
 		],
 		responsibilities: '',
 		technologies: '',
-		images: [
-			'/projects/undefined-agency/Atitlan-Leather_Custom-Boot-picker.jpg',
-			'/projects/undefined-agency/Command-Coffee-Home-CoffeeCalc.jpg',
-			'/projects/undefined-agency/Staze--Custom_Trio--opt.jpeg',
-		],
+		images: [atitlanBootPicker, commandCoffee, stazeCustomTrio],
 		featured: true,
 	},
 	{
@@ -50,10 +59,7 @@ export const jobRoles: JobRole[] = [
 			'Maintained and rebuilt the Shopify theme for Staze, a boutique herbal storage brand, translating a fresh redesign into a fully functional storefront. Developed custom templates, sections, and interactive features including pop-ups, dropdowns, and animations to enhance UX/UI and responsiveness using HTML, CSS, JavaScript, and Liquid. Rounded out the role with third-party app integration, performance optimization, SEO improvements, and ongoing technical troubleshooting to keep the store running smoothly.',
 		responsibilities: '',
 		technologies: '',
-		images: [
-			'/projects/staze/homepage.jpg',
-			'/projects/staze/product-details_custom-trio.jpeg',
-		],
+		images: [stazeHomepage, stazeProductDetails],
 		featured: true,
 	},
 	{
@@ -72,7 +78,7 @@ export const jobRoles: JobRole[] = [
 		],
 		responsibilities: '',
 		technologies: '',
-		images: ['/projects/simplehuman/Simplehuman-product-configuration.jpg'],
+		images: [simplehumanConfig],
 		featured: true,
 	},
 	{
@@ -105,10 +111,10 @@ export const jobRoles: JobRole[] = [
 		responsibilities: '',
 		technologies: '',
 		images: [
-			'/projects/true-classic/product-cards+loyalty.jpeg',
-			'/projects/true-classic/mega-menu-5.jpeg',
-			'/projects/true-classic/QuickAddModal.jpeg',
-			'/projects/true-classic/old-quick-add.jpeg',
+			trueClassicProductCards,
+			trueClassicMegaMenu,
+			trueClassicQuickAdd,
+			trueClassicOldQuickAdd,
 		],
 		featured: true,
 	},

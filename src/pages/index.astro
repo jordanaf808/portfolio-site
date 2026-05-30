@@ -1,9 +1,11 @@
 ---
+import { Picture } from 'astro:assets';
 import Layout from '@/layouts/Layout.astro';
 import ProjectCard from '@/components/ProjectCard.astro';
 import AvailabilityBadge from '@/components/AvailabilityBadge.astro';
 import { getFeaturedProjects } from '@/data/projects.ts';
 import { getFeaturedJobRoles } from '@/data/jobRoles.ts';
+import profilePic from '@/assets/profile-pic.jpg';
 
 const projects = [...getFeaturedProjects(), ...getFeaturedJobRoles()];
 ---
@@ -36,9 +38,12 @@ const projects = [...getFeaturedProjects(), ...getFeaturedJobRoles()];
 
     <!-- Image: stacked row 2 below 540px; col 1, row-span-2 at 540px+ -->
     <div class="max-[540px]:max-h-138 min-[640px]:max-h-154 border-b border-primary min-[540px]:col-start-1 min-[540px]:row-start-1 min-[540px]:row-span-2 min-[540px]:aspect-auto min-[540px]:border-r min-[540px]:border-b-0">
-      <img
-        src="/profile-pic.jpg"
+      <Picture
+        src={profilePic}
+        formats={['avif', 'webp']}
         alt=""
+        widths={[400, 800]}
+        sizes="(min-width: 540px) 50vw, 100vw"
         class="w-full h-full object-cover object-top grayscale-hover"
       />
     </div>

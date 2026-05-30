@@ -3,6 +3,20 @@
 ---
 
 **Date:** 2026-05-29
+**Branch:** `perf/astro-image-migration`
+**Change:** Migrate images to `src/assets` and optimize with `astro:assets`
+
+**Files touched:** `astro.config.mjs`, `package.json`, `src/types/index.ts`, `src/data/jobRoles.ts`, `src/components/ProjectCard.astro`, `src/components/ImageGallery.astro`, `src/components/LeftPanel.astro`, `src/pages/index.astro`, `src/pages/projects/[slug].astro`, moved `public/profile-pic.jpg` + `public/projects/**` → `src/assets/**`
+
+**What changed:** Moved the profile photo and all project images out of `public/` into `src/assets/` so Astro can process them. Added `sharp` (dev dependency) and set the Cloudflare adapter's `imageService: 'compile'` — the v13 default is `cloudflare-binding` (runtime transformation via a binding), which does nothing for a fully prerendered site; `compile` runs Sharp at build time for prerendered routes. Changed `BaseEntry.images` from `string[]` to `ImageMetadata[]` and switched `jobRoles.ts` to import each image as a module. Converted the rendered images to `<Picture>` with `formats={['avif','webp']}` and responsive `widths`/`sizes`: the ProjectCard hero (LCP image keeps `loading="eager"` + `fetchpriority="high"`), both profile placements (LeftPanel sticky + index mobile header), and the ImageGallery thumbnail strip. The gallery's fullscreen slideshow swaps `img.src` from client JS, so its sources are pre-generated with `getImage({ format: 'webp', width: 1600 })` and the optimized URLs are passed through `data-images`. Updated `ogImage` in `[slug].astro` to use `images[0].src`. Favicons and `og-default.jpg` stay in `public/` (stable crawler-facing URLs). `MasonryGallery.astro` is unused dead code and was left as-is.
+
+**Why:** Every image was a raw `<img>` pointing at an unoptimized JPEG in `public/`, served at full resolution behind a grayscale-hover effect. Importing them as modules lets Astro emit AVIF/WebP at multiple widths with intrinsic dimensions — verified in `dist/`: e.g. `homepage.jpg` (113kB) now also emits a 20kB WebP / 41kB AVIF, and `<img>` tags carry `width`/`height` to eliminate CLS. Build (`imageService: 'compile'`) confirmed Sharp optimizes at build time with no runtime binding required.
+
+**Note:** `pnpm audit` reports 2 advisories (1 high, 1 moderate) in `ws`, pulled transitively through the Cloudflare adapter's dev tooling (`@cloudflare/vite-plugin > miniflare > ws`). Pre-existing, dev-only, not introduced by `sharp` and not in the shipped output.
+
+---
+
+**Date:** 2026-05-29
 **Branch:** `refactor/extract-shared-components`
 **Change:** Extract shared components, tokenize CartDrawer, centralize cart-drawer trigger
 

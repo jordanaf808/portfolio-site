@@ -33,7 +33,7 @@ const description = Array.isArray(entry.description) ? entry.description[0] : en
 <Layout
   title={`${entry.title} — Jordan A.F. | Shopify & JS/TS Developer`}
   description={description}
-  ogImage={entry.images?.[0]}
+  ogImage={entry.images?.[0]?.src}
   activePage="project"
 >
   <!-- Hero -->

@@ -1,6 +1,8 @@
 ---
+import { Picture } from 'astro:assets';
 import AvailabilityBadge from '@/components/AvailabilityBadge.astro';
 import TechBadge from '@/components/TechBadge.astro';
+import profilePic from '@/assets/profile-pic.jpg';
 
 interface Props {
   activePage?: 'lookbook' | 'archive' | 'project';
@@ -79,9 +81,12 @@ const navCells: NavCell[] = [
     </div>
     <!-- Image: col 1, row 2, portrait by default; col 1, row-span-2 at 1300px+ -->
     <div class="hidden min-[1000px]:block col-start-1 row-start-2 row-span-1 aspect-2/3 border-r border-primary">
-      <img
-        src="/profile-pic.jpg"
+      <Picture
+        src={profilePic}
+        formats={['avif', 'webp']}
         alt="Jordan A.F."
+        widths={[250, 500]}
+        sizes="250px"
         class="w-full h-full object-cover object-top grayscale-hover"
       />
     </div>

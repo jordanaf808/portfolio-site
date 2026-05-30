@@ -1,30 +1,41 @@
 ---
+import { Picture, getImage } from 'astro:assets';
+
 interface Props {
-  images: string[];
+  images: ImageMetadata[];
   title: string;
 }
 const { images, title } = Astro.props;
 const total = images.length;
+
+// The fullscreen slideshow swaps `img.src` from client JS, so it needs plain URL
+// strings. Pre-generate an optimized WebP for each image and pass the URLs down.
+const slideshowSources = await Promise.all(
+  images.map((image) => getImage({ src: image, format: 'webp', width: 1600 })),
+);
+const slideshowUrls = slideshowSources.map((source) => source.src);
 ---
 <!-- Horizontally scrolling thumbnail strip -->
 <div
   id="image-gallery"
-  data-images={JSON.stringify(images)}
+  data-images={JSON.stringify(slideshowUrls)}
   class="flex overflow-x-auto border-b border-primary"
 >
-  {images.map((src, i) => (
+  {images.map((image, i) => (
     <button
       type="button"
       data-gallery-index={i}
       class="shrink-0 w-56.25 h-70.75 overflow-hidden border-r border-primary bg-surface-container-high cursor-pointer p-0"
       aria-label={`${title} — open image ${i + 1} in slideshow`}
     >
-      <img
-        src={src}
+      <Picture
+        src={image}
+        formats={['avif', 'webp']}
         alt={`${title} ${i + 1}`}
+        widths={[225, 450]}
+        sizes="225px"
         class="w-full h-full object-cover grayscale-hover"
         loading={i === 0 ? 'eager' : 'lazy'}
-        onerror="this.parentElement.style.background='#EFEFEB'"
       />
     </button>
   ))}
