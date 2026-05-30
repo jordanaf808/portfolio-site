@@ -4,6 +4,18 @@
 
 **Date:** 2026-05-29
 **Branch:** `style/slug-single-column-layout`
+**Change:** Convert project detail to single-column Layout + rebuild gallery
+
+**Files touched:** `src/pages/projects/[slug].astro`, `src/components/ImageGallery.astro`, `src/layouts/Layout.astro`, `src/styles/global.css`, `CLAUDE.md`, `DESIGN.md`
+
+**What changed:** Converted `projects/[slug].astro` from a standalone `<!doctype html>` document into a `Layout.astro` consumer (`activePage="project"`), so it inherits the sticky LeftPanel at ≥1000px, native body scroll, and shared head/SEO/CartDrawer. Removed the old 50/50 split, the inner accordion scroll container, and the grid-rows pinned-CTA footer — content now flows as a single column (hero → gallery → accordions → CTA → footer nav). Rebuilt `ImageGallery.astro` as a horizontally scrolling strip of fixed 225×283 (`w-56.25 h-70.75`) grayscale thumbnails with a self-contained fullscreen `<dialog>` slideshow (prev/next, ←/→ keys, Esc, click-overlay-to-close); both projects and job roles now use it. `MasonryGallery.astro` is no longer wired in but is kept in the codebase for later use. In `Layout.astro`, `hideMenuItems` is now true for `activePage === 'project'` (Home/Archive hidden on the slug TopNav), and `min-w-0` was added to the right-column wrapper and `<main>` so the horizontal gallery scrolls within its column instead of widening the page. In `global.css`, `::-webkit-scrollbar` gained `height: 6px` so horizontal scrollbars match the 6px vertical bars. Updated `CLAUDE.md` and `DESIGN.md` to describe the single-column layout and the new gallery/slideshow.
+
+**Why:** The slug page hand-rolled its own scroll model (`h-screen overflow-hidden` + inner scroll) and duplicated the layout boilerplate, which was inconsistent with the rest of the site after the body-scroll migration. A single-column layout sharing `Layout.astro` removes that duplication and the CTA-pinning complexity, and the horizontal gallery + slideshow reads more cleanly in one column than the former 50/50 split.
+
+---
+
+**Date:** 2026-05-29
+**Branch:** `style/slug-single-column-layout`
 **Change:** Refine mobile brand-header spacing on the lookbook
 
 **Files touched:** `src/pages/index.astro`

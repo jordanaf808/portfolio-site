@@ -6,63 +6,105 @@ interface Props {
 const { images, title } = Astro.props;
 const total = images.length;
 ---
-<div class="sticky top-0 h-[calc(100vh-3rem)] flex flex-col border-r border-primary">
-  <!-- Main image area -->
-  <div class="relative flex-1 overflow-hidden bg-surface-container-high">
-    {images.map((src, i) => (
+<!-- Horizontally scrolling thumbnail strip -->
+<div
+  id="image-gallery"
+  data-images={JSON.stringify(images)}
+  class="flex overflow-x-auto border-b border-primary"
+>
+  {images.map((src, i) => (
+    <button
+      type="button"
+      data-gallery-index={i}
+      class="shrink-0 w-56.25 h-70.75 overflow-hidden border-r border-primary bg-surface-container-high cursor-pointer p-0"
+      aria-label={`${title} — open image ${i + 1} in slideshow`}
+    >
       <img
-        id={`gallery-img-${i}`}
         src={src}
-        alt={`${title} — image ${i + 1}`}
-        class:list={[
-          'w-full h-full object-cover grayscale-hover absolute inset-0 transition-opacity duration-500',
-          i === 0 ? 'opacity-100' : 'opacity-0',
-        ]}
+        alt={`${title} ${i + 1}`}
+        class="w-full h-full object-cover grayscale-hover"
         loading={i === 0 ? 'eager' : 'lazy'}
         onerror="this.parentElement.style.background='#EFEFEB'"
       />
-    ))}
-    <!-- Counter badge -->
-    <div id="gallery-counter" class="absolute bottom-4 right-4 bg-primary text-surface font-mono text-xs px-3 py-1">
-      01 / {String(total).padStart(2, '0')}
-    </div>
-  </div>
-
-  <!-- Prev / Next controls -->
-  <div class="grid grid-cols-3 h-12 border-t border-primary flex-shrink-0">
-    <button id="gallery-prev" class="flex items-center justify-center border-r border-primary hover:bg-surface-container-high transition-colors font-mono text-sm">
-      ←
     </button>
-    <div class="flex items-center justify-center font-mono text-xs uppercase tracking-[0.1em] text-muted">
-      Prev / Next
-    </div>
-    <button id="gallery-next" class="flex items-center justify-center border-l border-primary hover:bg-surface-container-high transition-colors font-mono text-sm">
-      →
-    </button>
-  </div>
+  ))}
 </div>
 
-<script is:inline define:vars={{ total }}>
-  let current = 0;
+<!-- Fullscreen slideshow -->
+{total > 0 && (
+  <dialog
+    id="slideshow-modal"
+    class="fixed inset-0 w-screen h-screen max-w-none max-h-none m-0 p-0 bg-black/90 backdrop:bg-transparent"
+    aria-label="Image slideshow"
+  >
+    <div class="flex flex-col h-full">
+      <div class="flex items-center justify-between p-6 border-b border-white/10">
+        <span id="slideshow-counter" class="font-mono text-xs uppercase tracking-widest text-white/50"></span>
+        <button
+          id="slideshow-close"
+          class="font-mono text-xs uppercase tracking-widest text-white/50 hover:text-white transition-colors"
+          aria-label="Close slideshow"
+        >Close ×</button>
+      </div>
+      <div class="flex-1 flex items-center justify-between px-6 gap-6 overflow-hidden">
+        <button
+          id="slideshow-prev"
+          class="shrink-0 cursor-pointer font-mono text-xs uppercase tracking-widest text-white/50 hover:text-white transition-colors"
+          aria-label="Previous image"
+        >← Prev</button>
+        <div class="flex-1 flex items-center justify-center h-full overflow-hidden">
+          <img id="slideshow-img" src="" alt="" class="max-w-full max-h-full object-contain" />
+        </div>
+        <button
+          id="slideshow-next"
+          class="shrink-0 cursor-pointer font-mono text-xs uppercase tracking-widest text-white/50 hover:text-white transition-colors"
+          aria-label="Next image"
+        >Next →</button>
+      </div>
+    </div>
+  </dialog>
+)}
 
-  function showImage(index) {
-    document.querySelectorAll('[id^="gallery-img-"]').forEach((img, i) => {
-      img.style.opacity = i === index ? '1' : '0';
-    });
-    const counter = document.getElementById('gallery-counter');
-    if (counter) {
-      counter.textContent =
-        String(index + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+<script>
+  const gallery = document.getElementById('image-gallery')
+  const images: string[] = gallery ? JSON.parse(gallery.dataset.images ?? '[]') : []
+  const modal = document.getElementById('slideshow-modal') as HTMLDialogElement | null
+
+  if (modal && images.length > 0) {
+    let current = 0
+    const img = document.getElementById('slideshow-img') as HTMLImageElement
+    const counter = document.getElementById('slideshow-counter')
+
+    function showSlide(index: number): void {
+      current = (index + images.length) % images.length
+      img.src = images[current]
+      img.alt = `Image ${current + 1} of ${images.length}`
+      if (counter) {
+        counter.textContent = `${String(current + 1).padStart(2, '0')} / ${String(images.length).padStart(2, '0')}`
+      }
     }
+
+    gallery?.querySelectorAll<HTMLElement>('button[data-gallery-index]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        showSlide(Number(btn.dataset.galleryIndex))
+        modal.showModal()
+      })
+    })
+
+    document.getElementById('slideshow-close')?.addEventListener('click', () => modal.close())
+    document.getElementById('slideshow-prev')?.addEventListener('click', () => showSlide(current - 1))
+    document.getElementById('slideshow-next')?.addEventListener('click', () => showSlide(current + 1))
+
+    modal.addEventListener('click', (e) => {
+      const t = e.target as HTMLElement
+      if (t.closest('button') || t.id === 'slideshow-img') return
+      modal.close()
+    })
+
+    document.addEventListener('keydown', (e) => {
+      if (!modal.open) return
+      if (e.key === 'ArrowLeft') showSlide(current - 1)
+      if (e.key === 'ArrowRight') showSlide(current + 1)
+    })
   }
-
-  document.getElementById('gallery-prev')?.addEventListener('click', () => {
-    current = (current - 1 + total) % total;
-    showImage(current);
-  });
-
-  document.getElementById('gallery-next')?.addEventListener('click', () => {
-    current = (current + 1) % total;
-    showImage(current);
-  });
 </script>

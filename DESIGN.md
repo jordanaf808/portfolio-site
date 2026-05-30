@@ -44,7 +44,7 @@ typography:
 spacing:
   container-padding: 24-48px (varies per surface)
   bento-gap: 0px
-  grid-split: 40/60 (lookbook + archive); 50/50 (project detail body below hero)
+  grid-split: 40/60 across all pages (LeftPanel + right surface); project detail is single-column within the right surface
   stack-sm: 12px
   stack-md: 24px
   stack-lg: 48px
@@ -187,9 +187,9 @@ Editorial pairing — Newsreader (italic display) + Work Sans (body) + Space Gro
 **Layout:**
 
 - **Full-width hero (top):** project title (Newsreader text-5xl ≈ 48px), description paragraph (for projects only), tech tag pills.
-- **Body:** 50/50 split below the hero on `md` and up; stacks vertically on smaller viewports.
-  - **Left:** Sticky `ImageGallery.astro` (projects, image-stack) or scrollable `MasonryGallery.astro` (job roles, with click-to-slideshow modal).
-  - **Right:** CSS Grid `grid-rows-[1fr_auto]` with `overflow-hidden`. Row 1 is the scrollable accordions; row 2 is a pinned CTA + footer-nav block that stays anchored to the viewport bottom regardless of accordion height.
+- **Body:** Single-column content flow in the right surface (consumes `Layout.astro`, so the LeftPanel is sticky at ≥1000px and the page uses native body scroll). Below the hero, content stacks in order: gallery → accordions → CTA → footer nav.
+  - **Gallery:** `ImageGallery.astro` — a horizontally scrolling strip of fixed 225×283 thumbnails (grayscale-by-default), used for both projects and job roles. Clicking a thumbnail opens a self-contained fullscreen `<dialog>` slideshow (prev/next, arrow keys, Esc, click-overlay-to-close).
+  - **Content:** Accordions, then the CTA block (button + Technical Architecture table for projects), then prev/next footer nav — all flowing naturally in body scroll (no inner scroll container, no pinned CTA). `MasonryGallery.astro` remains in the codebase but is no longer wired into this page.
 
 **Accordion variants:**
 
@@ -297,7 +297,7 @@ Editorial pairing — Newsreader (italic display) + Work Sans (body) + Space Gro
 
 1. **Design System & Layout Wrapper:** `global.css` tokens, font loading via Google Fonts `<link>`, grid scaffolding in `Layout.astro` (`grid-cols-[500px_1fr]`), `hard-shadow-canvas` utility.
 2. **Lookbook (Home):** LeftPanel bento + scrollable right surface + project feed via `ProjectCard.astro`.
-3. **Project Detail:** Hero + sticky image gallery + scrollable accordion column + pinned CTA row (CSS Grid `grid-rows-[1fr_auto]`).
+3. **Project Detail:** Consumes `Layout.astro` — single-column hero + horizontal `ImageGallery` (click-to-slideshow) + accordions + CTA + footer nav, all in native body scroll.
 4. **Cart Drawer (Contact):** React island (`client:load`), custom `open-cart-drawer` event listener, Resend integration via `/api/contact` SSR endpoint, success-state rendering in-drawer.
 5. **Archive:** Dense table with row-level hover + click-anywhere navigation.
 
@@ -308,10 +308,10 @@ Editorial pairing — Newsreader (italic display) + Work Sans (body) + Space Gro
 These landed during build / iteration and are worth capturing here for future contributors:
 
 - **Skip-to-work link** — first focusable element on every page (rendered in `Layout.astro` as the first child of `<body>`); jumps to `<main id="main">` on keyboard focus. WCAG 2.1 Bypass Blocks. Hidden off-screen until `:focus-visible`.
-- **SEOHead component** — `src/components/SEOHead.astro` centralizes `<title>`, meta description, canonical link, full Open Graph block, and Twitter `summary_large_image` card. Used by `Layout.astro` and (independently) by `pages/projects/[slug].astro`. Single source of truth for all per-page metadata.
+- **SEOHead component** — `src/components/SEOHead.astro` centralizes `<title>`, meta description, canonical link, full Open Graph block, and Twitter `summary_large_image` card. Used by `Layout.astro`, which now wraps every page including `pages/projects/[slug].astro`. Single source of truth for all per-page metadata.
 - **Marquee hover animation** — bento nav cells (in LeftPanel) show a horizontally scrolling italic Newsreader text ("Selected Work / All Projects / What I Do / Get In Touch") at low opacity on hover. Pure CSS `@keyframes` driven; `aria-hidden` on the decorative track.
 - **Dynamic availability quarter** — `getCurrentQuarterLabel()` in `src/utils/date.ts` returns the current quarter as a `"Q2 2026"` string. The inline script in `LeftPanel.astro` rewrites the text content of every `[data-availability-label]` element on page load.
-- **Slideshow modal (job roles only)** — a native `<dialog>` on Product Detail pages with `type: 'jobRole'`. Clicking any image in the masonry gallery opens a fullscreen lightbox; prev/next buttons + arrow-key navigation; Escape or backdrop click closes.
+- **Slideshow modal** — a native `<dialog>` self-contained inside `ImageGallery.astro` on all Product Detail pages. Clicking any thumbnail in the horizontal gallery opens a fullscreen lightbox; prev/next buttons + arrow-key navigation; Escape, overlay click, or the Close button dismiss it.
 - **TopNav active-page indicator** — on mobile, TopNav reflects the `activePage` prop so the Home / Archive links show the active-link underline on `/projects/[slug]` pages.
 - **Project image fetch priorities** — `ProjectCard.astro` uses `loading="eager" fetchpriority="high"` for the first card (LCP candidate) and `loading="lazy" fetchpriority="auto"` for subsequent cards; all use `decoding="async"`.
 

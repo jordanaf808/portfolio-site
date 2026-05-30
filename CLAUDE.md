@@ -38,7 +38,7 @@ src/
 
 ### Page layout pattern
 
-Two-column split: left 40% fixed bento identity grid, right 60% scrollable surface with hard drop shadow. Product detail uses 50/50 with sticky image gallery on the left. The Archive page is a full-width dense table.
+Two-column split: left 40% fixed bento identity grid, right 60% scrollable surface with hard drop shadow. Product detail shares this same wrapper via `Layout.astro` — a single-column content flow in the right surface (hero, horizontal image gallery, accordions, CTA, footer nav) with the LeftPanel sticky at ≥1000px. The Archive page is a full-width dense table.
 
 ### Data flow
 

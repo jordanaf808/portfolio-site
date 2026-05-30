@@ -1,11 +1,7 @@
 ---
-import '../../styles/global.css';
-import TopNav from '../../components/TopNav.astro';
+import Layout from '../../layouts/Layout.astro';
 import Accordion from '../../components/Accordion.astro';
 import ImageGallery from '../../components/ImageGallery.astro';
-import MasonryGallery from '../../components/MasonryGallery.astro';
-import CartDrawer from '../../components/CartDrawer';
-import SEOHead from '../../components/SEOHead.astro';
 import { projects } from '../../data/projects.ts';
 import { jobRoles } from '../../data/jobRoles.ts';
 import type { ProjectEntry } from '../../types/index.ts';
@@ -29,32 +25,19 @@ interface Props {
 }
 
 const { entry, prevEntry, nextEntry } = Astro.props;
+const description = Array.isArray(entry.description) ? entry.description[0] : entry.description;
 ---
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <SEOHead
-    title={`${entry.title} — Jordan A.F. | Shopify & JS/TS Developer`}
-    description={entry.description}
-    ogImage={entry.images?.[0]}
-  />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Work+Sans:wght@400;500&family=Space+Grotesk:wght@400;500&display=swap"
-    rel="stylesheet"
-  />
-</head>
-<body class="flex flex-col h-screen overflow-hidden bg-surface">
-  <TopNav />
-    
+<Layout
+  title={`${entry.title} — Jordan A.F. | Shopify & JS/TS Developer`}
+  description={description}
+  ogImage={entry.images?.[0]}
+  activePage="project"
+>
   <!-- Hero -->
   <div class="px-6 py-10 md:py-12 border-b border-primary">
     <h1 class="font-display text-5xl leading-none text-text mb-6 max-w-125">{entry.title}</h1>
     {entry.type === 'project' && (
-      <p class="text-sm text-muted leading-relaxed">{entry.description}</p>
+      <p class="text-sm text-muted leading-relaxed">{description}</p>
     )}
     <div class="flex flex-wrap gap-2 max-w-125">
       {entry.tech.map((t) => (
@@ -65,205 +48,84 @@ const { entry, prevEntry, nextEntry } = Astro.props;
     </div>
   </div>
 
+  <!-- Gallery: image cycler with thumbnail navigation -->
+  {entry.images.length > 0 && (
+    <ImageGallery images={entry.images} title={entry.title} />
+  )}
+
+  <!-- Accordions -->
+  <div class="border-t border-primary">
+    {entry.type === 'project' ? (
+      <Fragment>
+        <Accordion title="The Challenge" open content={entry.challenge} />
+        <Accordion title="The Architecture" content={entry.architecture} />
+        <Accordion title="The Results" content={entry.results} />
+      </Fragment>
+    ) : (
+      <Fragment>
+        <Accordion title="Overview" open content={entry.description} />
+        {entry.responsibilities && (
+          <Accordion title="Responsibilities" content={entry.responsibilities} />
+        )}
+        {entry.technologies && (
+          <Accordion title="Technologies" content={entry.technologies} />
+        )}
+      </Fragment>
+    )}
+  </div>
+
+  <!-- CTA -->
+  <div class="border-t border-primary p-12">
+    {entry.type === 'project' ? (
+      <div class="grid grid-cols-2 gap-8 items-start">
+        <button
+          id="open-cart-drawer-project"
+          class="w-full bg-primary text-surface font-mono text-xs uppercase tracking-[0.15em] py-4 hover:opacity-90 active:scale-[0.98] transition-all"
+        >
+          Get In Touch
+        </button>
+        <div class="border border-primary">
+          <div class="p-4 border-b border-primary">
+            <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted">Technical Architecture</p>
+          </div>
+          <div class="divide-y divide-primary">
+            {[
+              ['Frontend', entry.tech[0] ?? '—'],
+              ['Commerce', entry.tech[1] ?? '—'],
+              ['Animation', entry.tech[2] ?? '—'],
+              ['Infra', 'Cloudflare Pages'],
+            ].map(([key, val]) => (
+              <div class="flex justify-between px-4 py-2">
+                <span class="font-mono text-xs uppercase tracking-[0.05em] text-muted">{key}</span>
+                <span class="font-mono text-xs text-text">{val}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    ) : (
+      <button
+        id="open-cart-drawer-project"
+        class="w-full bg-primary text-surface font-mono text-xs uppercase tracking-[0.15em] py-4 hover:opacity-90 active:scale-[0.98] transition-all"
+      >
+        Contact Me →
+      </button>
+    )}
+  </div>
+
   <!-- Footer nav -->
-  <!-- <div class="p-5 flex items-center justify-between border-b border-primary">
+  <div class="p-6 flex items-center justify-between border-t border-primary">
     <a href={`/projects/${prevEntry.slug}`} class="font-mono text-xs uppercase tracking-widest text-muted hover:text-text transition-colors">
       ← {prevEntry.title}
     </a>
     <a href={`/projects/${nextEntry.slug}`} class="font-mono text-xs uppercase tracking-widest text-muted hover:text-text transition-colors text-right">
       {nextEntry.title} →
     </a>
-  </div> -->
-
-  <!-- 50/50 split below nav; stacks vertically on mobile -->
-  <div class="flex flex-col md:flex-row flex-1 overflow-hidden">
-
-      <!-- Left: sticky image gallery (projects) or scrollable masonry (job roles) -->
-      <div class="w-full h-64 md:h-auto md:w-1/2 shrink-0">
-        {entry.type === 'project' ? (
-          <ImageGallery images={entry.images} title={entry.title} />
-        ) : (
-          <MasonryGallery images={entry.images} title={entry.title} />
-        )}
-
-        <!-- Gallery grid (projects only, when multiple images) -->
-        {entry.type === 'project' && entry.images.length > 1 && (
-          <div class="p-12 border-t border-primary">
-            <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted mb-6">Project Gallery</p>
-            <div class="grid grid-cols-2 border-t border-l border-primary">
-              {entry.images.map((src, i) => (
-                <div class="aspect-[4/5] overflow-hidden border-b border-r border-primary">
-                  <img
-                    src={src}
-                    alt={`${entry.title} detail ${i + 1}`}
-                    class="w-full h-full object-cover grayscale-hover"
-                    loading="lazy"
-                    onerror="this.parentElement.style.background='#EFEFEB'"
-                  />
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-
-    <!-- Right: scrollable content -->
-    <div class="w-full md:w-1/2 flex-1 grid grid-rows-[1fr_auto] overflow-hidden bg-surface">
-
-      <!-- Accordions (scrollable, row 1 of grid: 1fr) -->
-      <div class="overflow-y-auto min-h-0">
-        <div>
-          {entry.type === 'project' ? (
-            <Fragment>
-              <Accordion title="The Challenge" open>{entry.challenge}</Accordion>
-              <Accordion title="The Architecture">{entry.architecture}</Accordion>
-              <Accordion title="The Results">{entry.results}</Accordion>
-            </Fragment>
-          ) : (
-            <Fragment>
-              <Accordion title="Overview" open>{entry.description}</Accordion>
-              {entry.responsibilities && (
-                <Accordion title="Responsibilities">{entry.responsibilities}</Accordion>
-              )}
-              {entry.technologies && (
-                <Accordion title="Technologies">{entry.technologies}</Accordion>
-              )}
-            </Fragment>
-          )}
-        </div>
-      </div>
-
-      <!-- Pinned CTA + Footer Nav (row 2 of grid: auto) -->
-      <div class="border-t border-primary">
-        <!-- CTA -->
-        <div class="p-12">
-          {entry.type === 'project' ? (
-            <div class="grid grid-cols-2 gap-8 items-start">
-              <button
-                id="open-cart-drawer-project"
-                class="w-full bg-primary text-surface font-mono text-xs uppercase tracking-[0.15em] py-4 hover:opacity-90 active:scale-[0.98] transition-all"
-              >
-                Get In Touch
-              </button>
-              <div class="border border-primary">
-                <div class="p-4 border-b border-primary">
-                  <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted">Technical Architecture</p>
-                </div>
-                <div class="divide-y divide-primary">
-                  {[
-                    ['Frontend', entry.tech[0] ?? '—'],
-                    ['Commerce', entry.tech[1] ?? '—'],
-                    ['Animation', entry.tech[2] ?? '—'],
-                    ['Infra', 'Cloudflare Pages'],
-                  ].map(([key, val]) => (
-                    <div class="flex justify-between px-4 py-2">
-                      <span class="font-mono text-xs uppercase tracking-[0.05em] text-muted">{key}</span>
-                      <span class="font-mono text-xs text-text">{val}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ) : (
-            <button
-              id="open-cart-drawer-project"
-              class="w-full bg-primary text-surface font-mono text-xs uppercase tracking-[0.15em] py-4 hover:opacity-90 active:scale-[0.98] transition-all"
-            >
-              Contact Me →
-            </button>
-          )}
-        </div>
-
-        <!-- Footer nav -->
-        <div class="p-6 flex items-center justify-between border-t border-primary">
-          <a href={`/projects/${prevEntry.slug}`} class="font-mono text-xs uppercase tracking-widest text-muted hover:text-text transition-colors">
-            ← {prevEntry.title}
-          </a>
-          <a href={`/projects/${nextEntry.slug}`} class="font-mono text-xs uppercase tracking-widest text-muted hover:text-text transition-colors text-right">
-            {nextEntry.title} →
-          </a>
-        </div>
-      </div>
-    </div>
   </div>
-
-  {entry.type === 'jobRole' && entry.images.length > 0 && (
-    <dialog
-      id="slideshow-modal"
-      class="fixed inset-0 w-screen h-screen max-w-none max-h-none m-0 p-0 bg-black/90 backdrop:bg-transparent"
-      aria-label="Image slideshow"
-    >
-      <div class="flex flex-col h-full">
-        <div class="flex items-center justify-between p-6 border-b border-white/10">
-          <span id="slideshow-counter" class="font-mono text-xs uppercase tracking-widest text-white/50"></span>
-          <button
-            id="slideshow-close"
-            class="font-mono text-xs uppercase tracking-widest text-white/50 hover:text-white transition-colors"
-            aria-label="Close slideshow"
-          >Close ×</button>
-        </div>
-        <div class="flex-1 flex items-center justify-between px-6 gap-6 overflow-hidden">
-          <button
-            id="slideshow-prev"
-            class="shrink-0 cursor-pointer font-mono text-xs uppercase tracking-widest text-white/50 hover:text-white transition-colors"
-            aria-label="Previous image"
-          >← Prev</button>
-          <div class="flex-1 flex items-center justify-center h-full overflow-hidden">
-            <img id="slideshow-img" src="" alt="" class="max-w-full max-h-full object-contain" />
-          </div>
-          <button
-            id="slideshow-next"
-            class="shrink-0 cursor-pointer font-mono text-xs uppercase tracking-widest text-white/50 hover:text-white transition-colors"
-            aria-label="Next image"
-          >Next →</button>
-        </div>
-      </div>
-    </dialog>
-  )}
-
-  <CartDrawer client:load />
 
   <script>
     document.getElementById('open-cart-drawer-project')?.addEventListener('click', () => {
       document.dispatchEvent(new CustomEvent('open-cart-drawer'));
     });
-
-    const modal = document.getElementById('slideshow-modal') as HTMLDialogElement | null
-    if (modal) {
-      const gallery = document.getElementById('masonry-gallery')
-      const images: string[] = gallery ? JSON.parse(gallery.dataset.images ?? '[]') : []
-      let current = 0
-
-      const img = document.getElementById('slideshow-img') as HTMLImageElement
-      const counter = document.getElementById('slideshow-counter')
-
-      function showSlide(index: number): void {
-        current = (index + images.length) % images.length
-        img.src = images[current]
-        img.alt = `Image ${current + 1} of ${images.length}`
-        if (counter) {
-          counter.textContent = `${String(current + 1).padStart(2, '0')} / ${String(images.length).padStart(2, '0')}`
-        }
-      }
-
-      document.addEventListener('open-slideshow', (e: Event) => {
-        const { index } = (e as CustomEvent<{ index: number }>).detail
-        showSlide(index)
-        modal.showModal()
-      })
-
-      document.getElementById('slideshow-close')?.addEventListener('click', () => modal.close())
-      document.getElementById('slideshow-prev')?.addEventListener('click', () => showSlide(current - 1))
-      document.getElementById('slideshow-next')?.addEventListener('click', () => showSlide(current + 1))
-
-      modal.addEventListener('click', (e) => { if (e.target === modal) modal.close() })
-
-      document.addEventListener('keydown', (e) => {
-        if (!modal.open) return
-        if (e.key === 'ArrowLeft') showSlide(current - 1)
-        if (e.key === 'ArrowRight') showSlide(current + 1)
-      })
-    }
   </script>
-</body>
-</html>
+</Layout>
