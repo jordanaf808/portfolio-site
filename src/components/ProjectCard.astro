@@ -1,5 +1,6 @@
 ---
-import type { ProjectEntry } from '../types/index.ts';
+import type { ProjectEntry } from '@/types';
+import StatusBadge from '@/components/StatusBadge.astro';
 
 interface Props {
   project: ProjectEntry;
@@ -7,16 +8,11 @@ interface Props {
 }
 const { project, index } = Astro.props;
 const label = String(index + 1).padStart(3, '0');
-const statusDot: Record<string, string> = {
-  COMPLETE: 'bg-green-500',
-  ACTIVE: 'bg-yellow-400',
-  ARCHIVED: 'bg-gray-400',
-};
 ---
 <style>
   .group:hover .card-header {
     /* background-color: #ede5dd; */
-    background-color: #e7dfd6;
+    background-color: var(--color-surface-container-highest);
   }
 </style>
 
@@ -31,10 +27,7 @@ const statusDot: Record<string, string> = {
       </div>
       <div class="flex flex-col justify-between text-right shrink-0 ml-8 p-1">
         <p class="font-mono text-xs text-muted">{project.year}</p>
-        <span class="flex justify-end items-center gap-2.5">
-          <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted">{project.status}</p>
-          <div class={`w-2 h-2 rounded-full shrink-0 ${statusDot[project.status] ?? 'bg-gray-400'}`}></div>
-        </span>
+        <StatusBadge status={project.status} />
       </div>
     </div>
 

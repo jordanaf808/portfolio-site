@@ -1,7 +1,8 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { projects } from '../data/projects.ts';
-import { jobRoles } from '../data/jobRoles.ts';
+import Layout from '@/layouts/Layout.astro';
+import TechBadge from '@/components/TechBadge.astro';
+import { projects } from '@/data/projects.ts';
+import { jobRoles } from '@/data/jobRoles.ts';
 
 const startYear = (y: string): number => parseInt(y.match(/\d{4}/)?.[0] ?? '0', 10)
 const sorted = [...projects, ...jobRoles].sort((a, b) => startYear(b.year) - startYear(a.year))
@@ -50,11 +51,7 @@ const sorted = [...projects, ...jobRoles].sort((a, b) => startYear(b.year) - sta
               <td class="p-6 font-mono text-xs text-muted hidden md:table-cell">{entry.client ?? '—'}</td>
               <td class="p-6 hidden lg:table-cell">
                 <div class="flex flex-wrap gap-1">
-                  {entry.tech.slice(0, 3).map((t) => (
-                    <span class="font-mono text-xs uppercase tracking-[0.05em] text-muted border border-muted/40 px-1.5 py-0.5">
-                      {t}
-                    </span>
-                  ))}
+                  {entry.tech.slice(0, 3).map((t) => <TechBadge tag={t} variant="table" />)}
                 </div>
               </td>
               <td class="p-6">

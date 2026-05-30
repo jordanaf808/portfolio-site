@@ -78,6 +78,13 @@ const { title, description, ogImage, activePage } = Astro.props;
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closePanel()
     })
-  </script>
+
+    // Any element with [data-open-cart] opens the contact drawer (CartDrawer
+    // listens for this event). Delegated here so trigger buttons stay script-free.
+    document.addEventListener('click', (e) => {
+      const trigger = (e.target as HTMLElement | null)?.closest('[data-open-cart]')
+      if (trigger) document.dispatchEvent(new CustomEvent('open-cart-drawer'))
+    })
+</script>
 </body>
 </html>

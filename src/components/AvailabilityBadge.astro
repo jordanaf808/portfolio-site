@@ -1,0 +1,21 @@
+---
+interface Props {
+  // Wrapper-level classes vary per placement (margins, max-width); inner markup is fixed.
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+<div class:list={['flex items-center gap-1.5', className]}>
+  <span class="w-1.5 h-1.5 rounded-full bg-green-500 shrink-0" aria-hidden="true"></span>
+  <span data-availability-label class="font-mono text-xs uppercase tracking-[0.15em] text-muted">Available Q3 2026</span>
+</div>
+
+<script>
+  import { getCurrentQuarterLabel } from '@/utils/date';
+
+  // Updates every availability label on the page (this component can render more than once).
+  const label = `Available ${getCurrentQuarterLabel()}`;
+  document.querySelectorAll<HTMLElement>('[data-availability-label]').forEach((el) => {
+    el.textContent = label;
+  });
+</script>

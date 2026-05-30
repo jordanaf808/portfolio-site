@@ -1,4 +1,4 @@
-interface BaseEntry {
+export interface BaseEntry {
 	slug: string
 	title: string
 	subtitle: string

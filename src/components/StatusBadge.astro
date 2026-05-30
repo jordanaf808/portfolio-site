@@ -1,0 +1,17 @@
+---
+import type { BaseEntry } from '@/types';
+
+interface Props {
+  status: BaseEntry['status'];
+}
+const { status } = Astro.props;
+const dotColor: Record<BaseEntry['status'], string> = {
+  COMPLETE: 'bg-green-500',
+  ACTIVE: 'bg-yellow-400',
+  ARCHIVED: 'bg-gray-400',
+};
+---
+<span class="flex justify-end items-center gap-2.5">
+  <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted">{status}</p>
+  <div class:list={['w-2 h-2 rounded-full shrink-0', dotColor[status] ?? 'bg-gray-400']}></div>
+</span>

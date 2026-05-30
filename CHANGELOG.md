@@ -3,6 +3,18 @@
 ---
 
 **Date:** 2026-05-29
+**Branch:** `refactor/extract-shared-components`
+**Change:** Extract shared components, tokenize CartDrawer, centralize cart-drawer trigger
+
+**Files touched:** `src/components/TechBadge.astro` (new), `src/components/ContactButton.astro` (new), `src/components/StatusBadge.astro` (new), `src/components/AvailabilityBadge.astro` (new), `src/components/EntryNavLink.astro` (new), `src/components/LeftPanel.astro`, `src/components/TopNav.astro`, `src/components/ProjectCard.astro`, `src/components/CartDrawer.tsx`, `src/layouts/Layout.astro`, `src/pages/index.astro`, `src/pages/archive.astro`, `src/pages/projects/[slug].astro`, `src/styles/global.css`, `src/types/index.ts`
+
+**What changed:** Extracted five presentational components to remove repeated markup: `TechBadge` (with `panel`/`hero`/`table` variants matching the three call sites that had intentionally different weights), `ContactButton` (`sm`/`lg`), `StatusBadge`, `AvailabilityBadge` (now owns the `getCurrentQuarterLabel()` script that updates `[data-availability-label]`), and `EntryNavLink` (prev/next). Centralized the contact-drawer trigger: any element with a `data-open-cart` attribute now opens the drawer via a single delegated `click` listener in `Layout.astro`, replacing three duplicated per-component dispatch scripts (TopNav, LeftPanel, `[slug]`). Collapsed LeftPanel's four near-identical bento nav cells into a `.map()` over a `navCells` config (the marquee/label/title CSS stays in LeftPanel because the hover effects are scoped selectors on `.nav-cell`). Tokenized `CartDrawer.tsx` — swapped arbitrary hex utilities (`border-[#111111]`, `text-[#888888]`, `text-[#222222]`, `bg-[#111111]`, `bg-white`, `text-white`) for the `@theme` token utilities and replaced inline `fontFamily` styles with `font-mono`/`font-display`. Added `--color-surface-container-highest: #e7dfd6` and pointed ProjectCard's hover at it. Exported `BaseEntry` from `src/types/index.ts` and standardized touched files onto the `@/` import alias.
+
+**Why:** The same Tailwind class strings (tech badges, contact button, status dot, availability chip) were copy-pasted across pages and components, and three separate scripts dispatched the same `open-cart-drawer` event. Extracting typed primitives and a single delegated trigger removes the duplication and a hidden coupling where the home page relied on LeftPanel's global script to set its availability label. No visual or behavioural change — verified via `astro check` (0 errors), ESLint, a clean `pnpm build`, and HTML diffing of the prerendered output (badge/button classes render byte-identical).
+
+---
+
+**Date:** 2026-05-29
 **Branch:** `style/slug-single-column-layout`
 **Change:** Convert project detail to single-column Layout + rebuild gallery
 

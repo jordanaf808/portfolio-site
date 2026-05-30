@@ -1,8 +1,9 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import ProjectCard from '../components/ProjectCard.astro';
-import { getFeaturedProjects } from '../data/projects.ts';
-import { getFeaturedJobRoles } from '../data/jobRoles.ts';
+import Layout from '@/layouts/Layout.astro';
+import ProjectCard from '@/components/ProjectCard.astro';
+import AvailabilityBadge from '@/components/AvailabilityBadge.astro';
+import { getFeaturedProjects } from '@/data/projects.ts';
+import { getFeaturedJobRoles } from '@/data/jobRoles.ts';
 
 const projects = [...getFeaturedProjects(), ...getFeaturedJobRoles()];
 ---
@@ -30,10 +31,7 @@ const projects = [...getFeaturedProjects(), ...getFeaturedJobRoles()];
       <p class="font-mono text-xs uppercase tracking-[0.15em] text-muted mt-1 w-full min-[670px]:max-w-76">
         Shopify & JS/TS Development
       </p>
-      <div class="flex items-center gap-1.5 mt-2 w-full min-[670px]:max-w-76">
-        <span class="w-1.5 h-1.5 rounded-full bg-green-500 shrink-0" aria-hidden="true"></span>
-        <span data-availability-label class="font-mono text-xs uppercase tracking-[0.15em] text-muted">Available Q3 2026</span>
-      </div>
+      <AvailabilityBadge class="mt-2 w-full min-[670px]:max-w-76" />
     </div>
 
     <!-- Image: stacked row 2 below 540px; col 1, row-span-2 at 540px+ -->

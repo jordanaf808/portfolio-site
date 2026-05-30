@@ -1,0 +1,22 @@
+---
+interface Props {
+  label: string;
+  size?: 'sm' | 'lg';
+}
+const { label, size = 'lg' } = Astro.props;
+// The click is wired globally in Layout.astro via the `data-open-cart` attribute
+// (event delegation), so this stays a pure presentational component.
+const sizes: Record<NonNullable<Props['size']>, string> = {
+  sm: 'px-4 py-2 tracking-widest active:scale-95 cursor-pointer',
+  lg: 'w-full py-4 tracking-[0.15em] active:scale-[0.98]',
+};
+---
+<button
+  data-open-cart
+  class:list={[
+    'bg-primary text-surface font-mono text-xs uppercase hover:opacity-90 transition-all',
+    sizes[size],
+  ]}
+>
+  {label}
+</button>

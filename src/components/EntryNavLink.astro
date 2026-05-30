@@ -1,0 +1,18 @@
+---
+import type { ProjectEntry } from '@/types';
+
+interface Props {
+  entry: ProjectEntry;
+  direction: 'prev' | 'next';
+}
+const { entry, direction } = Astro.props;
+---
+<a
+  href={`/projects/${entry.slug}`}
+  class:list={[
+    'font-mono text-xs uppercase tracking-widest text-muted hover:text-text transition-colors',
+    direction === 'next' && 'text-right',
+  ]}
+>
+  {direction === 'prev' ? `← ${entry.title}` : `${entry.title} →`}
+</a>

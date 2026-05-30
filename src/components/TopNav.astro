@@ -1,4 +1,6 @@
 ---
+import ContactButton from '@/components/ContactButton.astro'
+
 interface Props {
   showHamburger?: boolean
   hideMenuItems?: boolean
@@ -31,17 +33,6 @@ const archiveClass = `${BASE} ${activePage === 'archive' ? ACTIVE : INACTIVE}`
     </div>
   </div>
   <div class="flex items-center gap-3">
-    <button
-      id="open-cart-drawer"
-      class="font-mono text-xs uppercase tracking-widest bg-primary text-surface px-4 py-2 hover:opacity-90 active:scale-95 transition-all cursor-pointer"
-    >
-      Contact Me
-    </button>
+    <ContactButton label="Contact Me" size="sm" />
   </div>
 </nav>
-
-<script>
-  document.getElementById('open-cart-drawer')?.addEventListener('click', () => {
-    document.dispatchEvent(new CustomEvent('open-cart-drawer'));
-  });
-</script>

@@ -1,10 +1,13 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import Accordion from '../../components/Accordion.astro';
-import ImageGallery from '../../components/ImageGallery.astro';
-import { projects } from '../../data/projects.ts';
-import { jobRoles } from '../../data/jobRoles.ts';
-import type { ProjectEntry } from '../../types/index.ts';
+import Layout from '@/layouts/Layout.astro';
+import Accordion from '@/components/Accordion.astro';
+import ImageGallery from '@/components/ImageGallery.astro';
+import TechBadge from '@/components/TechBadge.astro';
+import ContactButton from '@/components/ContactButton.astro';
+import EntryNavLink from '@/components/EntryNavLink.astro';
+import { projects } from '@/data/projects.ts';
+import { jobRoles } from '@/data/jobRoles.ts';
+import type { ProjectEntry } from '@/types';
 
 export function getStaticPaths() {
   const all = [...projects, ...jobRoles];
@@ -40,11 +43,7 @@ const description = Array.isArray(entry.description) ? entry.description[0] : en
       <p class="text-sm text-muted leading-relaxed">{description}</p>
     )}
     <div class="flex flex-wrap gap-2 max-w-125">
-      {entry.tech.map((t) => (
-        <span class="font-mono text-xs uppercase tracking-[0.1em] border border-primary px-3 py-1 text-text">
-          {t}
-        </span>
-      ))}
+      {entry.tech.map((t) => <TechBadge tag={t} variant="hero" />)}
     </div>
   </div>
 
@@ -78,12 +77,7 @@ const description = Array.isArray(entry.description) ? entry.description[0] : en
   <div class="border-t border-primary p-12">
     {entry.type === 'project' ? (
       <div class="grid grid-cols-2 gap-8 items-start">
-        <button
-          id="open-cart-drawer-project"
-          class="w-full bg-primary text-surface font-mono text-xs uppercase tracking-[0.15em] py-4 hover:opacity-90 active:scale-[0.98] transition-all"
-        >
-          Get In Touch
-        </button>
+        <ContactButton label="Get In Touch" />
         <div class="border border-primary">
           <div class="p-4 border-b border-primary">
             <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted">Technical Architecture</p>
@@ -104,28 +98,13 @@ const description = Array.isArray(entry.description) ? entry.description[0] : en
         </div>
       </div>
     ) : (
-      <button
-        id="open-cart-drawer-project"
-        class="w-full bg-primary text-surface font-mono text-xs uppercase tracking-[0.15em] py-4 hover:opacity-90 active:scale-[0.98] transition-all"
-      >
-        Contact Me →
-      </button>
+      <ContactButton label="Contact Me →" />
     )}
   </div>
 
   <!-- Footer nav -->
   <div class="p-6 flex items-center justify-between border-t border-primary">
-    <a href={`/projects/${prevEntry.slug}`} class="font-mono text-xs uppercase tracking-widest text-muted hover:text-text transition-colors">
-      ← {prevEntry.title}
-    </a>
-    <a href={`/projects/${nextEntry.slug}`} class="font-mono text-xs uppercase tracking-widest text-muted hover:text-text transition-colors text-right">
-      {nextEntry.title} →
-    </a>
+    <EntryNavLink entry={prevEntry} direction="prev" />
+    <EntryNavLink entry={nextEntry} direction="next" />
   </div>
-
-  <script>
-    document.getElementById('open-cart-drawer-project')?.addEventListener('click', () => {
-      document.dispatchEvent(new CustomEvent('open-cart-drawer'));
-    });
-  </script>
 </Layout>
