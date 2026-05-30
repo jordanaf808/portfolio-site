@@ -1,15 +1,28 @@
 ---
+import type { TechBadge } from '../data/services.ts'
+
 interface Props {
-  tag: string;
-  // Three call sites render the badge with intentionally different weights:
-  // panel = LeftPanel footer, hero = project detail hero, table = archive row.
-  variant?: 'panel' | 'hero' | 'table';
+  badge: TechBadge
 }
-const { tag, variant = 'panel' } = Astro.props;
-const variants: Record<NonNullable<Props['variant']>, string> = {
-  panel: 'tracking-[0.1em] border-primary px-2 py-1 text-muted',
-  hero: 'tracking-[0.1em] border-primary px-3 py-1 text-text',
-  table: 'tracking-[0.05em] border-muted/40 px-1.5 py-0.5 text-muted',
-};
+const { badge } = Astro.props
 ---
-<span class:list={['font-mono text-xs uppercase border', variants[variant]]}>{tag}</span>
+
+<div class="flex flex-col items-center gap-3 py-6 px-4 border-b border-primary bg-surface transition-colors duration-300 hover:bg-surface-container-high">
+  <img
+    src={badge.src}
+    alt={badge.name}
+    class="w-[72px] h-[72px]"
+    style="image-rendering: pixelated;"
+    loading="lazy"
+    decoding="async"
+  />
+  <span class="font-mono text-[11px] uppercase tracking-[0.1em] text-muted">
+    {badge.name}
+  </span>
+</div>
+
+<style>
+  div:not(:nth-child(3n)) {
+    border-right: 1px solid var(--color-primary);
+  }
+</style>

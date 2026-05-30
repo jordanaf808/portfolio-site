@@ -76,7 +76,7 @@ export default function CartDrawer(): React.ReactElement | null {
 							Request Engagement
 						</p>
 						<p className='font-display text-4xl leading-8 text-text mt-4'>
-							Contact
+							Get In Touch
 						</p>
 					</div>
 					<button
@@ -110,9 +110,7 @@ export default function CartDrawer(): React.ReactElement | null {
 									Specialized Shopify & JS/TS Services
 								</p>
 							</div>
-							<span className='font-mono text-xs text-muted'>
-								1×
-							</span>
+							<span className='font-mono text-xs text-muted'>1×</span>
 						</div>
 					</div>
 				</div>
@@ -182,9 +180,7 @@ export default function CartDrawer(): React.ReactElement | null {
 						</label>
 
 						{errorMsg && (
-							<p className='font-mono text-xs text-red-600'>
-								{errorMsg}
-							</p>
+							<p className='font-mono text-xs text-red-600'>{errorMsg}</p>
 						)}
 
 						<div className='mt-auto flex flex-col gap-3'>

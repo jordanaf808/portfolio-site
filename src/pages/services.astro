@@ -1,0 +1,50 @@
+---
+import Layout from '../layouts/Layout.astro'
+import ServiceCell from '../components/ServiceCell.astro'
+import TechBadge from '../components/TechBadge.astro'
+import ServicesCTA from '../components/ServicesCTA.astro'
+import { services, techBadges } from '../data/services.ts'
+---
+
+<Layout
+  title="Services — Jordan A.F."
+  description="Shopify Plus development, conversion optimization, performance engineering, and JS/TS services. Available for freelance engagements."
+  activePage="services"
+>
+  <!-- Section header -->
+  <div class="flex items-end justify-between gap-6 p-6 border-b border-primary min-[1000px]:min-h-37">
+    <h2 class="font-display italic text-5xl leading-none text-text shrink-0 whitespace-nowrap translate-y-0.5">
+      What I Do
+    </h2>
+    <p class="font-mono text-xs uppercase tracking-[0.15em] text-muted text-right leading-relaxed">
+      Six ways to ship<br />commerce that converts
+    </p>
+  </div>
+
+  <!-- Bento service grid -->
+  <div class="grid grid-cols-1 min-[540px]:grid-cols-2">
+    {services.map((service, i) => (
+      <ServiceCell service={service} index={i} />
+    ))}
+  </div>
+
+  <!-- Tech Stack header -->
+  <div class="flex items-baseline justify-between px-6 py-5 border-b border-primary bg-background">
+    <span class="font-display italic text-2xl text-text">Tech Stack</span>
+    <span class="font-mono text-xs uppercase tracking-[0.15em] text-muted">The Toolkit</span>
+  </div>
+
+  <!-- Tech Stack badge grid -->
+  <div class="grid grid-cols-3">
+    {techBadges.map((badge) => (
+      <TechBadge badge={badge} />
+    ))}
+  </div>
+
+  <!-- Closing CTA -->
+  <ServicesCTA />
+
+  <footer class="p-6">
+    <p class="font-mono text-xs text-muted">© {new Date().getFullYear()} JordanAF-Dev</p>
+  </footer>
+</Layout>

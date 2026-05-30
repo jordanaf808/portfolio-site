@@ -1,0 +1,38 @@
+---
+// ServicesCTA — Shopify-style line-item CTA that triggers the cart drawer
+---
+
+<div class="p-6 border-b border-primary bg-background">
+  <!-- Line item card -->
+  <div class="border border-primary bg-surface" style="box-shadow: 8px 8px 0px 0px rgba(17,17,17,0.05);">
+    <div class="flex justify-between p-4 border-b border-primary">
+      <span class="font-mono text-xs uppercase tracking-[0.1em] text-muted">Cart</span>
+      <span class="font-mono text-xs uppercase tracking-[0.1em] text-muted">Qty 1×</span>
+    </div>
+    <div class="flex items-center justify-between gap-6 p-4">
+      <div>
+        <p class="font-display text-[17px] leading-snug text-text">Freelance Developer Engagement</p>
+        <p class="font-mono text-xs text-muted mt-1">Specialized Shopify & JS/TS Services</p>
+      </div>
+      <span class="font-mono text-xs text-muted whitespace-nowrap">1×</span>
+    </div>
+  </div>
+
+  <!-- CTA button -->
+  <button
+    id="services-cta-btn"
+    class="w-full mt-4 bg-primary text-surface font-mono text-xs uppercase tracking-[0.15em] py-4 hover:opacity-90 active:scale-[0.98] transition-all cursor-pointer"
+  >
+    Request Engagement →
+  </button>
+
+  <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted text-center mt-3">
+    Discounts applied at checkout
+  </p>
+</div>
+
+<script>
+  document.getElementById('services-cta-btn')?.addEventListener('click', () => {
+    document.dispatchEvent(new CustomEvent('open-cart-drawer'))
+  })
+</script>

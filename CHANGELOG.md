@@ -3,6 +3,20 @@
 ---
 
 **Date:** 2026-05-30
+**Branch:** `feat/services-page`
+**Change:** Integrate design-agent services page; fix SVG badge rendering
+
+**Files touched:** `src/pages/services.astro` (new), `src/components/ServiceCell.astro` (new), `src/components/ServicesCTA.astro` (new), `src/components/TechBadge.astro` (new), `src/components/TechLabel.astro` (renamed from TechBadge.astro), `src/data/services.ts` (new), `src/assets/badges/*.svg` (9 files, new), `src/layouts/Layout.astro`, `src/components/LeftPanel.astro`, `src/components/TopNav.astro`, `src/pages/archive.astro`, `src/pages/projects/[slug].astro`
+
+**What changed:** Added `/services` page using the two-column Layout. Renamed the existing `TechBadge.astro` (text label component) to `TechLabel.astro` to avoid collision with the incoming image badge component. `ServiceCell` changed from `<button data-open-cart>` to a non-interactive `<div>` — the tiles display services but don't trigger the cart drawer. `ServicesCTA` at the bottom retains the "Request Engagement →" cart trigger. SVG badge files copied to `src/assets/badges/` with `?url` imports in `services.ts`. Added `'services'` to the `activePage` union in Layout, LeftPanel, and TopNav. Fixed all 9 badge SVG files by adding the missing `xmlns="http://www.w3.org/2000/svg"` root attribute.
+
+**Why:** SVG files lacked `xmlns` because they were authored for inline HTML use (where the HTML parser injects the SVG namespace implicitly). When loaded via `<img>` tag or as a data URI, the browser parses SVG as a standalone XML document — without `xmlns`, the parser doesn't recognise the elements as SVG and the image fails to render entirely. The `ServiceCell` script block was removed to prevent double-dispatch of `open-cart-drawer` alongside Layout's existing `data-open-cart` delegation.
+
+**Verified:** `/services` renders with 6 service cells, 9 tech badge images visible, "Request Engagement →" opens cart drawer, no regressions on `/`, `/archive`, or `/projects/*`.
+
+---
+
+**Date:** 2026-05-30
 **Branch:** `fix/dev-server-workerd-sharp`
 **Change:** Fix `astro dev` workerd crash from `imageService: 'compile'` + patch 3 `pnpm audit` advisories
 

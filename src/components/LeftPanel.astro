@@ -1,11 +1,11 @@
 ---
 import { Picture } from 'astro:assets';
 import AvailabilityBadge from '@/components/AvailabilityBadge.astro';
-import TechBadge from '@/components/TechBadge.astro';
+import TechBadge from '@/components/TechLabel.astro';
 import profilePic from '@/assets/profile-pic.jpg';
 
 interface Props {
-  activePage?: 'lookbook' | 'archive' | 'project';
+  activePage?: 'lookbook' | 'archive' | 'project' | 'services';
 }
 const { activePage = 'lookbook' } = Astro.props;
 

@@ -1,0 +1,102 @@
+---
+import type { Service } from '../data/services.ts'
+
+interface Props {
+  service: Service
+  index: number
+}
+const { service, index } = Astro.props
+const label = String(index + 1).padStart(3, '0')
+---
+
+<div class="service-cell relative flex flex-col justify-between gap-8 p-6 min-h-[200px] overflow-hidden border-b border-primary bg-surface transition-[background-color] duration-[400ms] ease-in-out">
+  <!-- Marquee (hidden by default, visible on hover) -->
+  <div class="marquee-wrap" aria-hidden="true">
+    <div class="marquee-track">
+      <span class="marquee-text">{service.marquee}</span>
+      <span class="marquee-text">{service.marquee}</span>
+      <span class="marquee-text">{service.marquee}</span>
+      <span class="marquee-text">{service.marquee}</span>
+    </div>
+  </div>
+
+  <!-- Top row: kicker + index -->
+  <div class="flex items-start justify-between relative z-10">
+    <span class="service-kick font-mono text-xs uppercase tracking-[0.1em] text-muted transition-colors duration-[400ms]">
+      {service.kicker}
+    </span>
+    <span class="service-num font-mono text-xs tracking-[0.1em] text-muted transition-colors duration-[400ms]">
+      {label}
+    </span>
+  </div>
+
+  <!-- Bottom: title + one-liner -->
+  <div class="relative z-10">
+    <p class="service-title font-display text-[28px] leading-[1.1] text-text mb-2 transition-colors duration-[400ms]">
+      {service.title}
+    </p>
+    <p class="service-line text-sm leading-relaxed text-muted max-w-[36ch] transition-colors duration-[400ms]">
+      {service.line}
+    </p>
+  </div>
+</div>
+
+<style>
+  @keyframes service-marquee-scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .service-cell:nth-child(odd) {
+    border-right: 1px solid var(--color-primary);
+  }
+
+  .service-cell:hover {
+    background-color: #c8b6a66e;
+  }
+
+  .marquee-wrap {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 400ms ease;
+  }
+
+  .service-cell:hover .marquee-wrap {
+    opacity: 1;
+  }
+
+  .marquee-track {
+    display: flex;
+    white-space: nowrap;
+    animation: service-marquee-scroll 9s linear infinite;
+  }
+
+  .marquee-text {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 96px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.32);
+    padding-right: 48px;
+    user-select: none;
+  }
+
+  .service-cell:hover .service-kick,
+  .service-cell:hover .service-num {
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .service-cell:hover .service-title {
+    color: #ffffff;
+  }
+
+  .service-cell:hover .service-line {
+    color: rgba(255, 255, 255, 0.65);
+  }
+</style>
