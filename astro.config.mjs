@@ -9,6 +9,48 @@ import tailwindcss from '@tailwindcss/vite';
 // production builds still get full optimization.
 const isDev = process.argv.includes('dev');
 
+// Dev-only React desync fix. The v13 Cloudflare adapter runs the dev SSR inside
+// workerd via @cloudflare/vite-plugin, which optimizes server deps into a
+// separate `deps_ssr` pass. When Vite discovers a dep lazily (here:
+// `astro/assets/services/noop`, the passthrough image service the services page
+// pulls in on first render) it re-optimizes and reloads the worker mid-render,
+// leaving react-dom/server holding a stale React whose hook dispatcher is null —
+// the "Invalid hook call / Cannot read properties of null (useState)" crash.
+// Pre-bundling everything in ONE pass at startup removes the lazy discovery.
+// Full writeup: docs/react-workerd-invalid-hook-call.md
+// Upstream: https://github.com/withastro/astro/issues/16529
+const SERVER_OPTIMIZE_DEPS = [
+  'react',
+  'react-dom',
+  'react-dom/server.edge',
+  'react-dom/client',
+  'react/jsx-runtime',
+  // The Astro internal that gets discovered lazily on first image render in dev.
+  'astro/assets/services/noop',
+];
+
+// SSR is its own Vite environment under @cloudflare/vite-plugin, so
+// `vite.ssr.optimizeDeps` never reaches it — `configEnvironment` is the only
+// hook that does. Apply the include list to every non-client environment.
+function optimizeServerDeps() {
+  return {
+    name: 'optimize-server-deps',
+    configEnvironment(name) {
+      if (name !== 'client') {
+        return { optimizeDeps: { include: SERVER_OPTIMIZE_DEPS } };
+      }
+    },
+  };
+}
+
+// In dev the worker needs the Web-Streams ("edge") build of react-dom/server;
+// forcing it keeps a single react-dom/server build across the Node and workerd
+// graphs so React's dispatcher can't desync. Production prerenders in Node and
+// uses the default build, so this alias is intentionally dev-only.
+const devReactDomAlias = isDev
+  ? { 'react-dom/server': 'react-dom/server.edge' }
+  : {};
+
 export default defineConfig({
   // TODO: replace with the production URL before deploying to Cloudflare Pages.
   // SEOHead.astro uses this to build absolute canonical and og:image URLs.
@@ -16,6 +58,14 @@ export default defineConfig({
   adapter: cloudflare({ imageService: isDev ? 'passthrough' : 'compile' }),
   integrations: [react()],
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), optimizeServerDeps()],
+    resolve: {
+      dedupe: ['react', 'react-dom'],
+      alias: devReactDomAlias,
+    },
+    // Same React entry points for the client graph so the browser doesn't churn.
+    optimizeDeps: {
+      include: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime'],
+    },
   },
 });

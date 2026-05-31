@@ -2,6 +2,22 @@
 
 ---
 
+**Date:** 2026-05-31
+**Branch:** `fix/react-workerd-invalid-hook-call`
+**Change:** Fix dev-only "Invalid hook call" crash in React islands under the Cloudflare adapter
+
+**Files touched:** `astro.config.mjs`, `docs/react-workerd-invalid-hook-call.md` (new)
+
+**What changed:** Added a `configEnvironment` Vite plugin (`optimizeServerDeps`) that pre-bundles React's entry points (`react`, `react-dom`, `react-dom/server.edge`, `react-dom/client`, `react/jsx-runtime`) plus the lazily-discovered Astro internal `astro/assets/services/noop` into the workerd SSR optimizer in one startup pass. Added a **dev-only** `resolve.alias` forcing `react-dom/server` → `react-dom/server.edge`, kept `resolve.dedupe: ['react','react-dom']`, and added the React entry points to the client-side `vite.optimizeDeps.include`. Full writeup in `docs/react-workerd-invalid-hook-call.md`.
+
+**Why:** `@astrojs/cloudflare` v13 runs the dev SSR inside workerd (its own Vite environment). The services page renders badge images, which lazily pulled in `astro/assets/services/noop` (the dev passthrough image service); Vite re-optimized and reloaded the worker mid-render, leaving `react-dom/server` holding a React instance with a null hook dispatcher → "Invalid hook call / Cannot read properties of null (useState)". Two separate `react-dom/server` builds (workerd resolves `server.edge.js`, Node resolves `server.node.js`) compounded it. `resolve.dedupe` alone did not fix it (only one copy on disk; the split was by build variant and optimizer pass) and `vite.ssr.optimizeDeps` is silently ignored under `@cloudflare/vite-plugin` — only `configEnvironment` reaches that optimizer. The alias is gated to dev because production prerenders in Node, where the default `react-dom/server` build is correct. Root cause matches open upstream issue withastro/astro#16529.
+
+**Verified:** `pnpm build` clean (alias inert in build). Cleared `node_modules/.vite`, ran `pnpm dev` (no `--force`); `/services` and `/` both return 200 and render; dev log shows no `new dependencies optimized` reload, no invalid-hook-call, no `useState` error.
+
+**Note:** When adding any new React island dependency, add it to **both** `SERVER_OPTIMIZE_DEPS` and `vite.optimizeDeps.include` or the lazy-discovery cascade can return.
+
+---
+
 **Date:** 2026-05-30
 **Branch:** `feat/services-page`
 **Change:** Integrate design-agent services page; fix SVG badge rendering
