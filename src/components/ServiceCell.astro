@@ -51,6 +51,12 @@ const label = String(index + 1).padStart(3, '0')
     border-right: 1px solid var(--color-primary);
   }
 
+  @media (max-width: 539px) {
+    .service-cell:nth-child(odd) {
+      border-right: none;
+    }
+  }
+
   .service-cell:hover {
     /* background-color: #c8b6a66e; */
     /* background-color: #c5ae9aa8; */

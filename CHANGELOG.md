@@ -4,6 +4,22 @@
 
 **Date:** 2026-06-01
 **Branch:** `main`
+**Change:** Fix mobile TopNav to position:fixed; trim nav links; fix ServiceCell border in single-column layout
+
+**Files touched:** `src/components/TopNav.astro`, `src/layouts/Layout.astro`, `src/components/ServiceCell.astro`
+
+**What changed:**
+
+- `TopNav.astro`: switched from `sticky` to `fixed top-0 left-0 right-0 z-20` so the bar stays pinned to the viewport regardless of DOM nesting within the right-panel flex column. Removed `Home` and `Archive` nav links and all associated props (`hideMenuItems`, `activePage`) and class variables (`BASE`, `ACTIVE`, `INACTIVE`, `homeClass`, `archiveClass`).
+- `Layout.astro`: added `max-[999px]:pt-11.25` (45px) to `<main>` to compensate for the fixed nav's height on mobile. Simplified the `<TopNav>` call site to `<TopNav showHamburger />`.
+- `ServiceCell.astro`: added `@media (max-width: 539px)` rule to suppress `border-right` on `:nth-child(odd)` cells in the single-column layout (below the 540px two-column breakpoint), where the right border had no column to divide and appeared as a stray edge line.
+
+**Why:** `position: sticky` fails when an element is nested inside a flex column that is itself a child of the document scroll container — the containing block calculation breaks. `position: fixed` escapes the containing block entirely and is the correct tool for a persistent mobile nav bar.
+
+---
+
+**Date:** 2026-06-01
+**Branch:** `main`
 **Change:** Add new pixel-art tech badges; fix badge import paths in services.ts
 
 **Files touched:** `src/data/services.ts`, `src/assets/badges/html-5-144-pixel.svg`, `src/assets/badges/js-144-pixel.svg`, `src/assets/badges/nodejs-144-pixel.svg`, `src/assets/badges/postgresql-48-pixel.svg`, `src/assets/badges/redux-144-pixel.svg`, `src/assets/badges/tailwind-css-144-pixel.svg`, `src/assets/badges/tanstack-100-pixel.svg`

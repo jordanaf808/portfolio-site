@@ -3,19 +3,10 @@ import ContactButton from '@/components/ContactButton.astro'
 
 interface Props {
   showHamburger?: boolean
-  hideMenuItems?: boolean
-  activePage?: 'lookbook' | 'archive' | 'project' | 'services'
 }
-const { showHamburger = false, hideMenuItems = false, activePage } = Astro.props
-
-const BASE = 'font-mono text-xs uppercase tracking-widest cursor-pointer underline-offset-4 hover:underline'
-const ACTIVE = 'text-text border-b border-primary pb-px'
-const INACTIVE = 'text-muted hover:text-text transition-colors'
-
-const homeClass = `${BASE} ${activePage === 'lookbook' ? ACTIVE : INACTIVE}`
-const archiveClass = `${BASE} ${activePage === 'archive' ? ACTIVE : INACTIVE}`
+const { showHamburger = false } = Astro.props
 ---
-<nav class="flex items-center justify-between border-b border-primary h-12 px-6 bg-surface sticky top-0 z-10">
+<nav class="flex items-center justify-between border-b border-primary h-12 px-6 bg-surface fixed top-0 left-0 right-0 z-20">
   <div class="flex items-center gap-6">
     {showHamburger && (
       <button
@@ -27,10 +18,6 @@ const archiveClass = `${BASE} ${activePage === 'archive' ? ACTIVE : INACTIVE}`
         Menu
       </button>
     )}
-    <div class:list={['menu-items flex items-center gap-4', hideMenuItems && 'hidden']}>
-      <a href="/" class={homeClass}>Home</a>
-      <a href="/archive" class={archiveClass}>Archive</a>
-    </div>
   </div>
   <div class="flex items-center gap-3">
     <ContactButton label="Contact Me" size="sm" />
