@@ -11,9 +11,29 @@ const { project, index } = Astro.props;
 const label = String(index + 1).padStart(3, '0');
 ---
 <style>
+  .card-header {
+    --card-label-color: #888888;
+  }
+
   .group:hover .card-header {
     /* background-color: #ede5dd; */
     background-color: #c4b8ad;
+    --card-label-color: rgba(255, 255, 255, 0.65);
+  }
+
+  .card-title,
+  .card-label,
+  .card-meta {
+    transition: color 400ms ease;
+  }
+
+  .group:hover .card-title {
+    color: #ffffff;
+  }
+
+  .group:hover .card-label,
+  .group:hover .card-meta {
+    color: rgba(255, 255, 255, 0.65);
   }
 </style>
 
@@ -23,11 +43,11 @@ const label = String(index + 1).padStart(3, '0');
     <!-- Card header -->
     <div class="card-header flex items-stretch justify-between p-6 border-b border-primary bg-surface transition-colors duration-300">
       <div>
-        <h2 class="font-display text-3xl text-text mb-1">{project.title}</h2>
-        <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted">{project.subtitle}</p>
+        <h2 class="card-title font-display text-3xl text-text mb-1">{project.title}</h2>
+        <p class="card-label font-mono text-xs uppercase tracking-widest text-muted">{project.subtitle}</p>
       </div>
       <div class="flex flex-col justify-between text-right shrink-0 ml-8 p-1">
-        <p class="font-mono text-xs text-muted">{project.year}</p>
+        <p class="card-meta font-mono text-xs text-muted">{project.year}</p>
         <StatusBadge status={project.status} />
       </div>
     </div>
@@ -46,7 +66,7 @@ const label = String(index + 1).padStart(3, '0');
         fetchpriority={index === 0 ? 'high' : 'auto'}
       />
       <!-- Counter -->
-      <div class="absolute bottom-4 right-4 bg-primary text-surface font-mono text-xs uppercase tracking-[0.1em] px-3 py-1">
+      <div class="absolute bottom-4 right-4 bg-primary text-surface font-mono text-xs uppercase tracking-widest px-3 py-1">
         {label}
       </div>
       <!-- Tech tags -->

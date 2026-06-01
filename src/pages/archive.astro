@@ -7,6 +7,26 @@ import { jobRoles } from '@/data/jobRoles.ts';
 const startYear = (y: string): number => parseInt(y.match(/\d{4}/)?.[0] ?? '0', 10)
 const sorted = [...projects, ...jobRoles].sort((a, b) => startYear(b.year) - startYear(a.year))
 ---
+<style>
+  .archive-row .row-title,
+  .archive-row .row-meta,
+  .archive-row .row-year,
+  .archive-row .row-client,
+  .archive-row .row-link {
+    transition: color 400ms ease;
+  }
+
+  .archive-row:hover .row-title {
+    color: #ffffff;
+  }
+
+  .archive-row:hover .row-meta,
+  .archive-row:hover .row-year,
+  .archive-row:hover .row-client,
+  .archive-row:hover .row-link {
+    color: rgba(255, 255, 255, 0.65);
+  }
+</style>
 <Layout
   title="Archive — Jordan A.F. | Shopify & JS/TS Developer"
   description="Full chronological index of Jordan A.F.'s eCommerce and web development work — Shopify Plus storefronts, Storefront API integrations, and JS/TS engineering across boutique to enterprise brands."
@@ -28,27 +48,27 @@ const sorted = [...projects, ...jobRoles].sort((a, b) => startYear(b.year) - sta
       <table class="w-full border-collapse">
         <thead>
           <tr class="border-b border-primary">
-            <th class="text-left p-6 font-mono text-xs uppercase tracking-[0.1em] text-muted w-20">Year</th>
-            <th class="text-left p-6 font-mono text-xs uppercase tracking-[0.1em] text-muted">Project</th>
-            <th class="text-left p-6 font-mono text-xs uppercase tracking-[0.1em] text-muted hidden md:table-cell">Client</th>
-            <th class="text-left p-6 font-mono text-xs uppercase tracking-[0.1em] text-muted hidden lg:table-cell">Tech</th>
-            <th class="text-left p-6 font-mono text-xs uppercase tracking-[0.1em] text-muted w-24">Link</th>
+            <th class="text-left p-6 font-mono text-xs uppercase tracking-widest text-muted w-20">Year</th>
+            <th class="text-left p-6 font-mono text-xs uppercase tracking-widest text-muted">Project</th>
+            <th class="text-left p-6 font-mono text-xs uppercase tracking-widest text-muted hidden md:table-cell">Client</th>
+            <th class="text-left p-6 font-mono text-xs uppercase tracking-widest text-muted hidden lg:table-cell">Tech</th>
+            <th class="text-left p-6 font-mono text-xs uppercase tracking-widest text-muted w-24">Link</th>
           </tr>
         </thead>
         <tbody>
           {sorted.map((entry) => (
             <tr
-              class="border-b border-primary hover:bg-(--color-accent-taupe-dark) transition-colors duration-300 cursor-pointer"
+              class="archive-row border-b border-primary hover:bg-accent-taupe-dark transition-colors duration-300 cursor-pointer"
               onclick={`window.location.href='/projects/${entry.slug}'`}
             >
-              <td class="p-6 font-mono text-xs text-muted">{entry.year}</td>
+              <td class="row-year p-6 font-mono text-xs text-muted">{entry.year}</td>
               <td class="p-6">
-                <p class="font-display text-lg text-text">{entry.title}</p>
-                <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted mt-0.5">
+                <p class="row-title font-display text-lg text-text">{entry.title}</p>
+                <p class="row-meta font-mono text-xs uppercase tracking-widest text-muted mt-0.5">
                   {entry.category} | {entry.type === 'jobRole' ? 'ROLE' : 'PROJECT'}
                 </p>
               </td>
-              <td class="p-6 font-mono text-xs text-muted hidden md:table-cell">{entry.client ?? '—'}</td>
+              <td class="row-client p-6 font-mono text-xs text-muted hidden md:table-cell">{entry.client ?? '—'}</td>
               <td class="p-6 hidden lg:table-cell">
                 <div class="flex flex-wrap gap-1">
                   {entry.tech.slice(0, 3).map((t) => <TechBadge tag={t} variant="table" />)}
@@ -57,7 +77,7 @@ const sorted = [...projects, ...jobRoles].sort((a, b) => startYear(b.year) - sta
               <td class="p-6">
                 <a
                   href={`/projects/${entry.slug}`}
-                  class="font-mono text-xs uppercase tracking-[0.1em] text-text hover:text-muted transition-colors"
+                  class="row-link font-mono text-xs uppercase tracking-widest text-text"
                 >
                   View →
                 </a>

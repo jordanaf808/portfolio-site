@@ -11,7 +11,14 @@ const dotColor: Record<BaseEntry['status'], string> = {
   ARCHIVED: 'bg-gray-400',
 };
 ---
+<style>
+  .status-label {
+    color: var(--card-label-color, #888888);
+    transition: color 400ms ease;
+  }
+</style>
+
 <span class="flex justify-end items-center gap-2.5">
-  <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted">{status}</p>
+  <p class="status-label font-mono text-xs uppercase tracking-widest">{status}</p>
   <div class:list={['w-2 h-2 rounded-full shrink-0', dotColor[status] ?? 'bg-gray-400']}></div>
 </span>
