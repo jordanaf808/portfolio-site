@@ -4,6 +4,25 @@
 
 **Date:** 2026-05-31
 **Branch:** `fix/react-workerd-invalid-hook-call`
+**Change:** Add HiDPI / Retina support to all image components
+
+**Files touched:** `src/components/ImageGallery.astro`, `src/components/LeftPanel.astro`, `src/components/ProjectCard.astro`
+
+**What changed:**
+
+- `LeftPanel.astro`: profile photo switched from `widths={[250, 500]}` to `width={250} densities={[1, 2]}` — portrait photo in a portrait container, so `densities` emits proper `1x`/`2x` srcset descriptors rather than `400w`/`800w` width descriptors.
+- `ImageGallery.astro` thumbnails: `widths={[225, 450]}` → `widths={[450, 1000]}` — the 225×283px portrait container with landscape images scales via `object-cover` to fill the height, making the effective content width ~503px for a 16:9 source. Bumping the base width to 450px covers that at 1× and provides adequate buffer at 2×.
+- `ImageGallery.astro` slideshow: `getImage()` now generates both a 1600px (1×) and 3200px (2×) WebP per image at `quality: 'max'`. The client JS sets both `img.src` and `img.srcset` so the browser picks by DPR. Thumbnail `<Picture>` left on Astro's default quality.
+- `ProjectCard.astro`: widths extended to `[400, 800, 1200, 1600]` — the 1600px entry covers 2× on single-card layout for viewports ≥ ~850px logical width.
+
+**Why:** Previous image setup never accounted for device pixel ratio. Fixed-size images used width descriptors instead of density descriptors; the slideshow served a single 1600px source regardless of DPR; ProjectCard's widths topped out at 1200px, leaving the single-card layout soft at 2× on common laptop screens.
+
+**Verified:** `pnpm type-check` → 0 errors. `pnpm build` → clean, 127 image variants (was ~100; additional entries are the 3200px 2× slideshow sources).
+
+---
+
+**Date:** 2026-05-31
+**Branch:** `fix/react-workerd-invalid-hook-call`
 **Change:** Fix dev-only "Invalid hook call" crash in React islands under the Cloudflare adapter
 
 **Files touched:** `astro.config.mjs`, `docs/react-workerd-invalid-hook-call.md` (new)

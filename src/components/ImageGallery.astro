@@ -8,12 +8,16 @@ interface Props {
 const { images, title } = Astro.props;
 const total = images.length;
 
-// The fullscreen slideshow swaps `img.src` from client JS, so it needs plain URL
-// strings. Pre-generate an optimized WebP for each image and pass the URLs down.
-const slideshowSources = await Promise.all(
-  images.map((image) => getImage({ src: image, format: 'webp', width: 1600 })),
-);
-const slideshowUrls = slideshowSources.map((source) => source.src);
+// The fullscreen slideshow swaps img.src/srcset from client JS. Pre-generate both a
+// 1× (1600px) and 2× (3200px) WebP per image so the browser picks by DPR.
+const [sources1x, sources2x] = await Promise.all([
+  Promise.all(images.map((image) => getImage({ src: image, format: 'webp', width: 1600, quality: 'max' }))),
+  Promise.all(images.map((image) => getImage({ src: image, format: 'webp', width: 3200, quality: 'max' }))),
+]);
+const slideshowUrls = sources1x.map((s, i) => ({
+  src: s.src,
+  srcset: `${s.src} 1x, ${sources2x[i].src} 2x`,
+}));
 ---
 <!-- Horizontally scrolling thumbnail strip -->
 <div
@@ -32,7 +36,7 @@ const slideshowUrls = slideshowSources.map((source) => source.src);
         src={image}
         formats={['avif', 'webp']}
         alt={`${title} ${i + 1}`}
-        widths={[225, 450]}
+        widths={[450, 1000]}
         sizes="225px"
         class="w-full h-full object-cover grayscale-hover"
         loading={i === 0 ? 'eager' : 'lazy'}
@@ -77,8 +81,9 @@ const slideshowUrls = slideshowSources.map((source) => source.src);
 )}
 
 <script>
+  interface SlideshowEntry { src: string; srcset: string }
   const gallery = document.getElementById('image-gallery')
-  const images: string[] = gallery ? JSON.parse(gallery.dataset.images ?? '[]') : []
+  const images: SlideshowEntry[] = gallery ? JSON.parse(gallery.dataset.images ?? '[]') : []
   const modal = document.getElementById('slideshow-modal') as HTMLDialogElement | null
 
   if (modal && images.length > 0) {
@@ -88,7 +93,8 @@ const slideshowUrls = slideshowSources.map((source) => source.src);
 
     function showSlide(index: number): void {
       current = (index + images.length) % images.length
-      img.src = images[current]
+      img.src = images[current].src
+      img.srcset = images[current].srcset
       img.alt = `Image ${current + 1} of ${images.length}`
       if (counter) {
         counter.textContent = `${String(current + 1).padStart(2, '0')} / ${String(images.length).padStart(2, '0')}`
