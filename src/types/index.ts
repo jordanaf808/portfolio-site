@@ -25,8 +25,8 @@ export interface Project extends BaseEntry {
 
 export interface JobRole extends BaseEntry {
 	type: 'jobRole'
-	responsibilities: string | string[]
-	technologies: string | string[]
+	responsibilities?: string | string[]
+	technologies?: string | string[]
 }
 
 export type ProjectEntry = Project | JobRole

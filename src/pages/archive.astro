@@ -36,7 +36,7 @@ const sorted = [...projects, ...jobRoles].sort((a, b) => startYear(b.year) - sta
     <!-- Header -->
     <div class="p-8 border-b border-primary min-[1000px]:min-h-37 flex items-center">
       <!-- <p class="font-mono text-xs uppercase tracking-[0.15em] text-muted mb-2">The Index</p> -->
-      <h2 class="w-full font-display italic text-text text-4xl min-[540px]:text-5xl text-center min-[1000px]:text-left translate-y-0.5">Archive</h2>
+      <h1 class="w-full font-display italic text-text text-4xl min-[540px]:text-5xl text-center min-[1000px]:text-left translate-y-0.5">Archive</h1>
       <!-- <p class="text-sm text-muted mt-4 max-w-md">
         A raw chronological ledger of architectural digital builds, technical experiments,
         and commercial deployments.
@@ -58,8 +58,7 @@ const sorted = [...projects, ...jobRoles].sort((a, b) => startYear(b.year) - sta
         <tbody>
           {sorted.map((entry) => (
             <tr
-              class="archive-row border-b border-primary hover:bg-accent-taupe-dark transition-colors duration-300 cursor-pointer"
-              onclick={`window.location.href='/projects/${entry.slug}'`}
+              class="archive-row border-b border-primary hover:bg-accent-taupe-dark transition-colors duration-300"
             >
               <td class="row-year p-6 font-mono text-xs text-muted">{entry.year}</td>
               <td class="p-6">

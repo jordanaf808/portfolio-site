@@ -4,6 +4,44 @@
 
 **Date:** 2026-06-01
 **Branch:** `main`
+**Change:** Security, accessibility, and code quality audit fixes
+
+**Files touched:** `public/_headers`, `src/lib/contactSchema.ts`, `src/components/CartDrawer.tsx`, `src/components/LeftPanel.astro`, `src/components/StatusBadge.astro`, `src/pages/archive.astro`, `src/pages/index.astro`, `src/pages/services.astro`, `src/data/jobRoles.ts`, `src/types/index.ts`
+
+**What changed:**
+
+- `_headers`: added `Content-Security-Policy` header (default-src self; unsafe-inline for scripts required by Astro hydration).
+- `contactSchema.ts`: added `escapeHtml` Zod transform on `company` and `details` fields to prevent HTML injection in the Resend email body.
+- `CartDrawer.tsx`: added focus trap (Tab/Shift+Tab cycles within the drawer), focus restore on close (returns focus to the trigger button), Escape key closes the drawer, and a persistent `aria-live="polite"` region announces form submission status to screen readers.
+- `LeftPanel.astro`: removed bare `outline: none` from `.nav-cell` — `:focus-visible` overrides remain and now take effect correctly.
+- `StatusBadge.astro`: changed `rounded-full` → `rounded-none` on the status dot; `rounded-full` was overridden to 0 in the Tailwind config but the class name was misleading.
+- `archive.astro`: promoted `<h2>Archive</h2>` to `<h1>`; removed mouse-only `onclick` from `<tr>` (inner `<a>` already handles navigation).
+- `index.astro`: promoted mobile header `<p aria-hidden="true">Jordan A.F.</p>` to `<h1>` (desktop gets its h1 from LeftPanel); fixed empty `alt=""` on profile photo to `alt="Jordan's profile image"`.
+- `services.astro`: promoted `<h2>What I Do</h2>` to `<h1>`.
+- `jobRoles.ts` + `types/index.ts`: made `responsibilities` and `technologies` optional fields on `JobRole`; removed empty-string placeholder values from all entries.
+
+**Why:** Addressed WCAG 2.1 AA failures (missing h1, no focus trap, empty alt text, outline removal), a medium-severity HTML injection risk in the email template, missing CSP header, and type imprecision in the data layer.
+
+---
+
+**Date:** 2026-06-01
+**Branch:** `main`
+**Change:** Project detail page layout — ImageGallery sizing, prose max-width, CTA centering
+
+**Files touched:** `src/pages/projects/[slug].astro`, `src/components/Accordion.astro`, `src/styles/global.css`
+
+**What changed:**
+
+- `[slug].astro`: removed `border-b` from the hero div (border now provided by the gallery); added `max-w-prose` to the hero description; wrapped the CTA section in `max-w-prose mx-auto` to center the button and project architecture table; replaced arbitrary `tracking-[0.1em]`/`tracking-[0.05em]` with canonical `tracking-widest`/`tracking-wider`.
+- `Accordion.astro`: added `max-w-prose mx-auto` to the content wrapper so body text is constrained to a readable line length and centered in the panel.
+- `global.css`: added `#image-gallery` rule — `min(750px, 100%)` width, `max-content` ceiling, auto horizontal margins, and a 1px border — to contain and center the image cycler on the project detail page.
+
+**Why:** Long prose lines on wide viewports hurt readability; centering the constrained block gives the page a more intentional, editorial feel consistent with the bento grid aesthetic.
+
+---
+
+**Date:** 2026-06-01
+**Branch:** `main`
 **Change:** Fix mobile TopNav to position:fixed; trim nav links; fix ServiceCell border in single-column layout
 
 **Files touched:** `src/components/TopNav.astro`, `src/layouts/Layout.astro`, `src/components/ServiceCell.astro`

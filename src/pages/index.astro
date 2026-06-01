@@ -27,9 +27,9 @@ const projects = [...getFeaturedProjects(), ...getFeaturedJobRoles()];
   <div class="border-b border-primary grid grid-cols-1 min-[540px]:grid-cols-2 min-[1000px]:hidden">
     <!-- Title: stacked row 1 below 540px; col 2 / row 1 at 540px+ -->
     <div class="flex flex-col items-center p-8 self-start border-b border-primary min-[540px]:col-start-2 min-[540px]:col-span-1 min-[540px]:row-start-1">
-      <p class="font-display italic text-[40px] leading-12.5 text-text w-full min-[670px]:max-w-76" aria-hidden="true">
+      <h1 class="font-display italic text-[40px] leading-12.5 text-text w-full min-[670px]:max-w-76">
         Jordan A.F.
-      </p>
+      </h1>
       <p class="font-mono text-xs uppercase tracking-[0.15em] text-muted mt-1 w-full min-[670px]:max-w-76">
         Shopify & JS/TS Development
       </p>
@@ -41,7 +41,7 @@ const projects = [...getFeaturedProjects(), ...getFeaturedJobRoles()];
       <Picture
         src={profilePic}
         formats={['avif', 'webp']}
-        alt=""
+        alt="Jordan's profile image"
         widths={[400, 800]}
         sizes="(min-width: 540px) 50vw, 100vw"
         class="w-full h-full object-cover object-top grayscale-hover"

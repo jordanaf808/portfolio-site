@@ -1,7 +1,10 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useRef, useCallback} from 'react'
 import type {ContactFormData} from '@/types'
 
 type Status = 'idle' | 'loading' | 'success' | 'error'
+
+const FOCUSABLE =
+	'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
 export default function CartDrawer(): React.ReactElement | null {
 	const [isOpen, setIsOpen] = useState(false)
@@ -12,12 +15,55 @@ export default function CartDrawer(): React.ReactElement | null {
 		details: '',
 		email: '',
 	})
+	const drawerRef = useRef<HTMLElement>(null)
+	const triggerRef = useRef<Element | null>(null)
 
 	useEffect(() => {
-		const handler = (): void => setIsOpen(true)
+		const handler = (): void => {
+			triggerRef.current = document.activeElement
+			setIsOpen(true)
+		}
 		document.addEventListener('open-cart-drawer', handler)
 		return () => document.removeEventListener('open-cart-drawer', handler)
 	}, [])
+
+	// Move focus into drawer when it opens
+	useEffect(() => {
+		if (!isOpen || !drawerRef.current) return
+		const first = drawerRef.current.querySelector<HTMLElement>(FOCUSABLE)
+		first?.focus()
+	}, [isOpen])
+
+	const handleClose = useCallback((): void => {
+		setIsOpen(false)
+		const trigger = triggerRef.current
+		if (trigger instanceof HTMLElement) trigger.focus()
+	}, [])
+
+	// Trap Tab focus inside drawer
+	const handleKeyDown = useCallback(
+		(e: React.KeyboardEvent<HTMLElement>): void => {
+			if (e.key === 'Escape') {
+				handleClose()
+				return
+			}
+			if (e.key !== 'Tab' || !drawerRef.current) return
+			const focusable = Array.from(
+				drawerRef.current.querySelectorAll<HTMLElement>(FOCUSABLE),
+			).filter((el) => el.offsetParent !== null)
+			if (focusable.length === 0) return
+			const first = focusable[0]
+			const last = focusable[focusable.length - 1]
+			if (e.shiftKey && document.activeElement === first) {
+				e.preventDefault()
+				last.focus()
+			} else if (!e.shiftKey && document.activeElement === last) {
+				e.preventDefault()
+				first.focus()
+			}
+		},
+		[handleClose],
+	)
 
 	function handleChange(
 		e: React.ChangeEvent<
@@ -55,15 +101,23 @@ export default function CartDrawer(): React.ReactElement | null {
 			{isOpen && (
 				<div
 					className='fixed inset-0 bg-black/20 z-40'
-					onClick={() => setIsOpen(false)}
+					onClick={handleClose}
 				/>
 			)}
 
+			{/* Screen-reader status announcement */}
+			<div aria-live='polite' className='sr-only'>
+				{status === 'success' && 'Message sent successfully.'}
+				{status === 'error' && errorMsg}
+			</div>
+
 			{/* Drawer panel */}
 			<aside
+				ref={drawerRef}
 				role='dialog'
 				aria-modal='true'
 				aria-label='Request Engagement'
+				onKeyDown={handleKeyDown}
 				className={`fixed top-0 right-0 h-full w-[480px] max-w-full bg-surface border-l border-primary z-50 flex flex-col transition-transform duration-300 ease-in-out ${
 					isOpen ? 'translate-x-0' : 'translate-x-[calc(100%+32px)]'
 				}`}
@@ -80,7 +134,7 @@ export default function CartDrawer(): React.ReactElement | null {
 						</p>
 					</div>
 					<button
-						onClick={() => setIsOpen(false)}
+						onClick={handleClose}
 						className='font-mono text-xs uppercase tracking-widest text-muted hover:text-text transition-colors mt-1'
 					>
 						Close ✕
@@ -145,7 +199,7 @@ export default function CartDrawer(): React.ReactElement | null {
 								onChange={handleChange}
 								placeholder='Enter your organization'
 								required
-								className='bg-transparent border-b border-primary py-2 text-sm text-text placeholder:text-muted focus:outline-none focus:border-b-2 transition-all'
+								className='bg-transparent border-b border-primary py-2 text-sm text-text placeholder:text-muted focus:outline-none focus:border-b-2 focus:ring-0 transition-all'
 							/>
 						</label>
 
@@ -160,7 +214,7 @@ export default function CartDrawer(): React.ReactElement | null {
 								placeholder='Briefly describe your technical objectives'
 								required
 								rows={4}
-								className='bg-transparent border-b border-primary py-2 text-sm text-text placeholder:text-muted focus:outline-none focus:border-b-2 transition-all resize-none'
+								className='bg-transparent border-b border-primary py-2 text-sm text-text placeholder:text-muted focus:outline-none focus:border-b-2 focus:ring-0 transition-all resize-none'
 							/>
 						</label>
 
@@ -175,7 +229,7 @@ export default function CartDrawer(): React.ReactElement | null {
 								onChange={handleChange}
 								placeholder='email@domain.com'
 								required
-								className='bg-transparent border-b border-primary py-2 text-sm text-text placeholder:text-muted focus:outline-none focus:border-b-2 transition-all'
+								className='bg-transparent border-b border-primary py-2 text-sm text-text placeholder:text-muted focus:outline-none focus:border-b-2 focus:ring-0 transition-all'
 							/>
 						</label>
 

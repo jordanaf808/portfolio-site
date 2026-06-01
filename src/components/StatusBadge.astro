@@ -20,5 +20,5 @@ const dotColor: Record<BaseEntry['status'], string> = {
 
 <span class="flex justify-end items-center gap-2.5">
   <p class="status-label font-mono text-xs uppercase tracking-widest">{status}</p>
-  <div class:list={['w-2 h-2 rounded-full shrink-0', dotColor[status] ?? 'bg-gray-400']}></div>
+  <div class:list={['w-2 h-2 rounded-none shrink-0', dotColor[status] ?? 'bg-gray-400']}></div>
 </span>
