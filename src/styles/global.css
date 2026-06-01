@@ -111,3 +111,11 @@
 		font-family: var(--font-mono);
 	}
 }
+
+/* Image Gallery */
+#image-gallery {
+	width: min(750px, 100%);
+	max-width: max-content;
+	margin: 0 auto 2.5rem;
+	border: 1px solid;
+}

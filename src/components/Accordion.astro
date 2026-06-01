@@ -28,7 +28,7 @@ const paragraphsLines = parseParagraphs(content).map((p) => p.split('\n'))
     data-accordion-content
   >
     <div class="overflow-hidden">
-      <div class="px-6 pb-6 text-sm text-muted leading-relaxed">
+      <div class="px-6 pb-6 text-sm text-muted leading-relaxed max-w-prose mx-auto">
         {content ? (
           paragraphsLines.map((lines) => (
               lines.map((line, i) => (

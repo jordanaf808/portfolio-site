@@ -37,10 +37,10 @@ const description = Array.isArray(entry.description) ? entry.description[0] : en
   activePage="project"
 >
   <!-- Hero -->
-  <div class="px-6 py-10 md:py-12 border-b border-primary">
+  <div class="px-6 py-10 md:py-12 ">
     <h1 class="font-display text-5xl leading-none text-text mb-6 max-w-125">{entry.title}</h1>
     {entry.type === 'project' && (
-      <p class="text-sm text-muted leading-relaxed">{description}</p>
+      <p class="text-sm text-muted leading-relaxed max-w-prose">{description}</p>
     )}
     <div class="flex flex-wrap gap-2 max-w-125">
       {entry.tech.map((t) => <TechBadge tag={t} variant="hero" />)}
@@ -75,31 +75,33 @@ const description = Array.isArray(entry.description) ? entry.description[0] : en
 
   <!-- CTA -->
   <div class="border-t border-primary p-12">
-    {entry.type === 'project' ? (
-      <div class="grid grid-cols-2 gap-8 items-start">
-        <ContactButton label="Get In Touch" />
-        <div class="border border-primary">
-          <div class="p-4 border-b border-primary">
-            <p class="font-mono text-xs uppercase tracking-[0.1em] text-muted">Technical Architecture</p>
-          </div>
-          <div class="divide-y divide-primary">
-            {[
-              ['Frontend', entry.tech[0] ?? '—'],
-              ['Commerce', entry.tech[1] ?? '—'],
-              ['Animation', entry.tech[2] ?? '—'],
-              ['Infra', 'Cloudflare Pages'],
-            ].map(([key, val]) => (
-              <div class="flex justify-between px-4 py-2">
-                <span class="font-mono text-xs uppercase tracking-[0.05em] text-muted">{key}</span>
-                <span class="font-mono text-xs text-text">{val}</span>
-              </div>
-            ))}
+    <div class="max-w-prose mx-auto">
+      {entry.type === 'project' ? (
+        <div class="grid grid-cols-2 gap-8 items-start">
+          <ContactButton label="Get In Touch" />
+          <div class="border border-primary">
+            <div class="p-4 border-b border-primary">
+              <p class="font-mono text-xs uppercase tracking-widest text-muted">Technical Architecture</p>
+            </div>
+            <div class="divide-y divide-primary">
+              {[
+                ['Frontend', entry.tech[0] ?? '—'],
+                ['Commerce', entry.tech[1] ?? '—'],
+                ['Animation', entry.tech[2] ?? '—'],
+                ['Infra', 'Cloudflare Pages'],
+              ].map(([key, val]) => (
+                <div class="flex justify-between px-4 py-2">
+                  <span class="font-mono text-xs uppercase tracking-wider text-muted">{key}</span>
+                  <span class="font-mono text-xs text-text">{val}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    ) : (
-      <ContactButton label="Contact Me →" />
-    )}
+      ) : (
+        <ContactButton label="Contact Me →" />
+      )}
+    </div>
   </div>
 
   <!-- Footer nav -->
