@@ -2,6 +2,23 @@
 
 ---
 
+**Date:** 2026-06-01
+**Branch:** `main`
+**Change:** Add new pixel-art tech badges; fix badge import paths in services.ts
+
+**Files touched:** `src/data/services.ts`, `src/assets/badges/html-5-144-pixel.svg`, `src/assets/badges/js-144-pixel.svg`, `src/assets/badges/nodejs-144-pixel.svg`, `src/assets/badges/postgresql-48-pixel.svg`, `src/assets/badges/redux-144-pixel.svg`, `src/assets/badges/tailwind-css-144-pixel.svg`, `src/assets/badges/tanstack-100-pixel.svg`
+
+**What changed:**
+
+- Added 7 new pixel-art SVG badges to `src/assets/badges/`: HTML5, JavaScript, Node.js, PostgreSQL, Redux, Tailwind CSS, TanStack.
+- Fixed import paths in `services.ts`: all new badge imports were missing the `.svg` extension, which the Cloudflare workerd dev runner rejects with "Denied ID". Added `.svg` to each.
+- Fixed PostgreSQL import filename: `postgres-144-pixel` → `postgresql-48-pixel` to match the actual file on disk.
+- Commented out background fill rects and corner/near-corner frame pixels in each SVG to render transparently against the services page background.
+
+**Why:** The Cloudflare workerd SSR runner enforces exact module IDs and does not resolve extensions automatically, unlike standard Vite. The SVG background and corner dots were artifacts of the original badge frame design, not part of the logo artwork.
+
+---
+
 **Date:** 2026-05-31
 **Branch:** `fix/react-workerd-invalid-hook-call`
 **Change:** Add HiDPI / Retina support to all image components
