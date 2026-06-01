@@ -40,7 +40,7 @@ const navCells: NavCell[] = [
   },
   {
     tag: 'a',
-    attrs: { href: '/#services' },
+    attrs: { href: '/services' },
     base: 'border-b border-primary min-[1000px]:border-b-0 min-[1000px]:border-r',
     active: false,
     label: 'Services',
@@ -151,9 +151,9 @@ const navCells: NavCell[] = [
 
   .nav-cell:hover,
   .nav-cell:focus-visible {
-    /* background-color: #C8B6A6; */
     /* background-color: color-mix(in oklab, var(--color-accent-taupe) 30%, transparent); */
-    background-color: #c8b6a66e;
+    /* background-color: #c8b6a66e; */
+    background-color: var(--color-accent-taupe-dark);
   }
 
   .marquee-wrap {
@@ -184,7 +184,7 @@ const navCells: NavCell[] = [
     font-weight: 400;
     font-size: 96px;
     line-height: 1;
-    color: rgba(255, 255, 255, 0.35);
+    color: rgba(255, 255, 255, 0.07);
     padding-right: 48px;
     user-select: none;
   }
