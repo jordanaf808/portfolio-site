@@ -102,7 +102,13 @@
 		filter: grayscale(0%);
 	}
 	.hard-shadow {
-		box-shadow: 8px 8px 0px 0px rgba(17, 17, 17, 0.1);
+		box-shadow: 8px 8px 0px 0px rgba(17, 17, 17, 0.05);
+	}
+	.drawer-shadow {
+		box-shadow: -8px 0 24px -4px rgba(17, 17, 17, 0.18);
+	}
+	.pixelated {
+		image-rendering: pixelated;
 	}
 	.font-display {
 		font-family: var(--font-display);

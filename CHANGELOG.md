@@ -3,6 +3,25 @@
 ---
 
 **Date:** 2026-06-01
+**Branch:** `feat/strict-csp`
+**Change:** Adopt Astro's built-in hash-based CSP; remove `'unsafe-inline'`
+
+**Files touched:** `astro.config.mjs`, `public/_headers`, `src/styles/global.css`, `src/components/TechBadge.astro`, `src/components/ServicesCTA.astro`, `src/components/CartDrawer.tsx`, `src/components/Accordion.astro`
+
+**What changed:**
+
+- `astro.config.mjs`: enabled `security.csp`. Astro now hashes every inline script/style it emits and injects a per-page `<meta http-equiv="content-security-policy">`. We declare `default-src`/`img-src`/`font-src`/`connect-src` and add `https://fonts.googleapis.com` to `style-src` via `styleDirective.resources`; `script-src 'self' 'sha256-…'` and the style hashes are appended automatically.
+- `public/_headers`: removed the static `Content-Security-Policy` line (replaced by the Astro meta CSP). A static header can't carry the per-build script hashes, and two enforced policies would conflict. Left a comment explaining why; framing stays protected by `X-Frame-Options: DENY`.
+- Removed all 5 inline `style=` attributes, since CSP hashes cannot cover style **attributes** (only `<style>`/`<script>` elements) and Astro ignores `'unsafe-inline'` once it emits hashes:
+  - `global.css`: repurposed the previously-unused `.hard-shadow` utility to the in-use `rgba(17,17,17,0.05)` value (was `0.1`, dead) and added `.drawer-shadow` and `.pixelated` utilities.
+  - `TechBadge.astro` → `.pixelated`; `ServicesCTA.astro` + `CartDrawer.tsx` (order summary) → `.hard-shadow`; `CartDrawer.tsx` (drawer panel) → `.drawer-shadow`.
+  - `Accordion.astro`: replaced the dynamic inline `grid-template-rows` style with a `class:list` toggle (`grid-rows-[1fr]`/`grid-rows-[0fr]`). The client click handler still animates via the CSSOM (`.style.gridTemplateRows`), which CSP does not block.
+
+**Why:** The previous header CSP used `script-src/style-src 'unsafe-inline'`, which negates most of CSP's XSS protection (and contradicts `security.md`). Hash-based CSP via Astro's first-party feature locks down inline scripts with no new dependencies. Note: this intentionally deviates from `astro.md`'s "use inline style with CSS custom properties for dynamic values" guidance in the Accordion — the value is binary and an inline attribute is incompatible with strict CSP.
+
+---
+
+**Date:** 2026-06-01
 **Branch:** `refactor/tokenize-hover-colors`
 **Change:** Consolidate hover-invert colors into theme tokens; remove dead code
 
