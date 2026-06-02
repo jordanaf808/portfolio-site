@@ -1,4 +1,4 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
 import cloudflare from '@astrojs/cloudflare';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
@@ -52,10 +52,18 @@ const devReactDomAlias = isDev
   : {};
 
 export default defineConfig({
-  // TODO: replace with the production URL before deploying to Cloudflare Pages.
   // SEOHead.astro uses this to build absolute canonical and og:image URLs.
-  site: 'https://thecommerceboutique.com',
+  site: 'https://jordanaf.com',
   adapter: cloudflare({ imageService: isDev ? 'passthrough' : 'compile' }),
+  // RESEND_API_KEY is a server-only secret read at runtime via `astro:env/server`.
+  // The Cloudflare adapter wires astro:env to the workerd runtime binding, so the
+  // value comes from the CF Pages dashboard in prod (and .env.local in dev) — not
+  // baked into the bundle the way `import.meta.env` would be.
+  env: {
+    schema: {
+      RESEND_API_KEY: envField.string({ context: 'server', access: 'secret' }),
+    },
+  },
   // Built-in CSP: Astro hashes every inline script/style it emits at build time and
   // injects a <meta http-equiv="content-security-policy"> per page — no 'unsafe-inline'.
   // script-src ('self' + sha256 hashes) is added automatically; we only declare the rest.

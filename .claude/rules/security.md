@@ -51,8 +51,8 @@ Cloudflare Pages has no built-in rate limiting on API routes — consider:
 
 ### Environment Secrets
 
-- `RESEND_API_KEY` must only ever be accessed via `import.meta.env.RESEND_API_KEY` in server-side code
-- Never reference `RESEND_API_KEY` in any `.astro` template or `.tsx` file — it would be bundled into client JS
+- `RESEND_API_KEY` is declared in `astro.config.mjs` (`env.schema`, context `server`, access `secret`) and must only ever be read via `import { RESEND_API_KEY } from 'astro:env/server'` in server-side code. Do **not** use `import.meta.env.RESEND_API_KEY`: under the v6 Cloudflare adapter SSR runs in workerd, where the secret is a runtime binding — `import.meta.env` is a build-time replacement that bakes the value into the bundle and breaks key rotation.
+- Never reference `RESEND_API_KEY` in any `.astro` template or `.tsx` file — it would be bundled into client JS. (`astro:env/server` is server-only by construction and will error if imported client-side.)
 - Never log the key, even partially
 - If the key is ever committed or logged, rotate it immediately in Resend dashboard + Cloudflare Pages
 

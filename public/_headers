@@ -10,4 +10,4 @@
   # X-Frame-Options above (meta CSP cannot express frame-ancestors).
 
 /api/*
-  Access-Control-Allow-Origin: https://thecommerceboutique.com
+  Access-Control-Allow-Origin: https://jordanaf.com

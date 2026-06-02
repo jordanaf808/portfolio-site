@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { RESEND_API_KEY } from 'astro:env/server';
 import { Resend } from 'resend';
 import { validateContact } from '../../lib/validateContact.ts';
 
@@ -25,10 +26,10 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const { company, details, email } = result.data;
-  const resend = new Resend(import.meta.env.RESEND_API_KEY);
+  const resend = new Resend(RESEND_API_KEY);
 
   const { error } = await resend.emails.send({
-    from: 'Portfolio Inquiry <inquiries@thecommerceboutique.com>',
+    from: 'Portfolio Inquiry <inquiries@mail.jordanaf.com>',
     to: ['jordanafdev@gmail.com'],
     replyTo: email,
     subject: `New Inquiry: ${company}`,

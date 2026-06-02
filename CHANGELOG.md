@@ -2,6 +2,24 @@
 
 ---
 
+**Date:** 2026-06-02
+**Branch:** `feat/deploy-readiness`
+**Change:** Read RESEND_API_KEY via `astro:env`; point domain to jordanaf.com
+
+**Files touched:** `astro.config.mjs`, `src/pages/api/contact.ts`, `.env.example`, `public/_headers`, `.claude/rules/security.md`
+
+**What changed:**
+
+- `astro.config.mjs`: added an `env.schema` declaring `RESEND_API_KEY` as a server secret (`envField.string({ context: 'server', access: 'secret' })`), and changed `site` from `https://thecommerceboutique.com` to `https://jordanaf.com` (removed the stale pre-deploy TODO).
+- `src/pages/api/contact.ts`: read the key via `import { RESEND_API_KEY } from 'astro:env/server'` instead of `import.meta.env.RESEND_API_KEY`; changed the Resend `from:` sender to `inquiries@mail.jordanaf.com` (the verified sending subdomain). `to:` and `replyTo:` unchanged.
+- `public/_headers`: updated the `/api/*` CORS `Access-Control-Allow-Origin` to `https://jordanaf.com`.
+- `.claude/rules/security.md`: updated the Environment Secrets rule to mandate `astro:env/server` (was `import.meta.env`).
+- `.env.example`: documented the var's context/access and where the value lives in dev vs prod.
+
+**Why:** Under the v6 Cloudflare adapter, SSR runs in workerd where the secret is a runtime binding. `import.meta.env` is a build-time replacement — it bakes the value into the bundle and breaks key rotation. `astro:env/server` reads the binding correctly at runtime (CF Pages dashboard in prod, `.env.local` in dev) and is the pattern the adapter supports. Domain strings moved off the retiring Commerce Boutique domain onto the personal `jordanaf.com`. Note: the build does not fail on a missing key (Astro's `validateSecrets` defaults to `false`) — a missing prod key surfaces as a runtime 500 on form submit, not a build error.
+
+---
+
 **Date:** 2026-06-01
 **Branch:** `feat/strict-csp`
 **Change:** Adopt Astro's built-in hash-based CSP; remove `'unsafe-inline'`
