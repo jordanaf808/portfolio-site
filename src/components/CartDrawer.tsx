@@ -118,10 +118,9 @@ export default function CartDrawer(): React.ReactElement | null {
 				aria-modal='true'
 				aria-label='Request Engagement'
 				onKeyDown={handleKeyDown}
-				className={`fixed top-0 right-0 h-full w-[480px] max-w-full bg-surface border-l border-primary z-50 flex flex-col transition-transform duration-300 ease-in-out ${
+				className={`drawer-shadow fixed top-0 right-0 h-full w-[480px] max-w-full bg-surface border-l border-primary z-50 flex flex-col transition-transform duration-300 ease-in-out ${
 					isOpen ? 'translate-x-0' : 'translate-x-[calc(100%+32px)]'
 				}`}
-				style={{boxShadow: '-8px 0 24px -4px rgba(17,17,17,0.18)'}}
 			>
 				{/* Header */}
 				<div className='flex items-start justify-between p-6 pb-5 border-b border-primary flex-shrink-0'>
@@ -143,10 +142,7 @@ export default function CartDrawer(): React.ReactElement | null {
 
 				{/* Order summary */}
 				<div className='p-6 border-b border-primary flex-shrink-0'>
-					<div
-						className='border border-primary'
-						style={{boxShadow: '8px 8px 0px 0px rgba(17,17,17,0.05)'}}
-					>
+					<div className='border border-primary hard-shadow'>
 						<div className='flex justify-between p-4 border-b border-primary'>
 							<span className='font-mono text-xs uppercase tracking-widest text-muted'>
 								Item

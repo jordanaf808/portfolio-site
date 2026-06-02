@@ -56,6 +56,24 @@ export default defineConfig({
   // SEOHead.astro uses this to build absolute canonical and og:image URLs.
   site: 'https://thecommerceboutique.com',
   adapter: cloudflare({ imageService: isDev ? 'passthrough' : 'compile' }),
+  // Built-in CSP: Astro hashes every inline script/style it emits at build time and
+  // injects a <meta http-equiv="content-security-policy"> per page — no 'unsafe-inline'.
+  // script-src ('self' + sha256 hashes) is added automatically; we only declare the rest.
+  // styleDirective.resources REPLACES the default style-src sources (so 'self' is re-listed);
+  // Astro still appends its own style hashes after these. CSP is inert in `dev` (Vite).
+  security: {
+    csp: {
+      directives: [
+        "default-src 'self'",
+        "img-src 'self' data:",
+        "font-src 'self' https://fonts.gstatic.com",
+        "connect-src 'self'",
+      ],
+      styleDirective: {
+        resources: ["'self'", 'https://fonts.googleapis.com'],
+      },
+    },
+  },
   integrations: [react()],
   vite: {
     plugins: [tailwindcss(), optimizeServerDeps()],
