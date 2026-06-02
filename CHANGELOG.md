@@ -3,6 +3,23 @@
 ---
 
 **Date:** 2026-06-01
+**Branch:** `refactor/tokenize-hover-colors`
+**Change:** Consolidate hover-invert colors into theme tokens; remove dead code
+
+**Files touched:** `src/styles/global.css`, `src/components/ProjectCard.astro`, `src/components/StatusBadge.astro`, `src/components/ServiceCell.astro`, `src/components/LeftPanel.astro`, `src/pages/archive.astro`, `src/pages/projects/[slug].astro`, `src/data/services.ts`
+
+**What changed:**
+
+- `global.css`: added `--color-hover-text` (`#ffffff`) and `--color-hover-muted` (`rgba(255, 255, 255, 0.65)`) tokens to the `@theme` block — the text colors used when sitting on a taupe hover background.
+- Replaced six hardcoded hover-color literals with these tokens across `ProjectCard.astro`, `StatusBadge.astro`, `ServiceCell.astro`, `LeftPanel.astro`, and `archive.astro`; pointed the two `#888888` defaults at the existing `--color-muted` token.
+- `services.ts`: removed a dead commented-out `jsSvg` import (re-imported below with the new `js-144-pixel.svg` path).
+- `[slug].astro`: removed trailing whitespace left in a `class` string after a prior edit.
+
+**Why:** The hover-invert text treatment was copy-pasted as raw color literals across five files; tokenizing gives a single source of truth consistent with the rest of the design system. No visual change — same rendered colors. Removed committed dead code per the project code-style rule.
+
+---
+
+**Date:** 2026-06-01
 **Branch:** `main`
 **Change:** Security, accessibility, and code quality audit fixes
 

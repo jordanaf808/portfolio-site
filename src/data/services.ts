@@ -50,7 +50,6 @@ export const services: Service[] = [
 ]
 
 import shopifySvg from '../assets/badges/shopify-8bit-logo.svg?url'
-// import jsSvg from '../assets/badges/js-8-bit-badge.svg?url'
 import reactSvg from '../assets/badges/react-8bit-logo.svg?url'
 import nextjsSvg from '../assets/badges/nextjs-8bit-logo.svg?url'
 import expressSvg from '../assets/badges/express-8bit-logo.svg?url'

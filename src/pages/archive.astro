@@ -17,14 +17,14 @@ const sorted = [...projects, ...jobRoles].sort((a, b) => startYear(b.year) - sta
   }
 
   .archive-row:hover .row-title {
-    color: #ffffff;
+    color: var(--color-hover-text);
   }
 
   .archive-row:hover .row-meta,
   .archive-row:hover .row-year,
   .archive-row:hover .row-client,
   .archive-row:hover .row-link {
-    color: rgba(255, 255, 255, 0.65);
+    color: var(--color-hover-muted);
   }
 </style>
 <Layout

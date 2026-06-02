@@ -12,13 +12,13 @@ const label = String(index + 1).padStart(3, '0');
 ---
 <style>
   .card-header {
-    --card-label-color: #888888;
+    --card-label-color: var(--color-muted);
   }
 
   .group:hover .card-header {
     /* background-color: #ede5dd; */
     background-color: #c4b8ad;
-    --card-label-color: rgba(255, 255, 255, 0.65);
+    --card-label-color: var(--color-hover-muted);
   }
 
   .card-title,
@@ -28,12 +28,12 @@ const label = String(index + 1).padStart(3, '0');
   }
 
   .group:hover .card-title {
-    color: #ffffff;
+    color: var(--color-hover-text);
   }
 
   .group:hover .card-label,
   .group:hover .card-meta {
-    color: rgba(255, 255, 255, 0.65);
+    color: var(--color-hover-muted);
   }
 </style>
 

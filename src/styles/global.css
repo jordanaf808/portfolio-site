@@ -9,6 +9,9 @@
 	--color-muted: #888888;
 	--color-accent-taupe: #c8b6a6;
 	--color-accent-taupe-dark: #846b566e;
+	/* Text colors when sitting on a taupe hover background */
+	--color-hover-text: #ffffff;
+	--color-hover-muted: rgba(255, 255, 255, 0.65);
 	--color-surface-container-highest: #e7dfd6;
 	--color-surface-container-high: #efefeb;
 	--color-surface-container-low: #f9f9f7;
