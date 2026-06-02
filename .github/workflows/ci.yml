@@ -1,0 +1,38 @@
+name: CI
+
+# Quality gate only. Deployment is handled by Cloudflare's Git integration
+# (build command `pnpm build`, output dir `dist`), not by this workflow.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    env:
+      # astro:env reads RESEND_API_KEY at build. With the default validateSecrets:false
+      # the build does not require it, but a dummy keeps CI deterministic and is required
+      # if validateSecrets is ever enabled. No email is sent in CI.
+      RESEND_API_KEY: re_dummy_ci_value
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm type-check
+
+      - run: pnpm lint
+
+      - run: pnpm test
+
+      - run: pnpm build
