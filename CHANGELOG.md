@@ -4,6 +4,21 @@
 
 **Date:** 2026-06-02
 **Branch:** `feat/deploy-readiness`
+**Change:** Cap contact input lengths per security policy
+
+**Files touched:** `src/lib/contactSchema.ts`, `src/lib/validateContact.test.ts`
+
+**What changed:**
+
+- `contactSchema.ts`: added `.max()` caps — company 100, email 254 (RFC 5321), details 2000 — as named constants. Caps run **before** `.transform(escapeHtml)` so the limit applies to raw input (escaping can expand a string, e.g. `<` → `&lt;`).
+- `validateContact.test.ts`: added three tests rejecting over-length company/email/details (10 tests total, all passing).
+
+**Why:** The schema previously enforced only minimum lengths, leaving the contact endpoint — the site's only user-facing attack surface — open to unbounded payloads. `.claude/rules/security.md` mandates these caps (`MAX_NAME`/`MAX_EMAIL`/`MAX_MESSAGE`).
+
+---
+
+**Date:** 2026-06-02
+**Branch:** `feat/deploy-readiness`
 **Change:** Read RESEND_API_KEY via `astro:env`; point domain to jordanaf.com
 
 **Files touched:** `astro.config.mjs`, `src/pages/api/contact.ts`, `.env.example`, `public/_headers`, `.claude/rules/security.md`

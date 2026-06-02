@@ -28,6 +28,19 @@ describe('validateContact', () => {
     expect(validateContact({ ...valid, details: 'Short' }).valid).toBe(false);
   });
 
+  it('rejects company longer than 100 chars', () => {
+    expect(validateContact({ ...valid, company: 'A'.repeat(101) }).valid).toBe(false);
+  });
+
+  it('rejects email longer than 254 chars', () => {
+    const longEmail = `${'a'.repeat(250)}@b.co`; // 256 chars
+    expect(validateContact({ ...valid, email: longEmail }).valid).toBe(false);
+  });
+
+  it('rejects details longer than 2000 chars', () => {
+    expect(validateContact({ ...valid, details: 'a'.repeat(2001) }).valid).toBe(false);
+  });
+
   it('accepts valid input', () => {
     const result = validateContact(valid);
     expect(result.valid).toBe(true);
