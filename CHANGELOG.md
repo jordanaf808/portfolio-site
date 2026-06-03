@@ -2,6 +2,20 @@
 
 ---
 
+**Date:** 2026-06-03
+**Branch:** `fix/contact-from-domain`
+**Change:** Send from the verified `mailer.jordanaf.com` Resend domain
+
+**Files touched:** `src/pages/api/contact.ts`
+
+**What changed:**
+
+- `from:` address changed from `inquiries@mail.jordanaf.com` to `inquiries@mailer.jordanaf.com`.
+
+**Why:** The original `mail.jordanaf.com` sending subdomain could never be verified in Resend — it carried leftover Titan MX/SPF/DKIM records (created when it was set up as a hosted "external website"), and a host can hold only one SPF record. The send-only subdomain was rebuilt as `mailer.jordanaf.com` (DKIM at `resend._domainkey.mailer`, MX + SPF on `send.mailer`, no Titan records) and is now verified. Resend rejects any `from:` whose domain isn't verified, so this line had to match.
+
+---
+
 **Date:** 2026-06-02
 **Branch:** `feat/contact-input-limits`
 **Change:** Mirror server length caps on the contact form inputs
