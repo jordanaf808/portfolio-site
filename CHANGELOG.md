@@ -3,6 +3,20 @@
 ---
 
 **Date:** 2026-06-02
+**Branch:** `feat/contact-input-limits`
+**Change:** Mirror server length caps on the contact form inputs
+
+**Files touched:** `src/components/CartDrawer.tsx`
+
+**What changed:**
+
+- Added `minLength`/`maxLength` attributes to the contact inputs matching the Zod schema: company `2`–`100`, details `10`–`2000`, email `max 254`. The inputs already had `required` + `type='email'`.
+
+**Why:** Client-side constraint hints give instant feedback and stop an over-long or too-short payload before a wasted round-trip. These are HTML attributes that *mirror* the server schema (`src/lib/contactSchema.ts`) — not a second validation layer — so there's no duplicated logic to drift. The server remains the security boundary.
+
+---
+
+**Date:** 2026-06-02
 **Branch:** `feat/deploy-readiness`
 **Change:** Cap contact input lengths per security policy
 

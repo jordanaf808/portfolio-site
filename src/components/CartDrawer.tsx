@@ -195,6 +195,8 @@ export default function CartDrawer(): React.ReactElement | null {
 								onChange={handleChange}
 								placeholder='Enter your organization'
 								required
+								minLength={2}
+								maxLength={100}
 								className='bg-transparent border-b border-primary py-2 text-sm text-text placeholder:text-muted focus:outline-none focus:border-b-2 focus:ring-0 transition-all'
 							/>
 						</label>
@@ -209,6 +211,8 @@ export default function CartDrawer(): React.ReactElement | null {
 								onChange={handleChange}
 								placeholder='Briefly describe your technical objectives'
 								required
+								minLength={10}
+								maxLength={2000}
 								rows={4}
 								className='bg-transparent border-b border-primary py-2 text-sm text-text placeholder:text-muted focus:outline-none focus:border-b-2 focus:ring-0 transition-all resize-none'
 							/>
@@ -225,6 +229,7 @@ export default function CartDrawer(): React.ReactElement | null {
 								onChange={handleChange}
 								placeholder='email@domain.com'
 								required
+								maxLength={254}
 								className='bg-transparent border-b border-primary py-2 text-sm text-text placeholder:text-muted focus:outline-none focus:border-b-2 focus:ring-0 transition-all'
 							/>
 						</label>
