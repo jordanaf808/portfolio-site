@@ -4,6 +4,21 @@
 
 **Date:** 2026-06-04
 **Branch:** `feat/contact-turnstile`
+**Change:** Pin Cloudflare Workers runtime config for reproducible deploys
+
+**Files touched:** `wrangler.jsonc` (new), `.nvmrc` (new)
+
+**What changed:**
+
+- Added `wrangler.jsonc` with `name`, `main: @astrojs/cloudflare/entrypoints/server`, `compatibility_date: 2025-05-05`, and `compatibility_flags: ["nodejs_compat"]`. `wrangler deploy` reads this; the adapter merges in `main`/`assets`/`SESSION` KV in its generated `dist/server/wrangler.json`.
+- Added `.nvmrc` (`22.16.0`) to pin the Node version used by the Workers Builds image.
+
+**Why:** This project deploys to **Cloudflare Workers** — `@astrojs/cloudflare` v13 no longer supports Cloudflare Pages. The SSR `/api/contact` route runs in workerd, which needs `nodejs_compat` (required by the Resend SDK's Node built-ins); the adapter auto-generates a compatibility date but leaves `compatibility_flags` empty, so it must be set explicitly. Committing it in-repo makes the runtime config version-controlled and reproducible. The pnpm version (11.2.2) still must be pinned via a `PNPM_VERSION` build env var in the dashboard — the build image defaults to pnpm 10 and no longer detects it from the lockfile.
+
+---
+
+**Date:** 2026-06-04
+**Branch:** `feat/contact-turnstile`
 **Change:** Add Cloudflare Turnstile bot protection to the contact form
 
 **Files touched:** `astro.config.mjs`, `src/components/CartDrawer.tsx`, `src/pages/api/contact.ts`, `.env.example`

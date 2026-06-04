@@ -1,0 +1,12 @@
+{
+  // Cloudflare WORKERS deploy config (the @astrojs/cloudflare v13 adapter no longer targets
+  // Pages). `wrangler deploy` reads this; the adapter merges in main/assets/SESSION KV.
+  // `name` must match the Worker name in the Cloudflare dashboard.
+  "name": "bento-box",
+  // Package entrypoint exposed by the adapter — resolves the built server in dist/server.
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  // The adapter does NOT add nodejs_compat on its own; the Resend SDK needs Node built-ins.
+  // Date >= 2024-09-23 also enables nodejs_compat_v2.
+  "compatibility_date": "2025-05-05",
+  "compatibility_flags": ["nodejs_compat"]
+}
