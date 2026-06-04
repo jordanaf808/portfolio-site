@@ -57,7 +57,7 @@ export default defineConfig({
   adapter: cloudflare({ imageService: isDev ? 'passthrough' : 'compile' }),
   // RESEND_API_KEY is a server-only secret read at runtime via `astro:env/server`.
   // The Cloudflare adapter wires astro:env to the workerd runtime binding, so the
-  // value comes from the CF Pages dashboard in prod (and .env.local in dev) — not
+  // value comes from the CF Workers dashboard in prod (and .env.local in dev) — not
   // baked into the bundle the way `import.meta.env` would be.
   env: {
     schema: {
@@ -66,7 +66,7 @@ export default defineConfig({
       // can be read from the CartDrawer island via `astro:env/client` (inlined at build).
       PUBLIC_TURNSTILE_SITE_KEY: envField.string({ context: 'client', access: 'public' }),
       // Turnstile secret — used server-side in /api/contact to call siteverify. Same
-      // runtime-binding model as RESEND_API_KEY (CF Pages dashboard in prod, .env.local in dev).
+      // runtime-binding model as RESEND_API_KEY (CF Workers dashboard in prod, .env.local in dev).
       TURNSTILE_SECRET_KEY: envField.string({ context: 'server', access: 'secret' }),
     },
   },

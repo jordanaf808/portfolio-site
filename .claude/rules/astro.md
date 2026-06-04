@@ -41,7 +41,7 @@ paths:
 
 Never use `client:load` for something that doesn't need to be interactive on page load — it adds JS weight.
 
-## SSR Endpoints (Cloudflare Pages)
+## SSR Endpoints (Cloudflare Workers)
 
 - SSR endpoints live in `src/pages/api/*.ts` — export named functions matching HTTP methods
 - Always type the `APIContext` from `astro`:

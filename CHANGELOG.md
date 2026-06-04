@@ -4,6 +4,21 @@
 
 **Date:** 2026-06-04
 **Branch:** `feat/contact-turnstile`
+**Change:** Correct "Cloudflare Pages" → "Cloudflare Workers" across docs and copy
+
+**Files touched:** `CLAUDE.md`, `astro.config.mjs` (comments), `.claude/rules/{astro,git-workflow,security}.md`, `TODO.md`, `src/pages/projects/[slug].astro`
+
+**What changed:**
+
+- Replaced every "Cloudflare Pages" reference with "Cloudflare Workers" in project docs, rule files, and config comments, and updated the hardcoded `['Infra', 'Cloudflare Workers']` label on the project detail page.
+- Corrected the surrounding context for Workers in `security.md`: the Rate Limiting section now documents the native Workers `ratelimits` binding (Workers *does* have built-in rate limiting); the Headers section now notes that `_headers` applies only to static-asset responses, not the Worker-rendered `/api/contact`.
+
+**Why:** `@astrojs/cloudflare` v13 deploys to Cloudflare Workers, not Pages (the adapter dropped Pages support). The "Pages" wording — and the platform-behavior claims around it — were inaccurate and would mislead future work. `public/_headers` still functions for the static pages (the whole site except `/api/contact`).
+
+---
+
+**Date:** 2026-06-04
+**Branch:** `feat/contact-turnstile`
 **Change:** Pin Cloudflare Workers runtime config for reproducible deploys
 
 **Files touched:** `wrangler.jsonc` (new), `.nvmrc` (new)

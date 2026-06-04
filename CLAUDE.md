@@ -16,7 +16,7 @@ Pre-commit: `pnpm type-check`, `pnpm lint`, and `pnpm build` must all pass. The 
 
 ## Architecture
 
-Astro 6.3.1 with hybrid output — all pages statically generated except `/api/contact` (SSR). Deployed to Cloudflare Pages; the Cloudflare adapter is required before adding any SSR or API routes.
+Astro 6.3.1 with hybrid output — all pages statically generated except `/api/contact` (SSR). Deployed to Cloudflare Workers — the `@astrojs/cloudflare` v13 adapter targets Workers (it no longer supports Cloudflare Pages) and is required before adding any SSR or API routes. Deploy config lives in `wrangler.jsonc` (`nodejs_compat` + compatibility date); deploy via `npx wrangler deploy`.
 
 ### Planned source structure
 
@@ -70,7 +70,7 @@ Fonts: **Newsreader** (display/headings), **Work Sans** (body/UI), **Space Grote
 - Project cards are grayscale by default, full color on hover (400ms transition)
 - The Cart Drawer (contact form) is a slide-in overlay, not a page
 - `RESEND_API_KEY` is server-only — never reference it in `.astro` templates (it would bundle into client JS)
-- Security headers go in `public/_headers` (Cloudflare Pages static header injection)
+- Security headers go in `public/_headers` (Cloudflare Workers static-asset header injection)
 
 ## Changelog
 

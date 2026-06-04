@@ -2,7 +2,7 @@
 
 ## Branching
 
-- `main` — production branch; what Cloudflare Pages deploys from
+- `main` — production branch; what Cloudflare Workers deploys from
 - Feature branches: `feat/short-description` (e.g., `feat/contact-form`, `feat/world-background`)
 - Bug fixes: `fix/short-description`
 - Content updates: `content/short-description` (e.g., `content/add-projects`)
