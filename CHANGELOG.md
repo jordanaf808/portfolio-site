@@ -2,6 +2,23 @@
 
 ---
 
+**Date:** 2026-06-04
+**Branch:** `feat/contact-turnstile`
+**Change:** Add Cloudflare Turnstile bot protection to the contact form
+
+**Files touched:** `astro.config.mjs`, `src/components/CartDrawer.tsx`, `src/pages/api/contact.ts`, `.env.example`
+
+**What changed:**
+
+- `astro.config.mjs`: added `PUBLIC_TURNSTILE_SITE_KEY` (client/public) and `TURNSTILE_SECRET_KEY` (server/secret) to the `astro:env` schema; allowlisted `https://challenges.cloudflare.com` in the CSP via a new `scriptDirective`, a new `frame-src` directive, and an expanded `connect-src`.
+- `CartDrawer.tsx`: lazy-loads the Turnstile `api.js` (explicit render) on first drawer open, renders the widget into the form, holds the single-use token in state, gates the submit button until a token exists, sends `turnstileToken` in the POST body, and resets the widget on retryable failures.
+- `api/contact.ts`: verifies the token against Cloudflare `siteverify` (with `remoteip` from `clientAddress`) *before* validation/Resend; a missing or failing token returns `403` and never reaches the mailer.
+- `.env.example`: documented both keys plus Cloudflare's always-pass test pair for local dev.
+
+**Why:** The contact form is the site's only public attack surface. Server-side Zod validation already caps input, but nothing stopped a bot from auto-submitting on repeat — flooding the inbox and burning Resend quota. Cloudflare's automatic protection only covers volumetric DDoS, not per-endpoint abuse. Turnstile (free, no added npm dependency — loaded as a runtime script) adds a bot-verification layer; the security lives entirely in the server-side `siteverify`, so the endpoint rejects any unverified request. Stacks with the existing Zod layer as defense in depth.
+
+---
+
 **Date:** 2026-06-03
 **Branch:** `fix/contact-from-domain`
 **Change:** Send from the verified `mailer.jordanaf.com` Resend domain

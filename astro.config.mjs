@@ -62,6 +62,12 @@ export default defineConfig({
   env: {
     schema: {
       RESEND_API_KEY: envField.string({ context: 'server', access: 'secret' }),
+      // Turnstile public site key — renders the widget client-side. PUBLIC/client so it
+      // can be read from the CartDrawer island via `astro:env/client` (inlined at build).
+      PUBLIC_TURNSTILE_SITE_KEY: envField.string({ context: 'client', access: 'public' }),
+      // Turnstile secret — used server-side in /api/contact to call siteverify. Same
+      // runtime-binding model as RESEND_API_KEY (CF Pages dashboard in prod, .env.local in dev).
+      TURNSTILE_SECRET_KEY: envField.string({ context: 'server', access: 'secret' }),
     },
   },
   // Built-in CSP: Astro hashes every inline script/style it emits at build time and
@@ -75,8 +81,17 @@ export default defineConfig({
         "default-src 'self'",
         "img-src 'self' data:",
         "font-src 'self' https://fonts.gstatic.com",
-        "connect-src 'self'",
+        // Turnstile's api.js may issue client-side requests back to its host.
+        "connect-src 'self' https://challenges.cloudflare.com",
+        // Turnstile renders the challenge in an iframe from this host. No frame-src
+        // existed before, so it fell back to default-src 'self' and would block it.
+        'frame-src https://challenges.cloudflare.com',
       ],
+      // resources REPLACE the default script-src sources, so 'self' must be re-listed;
+      // Astro still appends its own per-build inline-script hashes after these.
+      scriptDirective: {
+        resources: ["'self'", 'https://challenges.cloudflare.com'],
+      },
       styleDirective: {
         resources: ["'self'", 'https://fonts.googleapis.com'],
       },

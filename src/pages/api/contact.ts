@@ -1,17 +1,58 @@
 import type { APIRoute } from 'astro';
-import { RESEND_API_KEY } from 'astro:env/server';
+import { RESEND_API_KEY, TURNSTILE_SECRET_KEY } from 'astro:env/server';
 import { Resend } from 'resend';
 import { validateContact } from '../../lib/validateContact.ts';
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request }) => {
+const TURNSTILE_VERIFY_URL =
+  'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+
+// Calls Cloudflare siteverify. The widget alone proves nothing — this server-side check is
+// the actual bot defense, so a non-true outcome (or any network failure) must block sending.
+async function verifyTurnstile(
+  token: string,
+  remoteip: string | undefined,
+): Promise<boolean> {
+  const params = new URLSearchParams({
+    secret: TURNSTILE_SECRET_KEY,
+    response: token,
+  });
+  if (remoteip) params.set('remoteip', remoteip);
+
+  try {
+    const res = await fetch(TURNSTILE_VERIFY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params,
+    });
+    const outcome = (await res.json()) as { success?: boolean };
+    return outcome.success === true;
+  } catch {
+    return false;
+  }
+}
+
+export const POST: APIRoute = async ({ request, clientAddress }) => {
   let body: unknown;
   try {
     body = await request.json();
   } catch {
     return new Response(JSON.stringify({ error: 'Invalid JSON' }), {
       status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  // Turnstile gate — pulled straight off the raw body (it never enters the Zod schema, which
+  // strips unknown keys) and verified before any validation or send. Reject if it fails.
+  const token =
+    typeof body === 'object' && body !== null && 'turnstileToken' in body
+      ? (body as { turnstileToken?: unknown }).turnstileToken
+      : undefined;
+  if (typeof token !== 'string' || token.length === 0 || !(await verifyTurnstile(token, clientAddress))) {
+    return new Response(JSON.stringify({ error: 'Verification failed' }), {
+      status: 403,
       headers: { 'Content-Type': 'application/json' },
     });
   }
