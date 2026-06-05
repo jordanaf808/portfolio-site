@@ -4,6 +4,22 @@
 
 **Date:** 2026-06-04
 **Branch:** `feat/contact-turnstile`
+**Change:** Enforce same-origin on /api/contact, drop dead _headers rule, rename Worker
+
+**Files touched:** `src/pages/api/contact.ts`, `public/_headers`, `wrangler.jsonc`
+
+**What changed:**
+
+- `contact.ts`: added a same-origin guard at the top of the `POST` handler — rejects with `403` when the request's `Origin` header is present and doesn't match the request's own origin. Missing `Origin` falls through to the existing Turnstile gate.
+- `public/_headers`: removed the `/api/* → Access-Control-Allow-Origin` rule. On Cloudflare Workers `_headers` only applies to static-asset responses, so that rule never reached the Worker-rendered `/api/contact` — it was a no-op. Replaced with a comment pointing to the in-code guard.
+- `wrangler.jsonc`: renamed the Worker `bento-box` → `portfolio-site` (must match the Worker name in the Cloudflare dashboard).
+
+**Why:** The contact API's same-origin intent previously lived in a `_headers` rule that silently does nothing under Workers. Moving it into the route means it actually runs: a cross-site browser POST (`Origin: https://evil.com`) is rejected before any body read or Turnstile call, while same-origin posts (prod, preview, localhost) pass through. Defense-in-depth alongside Turnstile + Zod validation.
+
+---
+
+**Date:** 2026-06-04
+**Branch:** `feat/contact-turnstile`
 **Change:** Correct "Cloudflare Pages" → "Cloudflare Workers" across docs and copy
 
 **Files touched:** `CLAUDE.md`, `astro.config.mjs` (comments), `.claude/rules/{astro,git-workflow,security}.md`, `TODO.md`, `src/pages/projects/[slug].astro`

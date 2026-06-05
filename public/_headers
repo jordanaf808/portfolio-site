@@ -9,5 +9,6 @@
   # per-build script hashes, so it is intentionally not set. Framing is covered by
   # X-Frame-Options above (meta CSP cannot express frame-ancestors).
 
-/api/*
-  Access-Control-Allow-Origin: https://jordanaf.com
+# No /api/* rule: _headers only decorates static-asset responses on Cloudflare Workers, never
+# the Worker-rendered /api/contact. Same-origin enforcement for the API lives in the route code
+# (src/pages/api/contact.ts), where it actually runs.

@@ -34,6 +34,18 @@ async function verifyTurnstile(
 }
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
+  // Same-origin guard: browsers send Origin on cross-site POSTs, so reject those before doing
+  // any work. Comparing to the request's own origin auto-covers prod, *.workers.dev previews,
+  // and localhost. A missing Origin (curl, server-to-server) isn't a browser cross-site request
+  // and still has to clear the Turnstile gate below, so it's allowed through here.
+  const origin = request.headers.get('origin');
+  if (origin !== null && origin !== new URL(request.url).origin) {
+    return new Response(JSON.stringify({ error: 'Forbidden' }), {
+      status: 403,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   let body: unknown;
   try {
     body = await request.json();
