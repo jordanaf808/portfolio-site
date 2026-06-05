@@ -53,8 +53,29 @@ random/inconsistent answers. Migration order:
   handles that for you.
 - Use **only** Cloudflare's two assigned nameservers at the registrar.
 
+## Origin server / firewall lockdown — not needed here
+
+Cloudflare's onboarding may say to "block all incoming traffic that doesn't originate from
+Cloudflare" on your origin server's firewall. That defends against attackers bypassing Cloudflare
+by hitting the origin's raw IP — but it **only applies when Cloudflare proxies to a separate origin
+host** (Hostinger shared hosting, a VPS). This site has **no origin**: it runs on a Cloudflare
+**Worker** (`portfolio-site`), so there's no IP to lock down. **Skip the firewall step.**
+
+Instead:
+
+- **Remove any stale proxied (orange-cloud) record** pointing `jordanaf.com` or a subdomain at a
+  Hostinger hosting IP — *that* would be a bypassable origin. The Worker custom domain replaces it.
+- **Retire Hostinger hosting** once the site (Worker) and email (Resend) are verified working.
+  Keep the domain **registration** until/unless you move registrars — a registrar is not a host.
+- After the nameserver switch, **Hostinger's DNS editor is inert** — Cloudflare is now
+  authoritative. "No records in Hostinger" is expected; manage and verify records in the
+  **Cloudflare** dashboard instead.
+
 ## After cutover (verify)
 
+- [ ] The Resend mail records (`send.mailer` MX+SPF, `resend._domainkey.mailer` DKIM) are present
+      in the **Cloudflare** zone. If you switched nameservers before copying them over, add them now —
+      outbound email is broken until they exist in Cloudflare.
 - [ ] Resend dashboard shows `mailer.jordanaf.com` **Verified**.
 - [ ] `jordanaf.com` + `www` resolve to the Worker (site loads).
 - [ ] Submit a real contact-form inquiry → email arrives from `inquiries@mailer.jordanaf.com`,
