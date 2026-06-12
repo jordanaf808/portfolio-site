@@ -38,3 +38,6 @@ pnpm-debug.log*
 # browser-automation verification artifacts (Playwright / Chrome DevTools MCP)
 .playwright-mcp/
 /*.png
+
+# design assets not used in the build
+8-bit-badges/
