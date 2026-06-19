@@ -14,7 +14,45 @@ import trueClassicMegaMenu from '@/assets/projects/true-classic/mega-menu-5.jpeg
 import trueClassicQuickAdd from '@/assets/projects/true-classic/QuickAddModal.jpeg'
 import trueClassicOldQuickAdd from '@/assets/projects/true-classic/old-quick-add.jpeg'
 
+import aMapOfLife from '@/assets/projects/jordanaf-dev/Astrology-and-Tarot-Readings-with-René-Aceves-Rene-Astrology-Tarot-Readings.jpg'
+import heatherBorah from '@/assets/projects/jordanaf-dev/HeatherBorah-Homepage.jpg'
+import opuntiaFamilyHealing from '@/assets/projects/jordanaf-dev/Opuntia-Healing-Family-Therapy.jpg'
+import vintageOctober from '@/assets/projects/jordanaf-dev/Vintage-October_homepage+menu.jpg'
+import stazeProductConfigurator from '@/assets/projects/jordanaf-dev/Staze - Product Page.jpg'
+
 export const jobRoles: JobRole[] = [
+	{
+		type: 'jobRole',
+		slug: 'jordanaf-dev',
+		title: 'JordanAF Dev',
+		subtitle: 'Contract Developer',
+		client: 'Independent Contractor',
+		year: 'Mar 2020 - current',
+		category: 'Web Development',
+		tech: [
+			'Shopify',
+			'Liquid',
+			'JS',
+			'HTML',
+			'CSS',
+			'API Integration',
+			'Adobe',
+			'Wordpress',
+		],
+		status: 'COMPLETE',
+		description: [
+			'Jordan A.F. Development is my independent web development practice, where I work directly with small business owners and e-commerce brands to design, build, and maintain websites tailored to their needs. On the e-commerce side, I do custom Shopify Liquid theme development for brands like Staze and Vintage October — typically working from client-provided designs to build custom sections and features that match their vision pixel-perfectly. These client relationships originated through Undefined Agency and carried over when the agency dissolved, a testament to the working relationships built along the way.',
+			"On the small business side, I consult with clients to advise on design direction and site structure, then handle the full build using Hostinger's website builder and hosting infrastructure — including contact forms, business email setup, and SEO fundamentals. Clients have included a therapist practice (AcevesTherapy, Opuntia Family Healing), an astrologer (A Map Of Life), and a makeup artist. Across all engagements I manage the full client relationship from first conversation to post-launch support, owning project communication, ongoing maintenance, and updates — translating non-technical clients' visions into clean, functional sites while keeping the process straightforward for them.",
+		],
+		images: [
+			aMapOfLife,
+			heatherBorah,
+			opuntiaFamilyHealing,
+			vintageOctober,
+			stazeProductConfigurator,
+		],
+		featured: true,
+	},
 	{
 		type: 'jobRole',
 		slug: 'undefined-agency',

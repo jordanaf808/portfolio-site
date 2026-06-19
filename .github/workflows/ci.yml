@@ -1,7 +1,8 @@
 name: CI
 
-# Quality gate only. Deployment is handled by Cloudflare's Git integration
-# (build command `pnpm build`, output dir `dist`), not by this workflow.
+# Quality gate only. Deployment is handled separately — either via Cloudflare
+# Workers Builds (git-connected in the Cloudflare dashboard) or manually with
+# `npx wrangler deploy`. This workflow does not deploy.
 on:
   push:
     branches: [main]
