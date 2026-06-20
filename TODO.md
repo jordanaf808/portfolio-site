@@ -1,15 +1,16 @@
 # To-Do:
 
 [ ] - set a max-width for the slideshow on the project page.
-[✅] - Create Services Page
-[🚧] - Build badges for tech icons, Make sure to add Icons8 reference link: `icons by <a target="_blank" href="https://icons8.com">Icons8</a>`
-[ ] - Replace placeholder `site: 'https://thecommerceboutique.com'` in astro.config.mjs with the actual production URL before deploy.
 [ ] - Create captions for images
 [ ] - Add Video capability to project card and project detail page.
-[✅] - Revisit pnpm overrides in pnpm-workspace.yaml (devalue ^5.8.1, ws ^8.20.1, yaml ^2.8.3).
-These are pinned floors patching transitive `pnpm audit` advisories (1 high devalue via astro, 2 moderate: ws via @cloudflare/vite-plugin, yaml via @astrojs/check). Remove each once the parent package ships the patched version upstream so the overrides don't silently hold back future resolutions. Re-check with `pnpm audit`. Note: pnpm v11 only reads overrides from pnpm-workspace.yaml (not package.json), and changing them needs `pnpm install --force` to re-resolve — see memory: ref-pnpm-v11-overrides.md.
+
 [ ] - Confirm where production builds run before next deploy. If Cloudflare Workers Builds runs on its Linux CI, it needs the Linux Sharp binary (@img/sharp-linux-x64 or -linux-arm64); only @img/sharp-darwin-arm64 is installed locally. If instead you build locally and deploy dist/, no action needed. Relevant because astro.config.mjs uses imageService 'compile' (build-time Sharp) for production; dev uses 'passthrough'.
 
+[✅] - Create Services Page
+[🚧] - Build badges for tech icons, Make sure to add Icons8 reference link: `icons by <a target="_blank" href="https://icons8.com">Icons8</a>`
+[✅] - Replace placeholder `site: 'https://thecommerceboutique.com'` in astro.config.mjs with the actual production URL before deploy.
+[✅] - Revisit pnpm overrides in pnpm-workspace.yaml (devalue ^5.8.1, ws ^8.20.1, yaml ^2.8.3).
+These are pinned floors patching transitive `pnpm audit` advisories (1 high devalue via astro, 2 moderate: ws via @cloudflare/vite-plugin, yaml via @astrojs/check). Remove each once the parent package ships the patched version upstream so the overrides don't silently hold back future resolutions. Re-check with `pnpm audit`. Note: pnpm v11 only reads overrides from pnpm-workspace.yaml (not package.json), and changing them needs `pnpm install --force` to re-resolve — see memory: ref-pnpm-v11-overrides.md.
 [✅] - Use the Astro Image component?
 [✅] - make horizontal scrollbar 6px wide
 [✅] - click on overlay to close image gallery
