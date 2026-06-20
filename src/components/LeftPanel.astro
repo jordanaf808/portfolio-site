@@ -32,19 +32,19 @@ const navCells: NavCell[] = [
   },
   {
     tag: 'a',
-    attrs: { href: '/archive' },
-    base: 'border-b border-primary',
-    active: activePage === 'archive',
-    label: 'Archive',
-    title: 'All Projects',
-  },
-  {
-    tag: 'a',
     attrs: { href: '/services' },
-    base: 'border-b border-primary min-[1000px]:border-b-0 min-[1000px]:border-r',
+    base: 'border-b border-primary',
     active: false,
     label: 'Services',
     title: 'What I Do',
+  },
+  {
+    tag: 'a',
+    attrs: { href: '/archive' },
+    base: 'border-b border-primary min-[1000px]:border-b-0 min-[1000px]:border-r',
+    active: activePage === 'archive',
+    label: 'Archive',
+    title: 'All Projects',
   },
   {
     tag: 'button',
