@@ -94,7 +94,7 @@ export const jobRoles: JobRole[] = [
 		description:
 			'Maintained and rebuilt the Shopify theme for Staze, a boutique herbal storage brand, translating a fresh redesign into a fully functional storefront. Developed custom templates, sections, and interactive features including pop-ups, dropdowns, and animations to enhance UX/UI and responsiveness using HTML, CSS, JavaScript, and Liquid. Rounded out the role with third-party app integration, performance optimization, SEO improvements, and ongoing technical troubleshooting to keep the store running smoothly.',
 		images: [stazeHomepage, stazeProductDetails],
-		featured: true,
+		featured: false,
 	},
 	{
 		type: 'jobRole',

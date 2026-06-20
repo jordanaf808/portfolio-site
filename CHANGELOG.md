@@ -2,6 +2,49 @@
 
 ---
 
+## 2026-06-19
+
+**Branch:** `main`
+**Change:** Filter homepage grid to featured projects only
+
+**Files touched:** `src/pages/index.astro`, `src/data/jobRoles.ts`
+
+**What changed:**
+
+- `index.astro`: modified `.map()` loop to filter by `project.featured` — now only renders projects/job roles where `featured: true`.
+- `jobRoles.ts`: set Staze's `featured` flag to `false` (it was `true` but now hidden from the homepage).
+
+**Why:** The homepage grid previously displayed all projects regardless of their `featured` flag. This change makes that flag operative: Staze is de-emphasized from the homepage to highlight the JordanAF Dev and Simplehuman roles instead.
+
+---
+
+**Branch:** `main`
+**Change:** Update JordanAF Dev copy, add Simplehuman PDP screenshot
+
+**Files touched:** `src/data/jobRoles.ts`, `src/assets/projects/simplehuman/personalization-form.jpg`
+
+**What changed:**
+
+- `jobRoles.ts`: updated JordanAF Dev subtitle from "Contract Developer" to "Fullstack Web Developer"; refined description copy for accuracy (pixel-perfect phrasing, added "scheduling" to services list, named "Heather Borah" explicitly); reordered image array to put Vintage October first; added new `simplehumanPersonalization` import and inserted it into the Simplehuman role's `images` array.
+- `personalization-form.jpg`: new screenshot of the custom product personalization form built at Simplehuman.
+
+**Why:** Content refresh: more accurate branding for the independent practice, and showcasing an additional Simplehuman feature (the PDP personalization form) alongside the existing product configuration screenshot.
+
+---
+
+**Branch:** `main`
+**Change:** Reorder navigation — Services before Archive
+
+**Files touched:** `src/components/LeftPanel.astro`
+
+**What changed:**
+
+- Swapped the nav link order: Services now appears before Archive in the bento nav grid. Updated the CSS class (`border-r` moved to Archive) and the active-state condition to match.
+
+**Why:** Navigation hierarchy refinement — prioritize the Services page over the project Archive.
+
+---
+
 ## 2026-06-04
 
 **Branch:** `feat/contact-turnstile`
