@@ -9,6 +9,7 @@ import stazeCustomTrio from '@/assets/projects/undefined-agency/Staze--Custom_Tr
 import stazeHomepage from '@/assets/projects/staze/homepage.jpg'
 import stazeProductDetails from '@/assets/projects/staze/product-details_custom-trio.jpeg'
 import simplehumanConfig from '@/assets/projects/simplehuman/Simplehuman-product-configuration.jpg'
+import simplehumanPersonalization from '@/assets/projects/simplehuman/personalization-form.jpg'
 import trueClassicProductCards from '@/assets/projects/true-classic/product-cards+loyalty.jpeg'
 import trueClassicMegaMenu from '@/assets/projects/true-classic/mega-menu-5.jpeg'
 import trueClassicQuickAdd from '@/assets/projects/true-classic/QuickAddModal.jpeg'
@@ -25,7 +26,7 @@ export const jobRoles: JobRole[] = [
 		type: 'jobRole',
 		slug: 'jordanaf-dev',
 		title: 'JordanAF Dev',
-		subtitle: 'Contract Developer',
+		subtitle: 'Fullstack Web Developer',
 		client: 'Independent Contractor',
 		year: 'Mar 2020 - current',
 		category: 'Web Development',
@@ -41,15 +42,15 @@ export const jobRoles: JobRole[] = [
 		],
 		status: 'COMPLETE',
 		description: [
-			'Jordan A.F. Development is my independent web development practice, where I work directly with small business owners and e-commerce brands to design, build, and maintain websites tailored to their needs. On the e-commerce side, I do custom Shopify Liquid theme development for brands like Staze and Vintage October — typically working from client-provided designs to build custom sections and features that match their vision pixel-perfectly. These client relationships originated through Undefined Agency and carried over when the agency dissolved, a testament to the working relationships built along the way.',
-			"On the small business side, I consult with clients to advise on design direction and site structure, then handle the full build using Hostinger's website builder and hosting infrastructure — including contact forms, business email setup, and SEO fundamentals. Clients have included a therapist practice (AcevesTherapy, Opuntia Family Healing), an astrologer (A Map Of Life), and a makeup artist. Across all engagements I manage the full client relationship from first conversation to post-launch support, owning project communication, ongoing maintenance, and updates — translating non-technical clients' visions into clean, functional sites while keeping the process straightforward for them.",
+			'Jordan A.F. Development is my independent web development practice, where I work directly with small business owners and e-commerce brands to design, build, and maintain websites tailored to their needs. On the e-commerce side, I do custom Shopify Liquid theme development for brands like Staze and Vintage October — typically working from client-provided designs to build custom sections and features that match their vision with pixel-perfect accuracy. These client relationships originated through Undefined Agency and carried over when the agency dissolved, a testament to the working relationships built along the way.',
+			"On the small business side, I consult with clients to advise on design direction and site structure, then handle the full build using Hostinger's website builder and hosting infrastructure — including contact forms, business email setup, scheduling, and SEO fundamentals. Clients have included a therapist practice (AcevesTherapy, Opuntia Family Healing), an astrologer (A Map Of Life), and a makeup artist (Heather Borah). Across all engagements I manage the full client relationship from first conversation to post-launch support, owning project communication, ongoing maintenance, and updates — translating non-technical clients' visions into clean, functional sites while keeping the process straightforward for them.",
 		],
 		images: [
-			aMapOfLife,
-			heatherBorah,
-			opuntiaFamilyHealing,
 			vintageOctober,
 			stazeProductConfigurator,
+			heatherBorah,
+			opuntiaFamilyHealing,
+			aMapOfLife,
 		],
 		featured: true,
 	},
@@ -110,7 +111,7 @@ export const jobRoles: JobRole[] = [
 			'As one of two Shopify developers on the e-commerce team at Simplehuman I helped maintain an international Shopify Plus store built on a custom theme and CMS system. I was a full-time, on-site contractor collaborating closely with our copywriters, designers, and marketing team to launch new products, build out site features, and keep content fresh across all regions.',
 			"Responsibilities ranged from updating product data, to integrating Shopify's search app, and building a custom product configuration form on the PDP. This site used the Slate toolkit for building and compiling Shopify themes and a custom CMS system leveraging metafields. Using Liquid, JavaScript, jQuery, Figma and SCSS I improved site performance, SEO, translations, and metafield management to deliver a unique and enjoyable shopping experience for tens of thousands of daily visitors.",
 		],
-		images: [simplehumanConfig],
+		images: [simplehumanConfig, simplehumanPersonalization],
 		featured: true,
 	},
 	{
