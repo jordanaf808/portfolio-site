@@ -2,6 +2,21 @@
 
 ---
 
+## 2026-06-22
+
+**Branch:** `main`
+**Change:** Mark JordanAF Dev role as active
+
+**Files touched:** `src/data/jobRoles.ts`
+
+**What changed:**
+
+- `jobRoles.ts`: changed JordanAF Dev role `status` from `'COMPLETE'` to `'ACTIVE'`.
+
+**Why:** JordanAF Dev is an ongoing independent practice, not a finished engagement — `COMPLETE` was inaccurate.
+
+---
+
 ## 2026-06-19
 
 **Branch:** `main`

@@ -40,7 +40,7 @@ export const jobRoles: JobRole[] = [
 			'Adobe',
 			'Wordpress',
 		],
-		status: 'COMPLETE',
+		status: 'ACTIVE',
 		description: [
 			'Jordan A.F. Development is my independent web development practice, where I work directly with small business owners and e-commerce brands to design, build, and maintain websites tailored to their needs. On the e-commerce side, I do custom Shopify Liquid theme development for brands like Staze and Vintage October — typically working from client-provided designs to build custom sections and features that match their vision with pixel-perfect accuracy. These client relationships originated through Undefined Agency and carried over when the agency dissolved, a testament to the working relationships built along the way.',
 			"On the small business side, I consult with clients to advise on design direction and site structure, then handle the full build using Hostinger's website builder and hosting infrastructure — including contact forms, business email setup, scheduling, and SEO fundamentals. Clients have included a therapist practice (AcevesTherapy, Opuntia Family Healing), an astrologer (A Map Of Life), and a makeup artist (Heather Borah). Across all engagements I manage the full client relationship from first conversation to post-launch support, owning project communication, ongoing maintenance, and updates — translating non-technical clients' visions into clean, functional sites while keeping the process straightforward for them.",
