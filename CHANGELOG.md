@@ -17,6 +17,19 @@
 
 ---
 
+**Branch:** `style/leftpanel-home-link`
+**Change:** Make LeftPanel title a clickable home link
+
+**Files touched:** `src/components/LeftPanel.astro`
+
+**What changed:**
+
+- `LeftPanel.astro`: wrapped the "Jordan A.F." `<h1>` text in `<a href="/" class="cursor-pointer">`.
+
+**Why:** The brand title in the left panel was static text with no way to navigate home by clicking it, despite reading as the site's logo/identity mark — a standard click-to-home affordance was missing.
+
+---
+
 ## 2026-06-19
 
 **Branch:** `main`
