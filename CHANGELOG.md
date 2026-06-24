@@ -5,7 +5,7 @@
 ## 2026-06-24
 
 **Branch:** `main`
-**Commit:** (pending)
+**Commit:** `3c1baa4`
 **Change:** Align LeftPanel tech-tags row with page footer at viewport bottom
 
 **Files touched:** `src/components/LeftPanel.astro`, `src/pages/index.astro`, `src/pages/services.astro`
@@ -26,7 +26,7 @@ All three now share the same explicit min-height (`63px` at ≥600px viewport wi
 ---
 
 **Branch:** `main`
-**Commit:** (pending)
+**Commit:** `e6d47bc`
 **Change:** Lighten background color token; add `--color-light-grey`; minor follow-ups
 
 **Files touched:** `src/styles/global.css`, `DESIGN.md`, `src/pages/index.astro`, `src/pages/services.astro`, `TODO.md`
