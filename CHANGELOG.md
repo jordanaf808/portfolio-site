@@ -2,6 +2,29 @@
 
 ---
 
+## 2026-06-24
+
+**Branch:** `main`
+**Commit:** (pending)
+**Change:** Align LeftPanel tech-tags row with page footer at viewport bottom
+
+**Files touched:** `src/components/LeftPanel.astro`, `src/pages/index.astro`, `src/pages/services.astro`
+
+**What changed:**
+
+- `LeftPanel.astro`: tech-tags row (`p-8 border-t border-primary`) changed to `p-5 outline-1 outline-primary min-h-[95px] min-[600px]:min-h-[63px] flex items-center`.
+- `index.astro` + `services.astro`: footer (`p-6`) changed to `p-6 min-h-[95px] min-[600px]:min-h-[63px] flex items-center`.
+
+All three now share the same explicit min-height (`63px` at ≥600px viewport width, `95px` below it), with `flex items-center` vertically centering whichever side's natural content is shorter than that floor. The `600px` breakpoint matches where the LeftPanel mobile drawer's `min(80vw, max-w-lg)` width formula caps at 480px — also where the 6 tech-tag badges stop wrapping to two lines.
+
+**Why:** The LeftPanel's tech-tags row sits in a `sticky` + `h-screen` aside with the nav grid as `flex-1`, so its top border is pinned to `viewport_height − row_height` regardless of scroll. The page footer is normal document flow and only reaches the viewport bottom at max scroll, where its top border sits at `viewport_height − footer_height`. The two borders only coincide when both heights match — they didn't. Matching them with an explicit shared `min-height` (mirroring the existing `min-h-37` convention already used for the header row) fixes the multi-pixel visual gap reported via screenshot.
+
+**Note:** A residual sub-pixel gap (~0.1–0.125px, varies by viewport width) remains after this fix — confirmed via a `getBoundingClientRect()` sweep to be inherent floating-point rounding drift between the sticky sidebar's shallow layout calculation and the footer's deep document-flow content tree, not a wrong height value. Not fixable without introducing runtime JS, which conflicts with this project's zero-JS-unless-interactive rule (`astro.md`); accepted as a known limitation. The `border-t` → `outline-1` swap on the tech-tags row was tested as a possible fix for this residual (controlled A/B/C comparison of `border-t`/`outline`/`box-shadow` showed byte-identical layout geometry at every tested width — not a proven technical fix) but was kept anyway as the preferred final visual state.
+
+**Verified:** `pnpm type-check` → 0 errors. `pnpm build` → clean. Measured via Playwright across 1024–1920px desktop widths, the mobile drawer-open case (390–600px), and both `/` and `/services`.
+
+---
+
 ## 2026-06-22
 
 **Branch:** `main`
