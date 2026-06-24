@@ -25,6 +25,22 @@ All three now share the same explicit min-height (`63px` at ≥600px viewport wi
 
 ---
 
+**Branch:** `main`
+**Commit:** (pending)
+**Change:** Lighten background color token; add `--color-light-grey`; minor follow-ups
+
+**Files touched:** `src/styles/global.css`, `DESIGN.md`, `src/pages/index.astro`, `src/pages/services.astro`, `TODO.md`
+
+**What changed:**
+
+- `global.css` + `DESIGN.md`: `--color-background` changed from `#f4f4f0` to `#fafafa`. `global.css` also adds a new `--color-light-grey: #f4f4f0` token, preserving the old shade as a named, reusable color.
+- `index.astro` + `services.astro`: added explicit `bg-background` to the "Selected Work" / "What I Do" section header divs.
+- `TODO.md`: added a follow-up item to disable the text-editor cursor when not hovering over or focused in a text editor.
+
+**Why:** General brightness/polish tweak to the background color — `--color-light-grey` keeps the previous shade available as a named token instead of losing it. The TODO item is a noted follow-up, not yet implemented.
+
+---
+
 ## 2026-06-22
 
 **Branch:** `main`

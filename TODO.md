@@ -1,5 +1,6 @@
 # To-Do:
 
+[ ] - disable text-editor cursor when not hovering over a text editor or active in a text editor.
 [ ] - set a max-width for the slideshow on the project page.
 [ ] - Create captions for images
 [ ] - Add Video capability to project card and project detail page.

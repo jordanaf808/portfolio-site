@@ -3,7 +3,8 @@
 @theme {
 	/* Colors */
 	--color-primary: #111111;
-	--color-background: #f4f4f0;
+	--color-background: #fafafa;
+	--color-light-grey: #f4f4f0;
 	--color-surface: #ffffff;
 	--color-text: #222222;
 	--color-muted: #888888;

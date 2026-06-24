@@ -121,7 +121,7 @@ Editorial pairing — Newsreader (italic display) + Work Sans (body) + Space Gro
 ```css
 @theme {
 	--color-primary: #111111;
-	--color-background: #f4f4f0;
+	--color-background: #fafafa;
 	--color-surface: #ffffff;
 	--color-text: #222222;
 	--color-muted: #888888;
