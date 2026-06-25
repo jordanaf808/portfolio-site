@@ -33,7 +33,7 @@
 ---
 
 **Branch:** `feat/media-gallery-scaffolding`
-**Commit:** _pending_
+**Commit:** `7a7e1b5`
 **Change:** Add image caption + video scaffolding; rename ImageGallery → MediaGallery
 
 **Files touched:** `src/types/index.ts`, `src/data/jobRoles.ts`, `src/components/ProjectCard.astro`, `src/components/ImageGallery.astro` → `src/components/MediaGallery.astro`, `src/pages/projects/[slug].astro`, `TODO.md`
