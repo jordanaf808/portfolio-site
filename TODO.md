@@ -5,6 +5,8 @@
 [🚧] - Create captions for images. Scaffolding built (ImageItem.caption, rendered in MediaGallery slideshow) — no copy written yet.
 [🚧] - Add Video capability to project card and project detail page. Scaffolding built (VideoItem type, MediaGallery video slides, ProjectCard video badge) — no video assets exist yet to verify with.
 
+[ ] - CartDrawer submit button computes to `cursor: default` instead of `pointer` — missing the `cursor-pointer` Tailwind class other buttons have.
+
 [✅] - Confirm where production builds run before next deploy. Resolved: pnpm-lock.yaml already records every @img/sharp-* platform binary (darwin + linux); `pnpm install` resolves the one matching whatever OS runs `pnpm build`, so no pinning is needed whether deploy goes through Workers Builds (Linux CI) or a local manual `wrangler deploy`. See BUILD.md. Still worth a one-time check that Workers Builds' git integration is actually connected in the Cloudflare dashboard, since that's outside repo visibility.
 
 [✅] - Create Services Page
