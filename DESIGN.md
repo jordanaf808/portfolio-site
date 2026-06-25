@@ -3,7 +3,8 @@ name: Jordan A.F. — Shopify & JS/TS Developer
 brand_history: Originally scoped as "The Commerce Boutique"; rebranded toward personal identity during build.
 colors:
   primary: '#111111'
-  background: '#f4f4f0'
+  background: '#fafafa'
+  light-grey: '#f4f4f0'
   surface: '#ffffff'
   text: '#222222'
   muted: '#888888'
@@ -52,7 +53,7 @@ spacing:
 
 # Jordan A.F. — Portfolio Site
 
-_Reflects the implementation as of 2026-05-27._
+_Reflects the implementation as of 2026-06-25._
 
 ## Product Overview
 
@@ -94,10 +95,10 @@ The Cart Drawer is also reachable directly from the LeftPanel "Get In Touch" ben
 
 ### Color Palette
 
-The implementation uses 8 tokens, all defined in `src/styles/global.css` `@theme` block:
+The implementation uses 8 core tokens (plus a few hover-state variants), all defined in `src/styles/global.css` `@theme` block:
 
 - **Primary:** `#111111` — Charcoal black; borders, primary text, solid buttons.
-- **Background:** `#F4F4F0` — Alabaster off-white; main canvas (LeftPanel).
+- **Background:** `#FAFAFA` — Off-white; main canvas. `#F4F4F0` (the original background value) survives as the secondary `--color-light-grey` token.
 - **Surface:** `#FFFFFF` — Crisp white; right-side panel, project cards, Cart Drawer.
 - **Text:** `#222222` — Near-black; primary body copy.
 - **Muted:** `#888888` — Stone grey; metadata, tags, secondary labels.
