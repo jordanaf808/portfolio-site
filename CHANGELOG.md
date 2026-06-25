@@ -5,6 +5,20 @@
 ## 2026-06-25
 
 **Branch:** `feat/media-gallery-scaffolding`
+**Commit:** `1745c62`
+**Change:** Sync CLAUDE.md and DESIGN.md with current architecture
+
+**Files touched:** `CLAUDE.md`, `DESIGN.md`
+
+**What changed:** CLAUDE.md: bumped the documented Astro version, dropped the "planned" framing on the source-structure tree and added `jobRoles.ts`/`services.ts`/`services.astro`/`lib/`/`utils/`, updated the data-flow description to cover the shared `featured` flag and the Turnstile/same-origin checks on `/api/contact`, replaced the hardcoded (and now-wrong) design-tokens table with a pointer to `global.css`, and added constraints for the `MediaGallery.astro` rename and the `featured` flag. DESIGN.md: corrected the background hex (`#f4f4f0` → `#fafafa`, with `#f4f4f0` redescribed as the `light-grey` token) and bumped the "as of" date stamp.
+
+**Why:** CLAUDE.md hadn't been updated in 21 commits — a job-roles content model, a Services page, the gallery rename, and the contact-endpoint hardening had all landed without the doc catching up, so a fresh session reading it would get an inaccurate picture of the codebase.
+
+**Verified:** Documentation-only change. Cross-checked every claim against the current source (`package.json`, `global.css`, `contact.ts`, `wrangler.jsonc`) before editing; confirmed no stale strings remain via `grep`.
+
+---
+
+**Branch:** `feat/media-gallery-scaffolding`
 **Commit:** `c220709`
 **Change:** Clarify Sharp binary resolution for either deploy path
 
