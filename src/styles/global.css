@@ -50,6 +50,13 @@
 		color: var(--color-text);
 		font-family: var(--font-body);
 		line-height: 1.5;
+		cursor: pointer;
+	}
+
+	input,
+	textarea,
+	[contenteditable='true'] {
+		cursor: text;
 	}
 
 	::selection {
