@@ -2,6 +2,56 @@
 
 ---
 
+## 2026-06-25
+
+**Branch:** `feat/media-gallery-scaffolding`
+**Commit:** `c220709`
+**Change:** Clarify Sharp binary resolution for either deploy path
+
+**Files touched:** `BUILD.md`
+
+**What changed:** Added a note under the Deployment section recording that `pnpm-lock.yaml` already resolves every `@img/sharp-*` platform binary (darwin + linux), so `pnpm install` picks the right one for whichever OS runs `pnpm build` — no manual pinning needed whether deploy goes through Workers Builds (Linux CI) or a local manual `wrangler deploy`.
+
+**Why:** Closes out a TODO.md item that was previously an open question about whether the Linux Sharp binary would be available if Cloudflare Workers Builds runs the production build. Investigation showed it's a non-issue — pnpm's lockfile already carries cross-platform optional-dependency resolutions.
+
+**Verified:** Documentation-only change, no build/type-check impact.
+
+---
+
+**Branch:** `feat/media-gallery-scaffolding`
+**Commit:** `36ba4a2`
+**Change:** Make cursor pointer on text, keep caret in form fields
+
+**Files touched:** `src/styles/global.css`, `TODO.md`
+
+**What changed:** Added `cursor: pointer` to the base `body` rule, and `cursor: text` on `input`, `textarea`, `[contenteditable='true']` to override it where text entry is actually possible.
+
+**Why:** Body text was showing the browser's default text-select caret on hover, inconsistent with the rest of the site's clickable-everything feel. The contact form's text/email inputs and textarea still need the native caret to remain usable.
+
+**Verified:** `pnpm type-check` → 0 errors. `pnpm lint` → 0 errors. Confirmed via Playwright: `body`/`h1` compute to `cursor: pointer`; the CartDrawer's two text inputs, email input, and textarea compute to `cursor: text`; its `<button type="submit">` is unaffected (separate pre-existing gap noted, not in scope here). Also confirmed in the same pass that the existing `#image-gallery { width: min(750px, 100%) }` rule in `global.css` already caps the slideshow at 750px on wide viewports — closes that TODO.md item with no code change needed.
+
+---
+
+**Branch:** `feat/media-gallery-scaffolding`
+**Commit:** _pending_
+**Change:** Add image caption + video scaffolding; rename ImageGallery → MediaGallery
+
+**Files touched:** `src/types/index.ts`, `src/data/jobRoles.ts`, `src/components/ProjectCard.astro`, `src/components/ImageGallery.astro` → `src/components/MediaGallery.astro`, `src/pages/projects/[slug].astro`, `TODO.md`
+
+**What changed:**
+
+- `types/index.ts`: added `ImageItem` (`{ src: ImageMetadata; alt?: string; caption?: string }`) and `VideoItem` (`{ src: string; poster: ImageMetadata; alt?: string; caption?: string }`). `BaseEntry.images` changed from `ImageMetadata[]` to `ImageItem[]`; added optional `videos?: VideoItem[]`.
+- `jobRoles.ts`: wrapped the 5 existing `images: [...]` array literals into `{ src }` objects to match the new shape. No `caption`/`alt`/`videos` values added yet.
+- `ProjectCard.astro`: reads `project.images[0].src`/`.alt` instead of the bare `ImageMetadata`; renders a small square play-icon badge over the card thumbnail when `project.videos` is non-empty.
+- `ImageGallery.astro` renamed to `MediaGallery.astro` (only consumer was `[slug].astro`) since it now handles both images and video. Accepts a new optional `videos` prop, builds a combined ordered slide list (images then videos) for the thumbnail strip and fullscreen modal, renders video thumbnails using their `poster` image with a play-icon overlay, and adds a `<video muted loop playsinline>` element to the modal with a custom play/pause button (no native `controls`, so no scrubber/volume/fullscreen exposed) instead of autoplaying or exposing sound. Also threads `caption` through to a new caption element in the modal, shown only when present.
+- `[slug].astro`: updated import/usage to `MediaGallery`, passes `videos={entry.videos}` alongside `images`. Fixed `ogImage={entry.images?.[0]?.src?.src}` (one extra `.src` hop now that `images[0].src` is the `ImageMetadata`, not the URL string).
+
+**Why:** Closing out two TODO.md items ("Create captions for images", "Add Video capability") as scaffolding only — no caption copy or video files exist yet, so this is purely additive, type-checked plumbing with zero visual change today. `images`/`videos` kept as two separate optional fields rather than merged into one discriminated-union `media` field, since merging would force a rename touching every consumer for no behavioral gain right now.
+
+**Verified:** `pnpm type-check` → 0 errors. `pnpm lint` → 0 errors. `pnpm build` → clean. Manually exercised in `pnpm dev` via Playwright: thumbnail clicks open the modal at the right slide, counter/prev/next/wraparound/close all behave identically to before the refactor, caption stays hidden (no copy yet), video toggle stays hidden (no video data yet), homepage cards render with no stray video badges.
+
+---
+
 ## 2026-06-24
 
 **Branch:** `main`

@@ -1,0 +1,248 @@
+---
+import { Picture, getImage } from 'astro:assets';
+import type { ImageItem, VideoItem } from '@/types';
+
+interface Props {
+  images: ImageItem[];
+  videos?: VideoItem[];
+  title: string;
+}
+const { images, videos = [], title } = Astro.props;
+const total = images.length + videos.length;
+
+// The fullscreen slideshow swaps img/video src from client JS. Pre-generate both a
+// 1× (1600px) and 2× (3200px) WebP per image so the browser picks by DPR.
+const [sources1x, sources2x, posterSources] = await Promise.all([
+  Promise.all(images.map((image) => getImage({ src: image.src, format: 'webp', width: 1600, quality: 'max' }))),
+  Promise.all(images.map((image) => getImage({ src: image.src, format: 'webp', width: 3200, quality: 'max' }))),
+  Promise.all(videos.map((video) => getImage({ src: video.poster, format: 'webp', width: 1600, quality: 'max' }))),
+]);
+
+interface ImageSlide {
+  type: 'image';
+  src: string;
+  srcset: string;
+  alt: string;
+  caption?: string;
+}
+interface VideoSlide {
+  type: 'video';
+  src: string;
+  poster: string;
+  alt: string;
+  caption?: string;
+}
+type Slide = ImageSlide | VideoSlide;
+
+const slides: Slide[] = [
+  ...sources1x.map(
+    (s, i): ImageSlide => ({
+      type: 'image',
+      src: s.src,
+      srcset: `${s.src} 1x, ${sources2x[i].src} 2x`,
+      alt: images[i].alt ?? `${title} ${i + 1}`,
+      caption: images[i].caption,
+    }),
+  ),
+  ...posterSources.map(
+    (p, i): VideoSlide => ({
+      type: 'video',
+      src: videos[i].src,
+      poster: p.src,
+      alt: videos[i].alt ?? `${title} video ${i + 1}`,
+      caption: videos[i].caption,
+    }),
+  ),
+];
+
+const thumbnails = [
+  ...images.map((image, i) => ({ kind: 'image' as const, index: i, image })),
+  ...videos.map((video, i) => ({ kind: 'video' as const, index: images.length + i, video })),
+];
+---
+<!-- Horizontally scrolling thumbnail strip -->
+<div
+  id="image-gallery"
+  data-slides={JSON.stringify(slides)}
+  class="flex overflow-x-auto border-b border-primary"
+>
+  {thumbnails.map((item) => (
+    <button
+      type="button"
+      data-gallery-index={item.index}
+      class="relative shrink-0 w-56.25 h-70.75 overflow-hidden border-r border-primary bg-surface-container-high cursor-pointer p-0"
+      aria-label={
+        item.kind === 'image'
+          ? `${title} — open image ${item.index + 1} in slideshow`
+          : `${title} — open video ${item.index + 1} in slideshow`
+      }
+    >
+      {item.kind === 'image' ? (
+        <Picture
+          src={item.image.src}
+          formats={['avif', 'webp']}
+          alt={item.image.alt ?? `${title} ${item.index + 1}`}
+          widths={[450, 1000]}
+          sizes="225px"
+          class="w-full h-full object-cover grayscale-hover"
+          loading={item.index === 0 ? 'eager' : 'lazy'}
+        />
+      ) : (
+        <>
+          <Picture
+            src={item.video.poster}
+            formats={['avif', 'webp']}
+            alt={item.video.alt ?? `${title} video ${item.index + 1}`}
+            widths={[450, 1000]}
+            sizes="225px"
+            class="w-full h-full object-cover grayscale-hover"
+            loading="lazy"
+          />
+          <span class="absolute inset-0 flex items-center justify-center bg-black/30 text-white text-lg" aria-hidden="true">▶</span>
+        </>
+      )}
+    </button>
+  ))}
+</div>
+
+<!-- Fullscreen slideshow -->
+{total > 0 && (
+  <dialog
+    id="slideshow-modal"
+    class="fixed inset-0 w-screen h-screen max-w-none max-h-none m-0 p-0 bg-black/90 backdrop:bg-transparent"
+    aria-label="Media slideshow"
+  >
+    <div class="flex flex-col h-full">
+      <div class="flex items-center justify-between p-6 border-b border-white/10">
+        <span id="slideshow-counter" class="font-mono text-xs uppercase tracking-widest text-white/50"></span>
+        <button
+          id="slideshow-close"
+          class="font-mono text-xs uppercase tracking-widest text-white/50 hover:text-white transition-colors"
+          aria-label="Close slideshow"
+        >Close ×</button>
+      </div>
+      <div class="flex-1 flex items-center justify-between px-6 gap-6 overflow-hidden">
+        <button
+          id="slideshow-prev"
+          class="shrink-0 cursor-pointer font-mono text-xs uppercase tracking-widest text-white/50 hover:text-white transition-colors"
+          aria-label="Previous"
+        >← Prev</button>
+        <div class="relative flex-1 flex items-center justify-center h-full overflow-hidden">
+          <img id="slideshow-img" src="" alt="" class="max-w-full max-h-full object-contain" />
+          <video id="slideshow-video" muted loop playsinline hidden class="max-w-full max-h-full object-contain"></video>
+          <button
+            id="slideshow-video-toggle"
+            type="button"
+            hidden
+            class="absolute bottom-6 left-6 bg-black/40 px-3 py-1 font-mono text-xs uppercase tracking-widest text-white/70 hover:text-white transition-colors"
+          >
+            <span data-state="play">▶ Play</span>
+            <span data-state="pause" hidden>⏸ Pause</span>
+          </button>
+        </div>
+        <button
+          id="slideshow-next"
+          class="shrink-0 cursor-pointer font-mono text-xs uppercase tracking-widest text-white/50 hover:text-white transition-colors"
+          aria-label="Next"
+        >Next →</button>
+      </div>
+      <p id="slideshow-caption" hidden class="px-6 py-4 font-mono text-xs text-white/60 border-t border-white/10"></p>
+    </div>
+  </dialog>
+)}
+
+<script>
+  interface ImageSlide { type: 'image'; src: string; srcset: string; alt: string; caption?: string }
+  interface VideoSlide { type: 'video'; src: string; poster: string; alt: string; caption?: string }
+  type Slide = ImageSlide | VideoSlide
+
+  const gallery = document.getElementById('image-gallery')
+  const slides: Slide[] = gallery ? JSON.parse(gallery.dataset.slides ?? '[]') : []
+  const modal = document.getElementById('slideshow-modal') as HTMLDialogElement | null
+
+  if (modal && slides.length > 0) {
+    let current = 0
+    const img = document.getElementById('slideshow-img') as HTMLImageElement
+    const video = document.getElementById('slideshow-video') as HTMLVideoElement
+    const videoToggle = document.getElementById('slideshow-video-toggle') as HTMLButtonElement
+    const playLabel = videoToggle.querySelector('[data-state="play"]') as HTMLElement
+    const pauseLabel = videoToggle.querySelector('[data-state="pause"]') as HTMLElement
+    const counter = document.getElementById('slideshow-counter')
+    const caption = document.getElementById('slideshow-caption') as HTMLElement | null
+
+    function showSlide(index: number): void {
+      current = (index + slides.length) % slides.length
+      const slide = slides[current]
+
+      video.pause()
+      if (slide.type === 'image') {
+        img.src = slide.src
+        img.srcset = slide.srcset
+        img.alt = slide.alt
+        img.hidden = false
+        video.hidden = true
+        videoToggle.hidden = true
+      } else {
+        video.src = slide.src
+        video.poster = slide.poster
+        video.currentTime = 0
+        playLabel.hidden = false
+        pauseLabel.hidden = true
+        img.hidden = true
+        video.hidden = false
+        videoToggle.hidden = false
+      }
+
+      if (caption) {
+        caption.textContent = slide.caption ?? ''
+        caption.hidden = !slide.caption
+      }
+      if (counter) {
+        counter.textContent = `${String(current + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`
+      }
+    }
+
+    videoToggle.addEventListener('click', () => {
+      if (video.paused) {
+        video.play()
+      } else {
+        video.pause()
+      }
+    })
+    video.addEventListener('play', () => {
+      playLabel.hidden = true
+      pauseLabel.hidden = false
+    })
+    video.addEventListener('pause', () => {
+      playLabel.hidden = false
+      pauseLabel.hidden = true
+    })
+
+    gallery?.querySelectorAll<HTMLElement>('button[data-gallery-index]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        showSlide(Number(btn.dataset.galleryIndex))
+        modal.showModal()
+      })
+    })
+
+    document.getElementById('slideshow-close')?.addEventListener('click', () => {
+      video.pause()
+      modal.close()
+    })
+    document.getElementById('slideshow-prev')?.addEventListener('click', () => showSlide(current - 1))
+    document.getElementById('slideshow-next')?.addEventListener('click', () => showSlide(current + 1))
+
+    modal.addEventListener('click', (e) => {
+      const t = e.target as HTMLElement
+      if (t.closest('button') || t.id === 'slideshow-img' || t.id === 'slideshow-video') return
+      video.pause()
+      modal.close()
+    })
+
+    document.addEventListener('keydown', (e) => {
+      if (!modal.open) return
+      if (e.key === 'ArrowLeft') showSlide(current - 1)
+      if (e.key === 'ArrowRight') showSlide(current + 1)
+    })
+  }
+</script>

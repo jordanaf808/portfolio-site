@@ -1,7 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import Accordion from '@/components/Accordion.astro';
-import ImageGallery from '@/components/ImageGallery.astro';
+import MediaGallery from '@/components/MediaGallery.astro';
 import TechBadge from '@/components/TechLabel.astro';
 import ContactButton from '@/components/ContactButton.astro';
 import EntryNavLink from '@/components/EntryNavLink.astro';
@@ -33,7 +33,7 @@ const description = Array.isArray(entry.description) ? entry.description[0] : en
 <Layout
   title={`${entry.title} — Jordan A.F. | Shopify & JS/TS Developer`}
   description={description}
-  ogImage={entry.images?.[0]?.src}
+  ogImage={entry.images?.[0]?.src?.src}
   activePage="project"
 >
   <!-- Hero -->
@@ -49,7 +49,7 @@ const description = Array.isArray(entry.description) ? entry.description[0] : en
 
   <!-- Gallery: image cycler with thumbnail navigation -->
   {entry.images.length > 0 && (
-    <ImageGallery images={entry.images} title={entry.title} />
+    <MediaGallery images={entry.images} videos={entry.videos} title={entry.title} />
   )}
 
   <!-- Accordions -->
