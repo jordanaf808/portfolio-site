@@ -23,6 +23,8 @@ pnpm build        # full Astro production build
 
 Both options deploy to Cloudflare Workers using `wrangler.jsonc` for config.
 
+**Sharp binary, either path:** production builds use `imageService: 'compile'` (build-time Sharp) per `astro.config.mjs`. `pnpm-lock.yaml` records every `@img/sharp-*` platform variant (darwin and linux), so `pnpm install` resolves the correct one for whichever OS actually runs `pnpm build` — Workers Builds' Linux CI or a local Mac. No manual pinning needed for either option.
+
 ### Option A — Workers Builds (recommended)
 
 Connect the repo in the Cloudflare dashboard: **Workers → your worker → Builds → Connect GitHub**. Auto-deploys on push to `main`. Uses the `wrangler.jsonc` build config — there is no "output directory" like Pages; Wrangler handles the asset upload.
