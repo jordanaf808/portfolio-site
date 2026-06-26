@@ -12,10 +12,13 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     env:
-      # astro:env reads RESEND_API_KEY at build. With the default validateSecrets:false
-      # the build does not require it, but a dummy keeps CI deterministic and is required
-      # if validateSecrets is ever enabled. No email is sent in CI.
+      # Astro validates the env vars declared in astro.config.mjs during the build.
+      # We're not testing the contact form here, so real secrets aren't needed —
+      # test values are enough. Cloudflare publishes "always pass" test keys for
+      # Turnstile that work for both the site key and secret key below.
       RESEND_API_KEY: re_dummy_ci_value
+      PUBLIC_TURNSTILE_SITE_KEY: 1x00000000000000000000AA
+      TURNSTILE_SECRET_KEY: 1x0000000000000000000000000000000AA
     steps:
       - uses: actions/checkout@v4
 

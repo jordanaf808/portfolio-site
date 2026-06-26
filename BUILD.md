@@ -15,7 +15,7 @@ pnpm test         # Vitest unit tests
 pnpm build        # full Astro production build
 ```
 
-`RESEND_API_KEY` is set to a dummy value in CI so the Astro build completes without real secrets — no email is sent. A failing step blocks merge and acts as the deploy gate.
+`RESEND_API_KEY` is set to a dummy value in CI so the Astro build completes without real secrets — no email is sent. `PUBLIC_TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` are set to Cloudflare's published "always pass" test keys — `PUBLIC_TURNSTILE_SITE_KEY` is required at build time because it's inlined into the client bundle (`context: 'client'` in `astro.config.mjs`), not just read at runtime. A failing step blocks merge and acts as the deploy gate.
 
 ---
 
@@ -44,6 +44,8 @@ Requires either a `wrangler login` session or a `CLOUDFLARE_API_TOKEN` environme
 | Variable | Where | Purpose |
 |---|---|---|
 | `RESEND_API_KEY` | `.env.local` (dev) / `.dev.vars` (preview) / Workers secret (prod) | Resend email API for `/api/contact` |
+| `PUBLIC_TURNSTILE_SITE_KEY` | `.env.local` (dev) / `.dev.vars` (preview) / Workers secret (prod) | Public Turnstile widget key, rendered client-side in `CartDrawer.tsx`; inlined at build time |
+| `TURNSTILE_SECRET_KEY` | `.env.local` (dev) / `.dev.vars` (preview) / Workers secret (prod) | Server-only Turnstile secret for the `siteverify` call in `/api/contact` |
 | `CLOUDFLARE_API_TOKEN` | Local shell env or GitHub secret | Wrangler auth for manual deploy |
 
 **Important:** `pnpm preview` runs the Cloudflare workerd runtime and reads secrets from `.dev.vars`, not `.env.local`. If `/api/contact` returns 500 in preview, check `.dev.vars` first.
