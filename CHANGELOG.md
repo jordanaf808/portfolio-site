@@ -2,6 +2,22 @@
 
 ---
 
+## 2026-06-26
+
+**Branch:** `fix/ci-turnstile-env`
+**Commit:** `0586c14`
+**Change:** Provide Turnstile test keys in CI build
+
+**Files touched:** `.github/workflows/ci.yml`, `BUILD.md`, `.claude/rules/security.md`
+
+**What changed:** Added `PUBLIC_TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` to the CI `verify` job's `env:` block, using Cloudflare's published "always pass" Turnstile test keypair. Documented both variables in `BUILD.md`'s environment variables table and added a Turnstile subsection to `.claude/rules/security.md` next to the existing `RESEND_API_KEY` write-up.
+
+**Why:** CI's `pnpm build` step failed with `[EnvInvalidVariables] PUBLIC_TURNSTILE_SITE_KEY is missing`. `astro.config.mjs`'s env schema declares it with `context: 'client'`, so Astro inlines it into the client bundle at build time, not just at runtime — CI only supplied a dummy `RESEND_API_KEY`, leaving the Turnstile vars unset.
+
+**Verified:** Ran `pnpm type-check` and `pnpm lint` clean; simulated the CI build with only the CI-style env vars set (`env -i ... pnpm build`) and confirmed it completes without the `EnvInvalidVariables` error.
+
+---
+
 ## 2026-06-25
 
 **Branch:** `feat/media-gallery-scaffolding`
