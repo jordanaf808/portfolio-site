@@ -1,43 +1,52 @@
-# Astro Starter Kit: Minimal
+# Jordan A.F. — Portfolio Site
 
-```sh
-pnpm create astro@latest -- --template minimal
+A premium, e-commerce-inspired developer portfolio. Projects and job roles are browsed like a lookbook, and the contact flow is a slide-in Cart Drawer ("checkout") instead of a typical contact page.
+
+**Live:** [jordanaf.com](https://jordanaf.com)
+
+## Stack
+
+- [Astro 6](https://astro.build) — hybrid output, static by default
+- React 19 — interactive islands only (Cart Drawer / contact form)
+- Tailwind CSS v4
+- Cloudflare Workers (`@astrojs/cloudflare` adapter) — the only SSR route is `/api/contact`
+- [Resend](https://resend.com) — transactional email for contact form submissions
+- Cloudflare Turnstile — bot protection on the contact form
+- Zod — server-side input validation
+- Vitest + ESLint
+
+## Getting started
+
+```bash
+pnpm install
+cp .env.example .env.local   # fill in RESEND_API_KEY + Turnstile keys
+pnpm dev                     # localhost:4321
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Requires Node ≥22.12.0.
 
-## 🚀 Project Structure
+## Commands
 
-Inside of your Astro project, you'll see the following folders and files:
+| Command           | Action                                  |
+| ----------------- | --------------------------------------- |
+| `pnpm dev`        | Start the dev server                    |
+| `pnpm build`      | Production build to `./dist/`           |
+| `pnpm preview`    | Preview the build locally               |
+| `pnpm type-check` | Strict TypeScript check (`astro check`) |
+| `pnpm lint`       | ESLint                                  |
+| `pnpm test`       | Run the Vitest suite once               |
+| `pnpm test:watch` | Vitest in watch mode                    |
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+## Deployment
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Deploys to Cloudflare Workers — the `@astrojs/cloudflare` v13 adapter no longer targets Pages. Deploy config lives in `wrangler.jsonc`; ship with `npx wrangler deploy`. Full CI/deploy notes live in [BUILD.md](./BUILD.md).
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Project docs
 
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+| Doc                            | What's in it                                                                                                    |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| [CLAUDE.md](./CLAUDE.md)       | Architecture, source layout, and constraints — written for AI coding agents, also a good orientation for humans |
+| [DESIGN.md](./DESIGN.md)       | Full design system: tokens, typography, screen-by-screen specs                                                  |
+| [BUILD.md](./BUILD.md)         | CI and deploy workflow                                                                                          |
+| [CHANGELOG.md](./CHANGELOG.md) | Build log — what changed, why, per commit                                                                       |
+| [TODO.md](./TODO.md)           | Current punch list                                                                                              |
