@@ -5,7 +5,7 @@
 ## 2026-06-29
 
 **Branch:** `feat/slideshow-ux-improvements`
-**Commit:** _pending_
+**Commit:** `d620d8f`
 **Change:** Improve fullscreen slideshow click targets, responsive text, and caption placement
 
 **Files touched:** `src/components/MediaGallery.astro`, `TODO.md`
