@@ -18,6 +18,20 @@
 
 ---
 
+**Branch:** `feat/slideshow-ux-improvements`
+**Commit:** _pending_
+**Change:** Slideshow top bar refinements — caption placement, video autoplay, click-to-toggle
+
+**Files touched:** `src/components/MediaGallery.astro`
+
+**What changed:** Counter/close row and caption are now one `flex-wrap` row: the caption sits between the counter and close button (max-width, centered) on `sm:`+ screens, and drops to its own full-width row below them on mobile, using `order-*` utilities rather than a custom `<style>` block. Caption font no longer grows past `text-base` (was reaching `md:text-lg`, too large on wide screens). Close button label drops the "×" (its `aria-label` already carries the full accessible name). Top bar padding is flat `p-4` (dropped the `sm:p-6` escalation). The play/pause control moves out of its overlay position on the video into the top bar, stacked directly under the counter, restyled to match the bar's other chrome instead of needing its own background scrim. Video now autoplays (muted, already had `loop`) as soon as its slide becomes active, and clicking the video itself — not just the dedicated button — toggles play/pause via a new shared `toggleVideoPlayback()` function.
+
+**Why:** Follow-up from using the Round 1 slideshow rework — caption was too large on wide screens, the close button's "×" was redundant, the caption sitting below the counter/close row wasted space that could hold it inline, and the video required a manual click before doing anything instead of just playing.
+
+**Verified:** `pnpm type-check`, `pnpm lint`, `pnpm build` all pass. Manually verified via `pnpm dev`: caption reflows between stacked (mobile) and inline-centered (sm:+) layouts at the 640px breakpoint, caption font caps at `text-base` on a wide viewport, video autoplays muted on slide entry and loops, clicking the video and clicking the relocated button both toggle playback with the icon swapping correctly, and navigating away still pauses it (existing `video.pause()` calls in `showSlide()`/close/backdrop-click, unchanged).
+
+---
+
 ## 2026-06-26
 
 **Branch:** `fix/ci-turnstile-env`
