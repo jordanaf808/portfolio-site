@@ -2,6 +2,22 @@
 
 ---
 
+## 2026-06-29
+
+**Branch:** `feat/slideshow-ux-improvements`
+**Commit:** _pending_
+**Change:** Improve fullscreen slideshow click targets, responsive text, and caption placement
+
+**Files touched:** `src/components/MediaGallery.astro`, `TODO.md`
+
+**What changed:** Prev/Next controls are now full-height columns flush against the viewport edges (via `items-stretch` on the image-stage row) instead of small inline text buttons, with centered inline SVG chevrons replacing the Unicode arrows. The caption moved from a footer below the image into a second row in the top bar, with a permanently reserved `min-h` so it never collapses (avoiding layout shift between captioned/uncaptioned slides) and sits against the bar's solid `bg-black/90` instead of overlaying arbitrary photo content. Counter/close text and the caption now scale up at `sm:`/`md:` breakpoints instead of a fixed `text-xs`. The video play/pause button kept its position overlaid on the video but got a larger hit area, stronger background scrim, and SVG icons. The close button and video toggle both use `min-w-[44px] min-h-[44px]` (arbitrary px, not the `min-w-11`/`min-h-11` Tailwind scale) to guarantee a true 44px WCAG touch target despite this project's `15px` root font-size shrinking rem-based spacing utilities.
+
+**Why:** Three usability complaints — Prev/Next hit areas were exactly text-sized, all slideshow text was a fixed 12px with no responsive scaling, and the caption was small/illegible when it would have overlaid arbitrary photo content. Also resolves two pre-existing `TODO.md` items (caption layout, button click area), superseding an earlier note that wanted the caption overlaying the bottom third of the image — moved to the top bar instead since that's the only place with a guaranteed-legible solid background.
+
+**Verified:** `pnpm type-check`, `pnpm lint`, `pnpm build` all pass. Manually verified via `pnpm dev` + direct DOM introspection (`getComputedStyle`/`getBoundingClientRect`) at desktop and mobile viewport widths: full-viewport dialog with correct `bg-black/90`, Prev/Next genuinely full-height and flush-edge at both breakpoints, close button hit area measured at exactly 44px (confirming the arbitrary-px fix works), caption grows cleanly for real 2-line caption copy without clipping, and slide navigation (click + keyboard) advances correctly with no console errors.
+
+---
+
 ## 2026-06-26
 
 **Branch:** `fix/ci-turnstile-env`
