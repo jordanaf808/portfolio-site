@@ -19,7 +19,7 @@
 ---
 
 **Branch:** `feat/slideshow-ux-improvements`
-**Commit:** _pending_
+**Commit:** `ef0eeb6`
 **Change:** Slideshow top bar refinements — caption placement, video autoplay, click-to-toggle
 
 **Files touched:** `src/components/MediaGallery.astro`
