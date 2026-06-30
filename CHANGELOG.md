@@ -33,7 +33,7 @@
 ---
 
 **Branch:** `feat/slideshow-ux-improvements`
-**Commit:** _pending_
+**Commit:** `f3c7354`
 **Change:** Caption typography, video-first ordering, eager-load fix
 
 **Files touched:** `src/components/MediaGallery.astro`, `TODO.md`
