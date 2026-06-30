@@ -32,6 +32,20 @@
 
 ---
 
+**Branch:** `feat/slideshow-ux-improvements`
+**Commit:** _pending_
+**Change:** Caption typography, video-first ordering, eager-load fix
+
+**Files touched:** `src/components/MediaGallery.astro`, `TODO.md`
+
+**What changed:** Caption now uses `font-body` (Work Sans) instead of `font-mono`, with `tracking-[0.01rem]` and `max-w-[min(80ch,100%_-_4rem)]` replacing the previous fixed `sm:max-w-md`. Both the `slides` and `thumbnails` arrays in the frontmatter now build videos before images, so video slides lead the slideshow and the thumbnail strip. That reorder exposed a latent bug: the thumbnail strip's `loading="eager"` (for LCP) was keyed to `item.index === 0`, which only matched the first *image* — with a video now first, no thumbnail would have been eager-loaded at all for any project with videos. Fixed by switching to the `.map()` array position (`position === 0`) instead, applied uniformly to both the image and video-poster `<Picture>` branches.
+
+**Why:** Caption needed a body-text typeface (not the mono label font) and a content-aware max-width instead of a flat breakpoint value. Video-first ordering was a standing `TODO.md` item. The eager-load fix isn't something that was asked for — it's a regression the reorder would have silently caused, caught by reasoning through the existing `item.index === 0` condition before assuming the reorder was a pure data change.
+
+**Verified:** `pnpm type-check`, `pnpm lint`, `pnpm build` all pass. Manually verified via `pnpm dev` + direct DOM introspection: `slides` array confirmed video-first (`["video","image","image","image"]` on a project with one video), thumbnail `loading` attributes confirmed `["eager","lazy","lazy","lazy"]` (position-based, not type-based), caption computed styles confirmed `font-family: "Work Sans", system-ui, sans-serif`, `max-width: min(746.4px, 100% - 60px)`, `letter-spacing: 0.15px` (0.01rem at this site's 15px root) — all matching the requested raw CSS. Re-confirmed (no code change needed) that the play/pause icon swap was already correct: pause icon shows while playing, play icon shows while paused, verified via click-to-toggle on both the video and the relocated button.
+
+---
+
 ## 2026-06-26
 
 **Branch:** `fix/ci-turnstile-env`

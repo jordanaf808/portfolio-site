@@ -2,7 +2,7 @@
 
 create zoom feature for slideshow gallery
 
-Move Videos to first position
+[✅] - Move Videos to first position (slides/thumbnails arrays in MediaGallery.astro now build videos before images; eager-loading on the thumbnail strip switched from "first image" to "first rendered thumbnail" so LCP isn't lost when a video leads)
 
 [✅] - Improve Caption layout, it's too small. Increase font size. Make sure the text is legible with a dark background. (Superseded the "overlay bottom third of image" placement — caption moved into the top bar with a reserved-height row against the bar's solid bg-black/90 instead, avoiding both the contrast problem and layout shift. See MediaGallery.astro)
 

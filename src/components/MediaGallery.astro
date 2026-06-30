@@ -35,15 +35,6 @@ interface VideoSlide {
 type Slide = ImageSlide | VideoSlide;
 
 const slides: Slide[] = [
-  ...sources1x.map(
-    (s, i): ImageSlide => ({
-      type: 'image',
-      src: s.src,
-      srcset: `${s.src} 1x, ${sources2x[i].src} 2x`,
-      alt: images[i].alt ?? `${title} ${i + 1}`,
-      caption: images[i].caption,
-    }),
-  ),
   ...posterSources.map(
     (p, i): VideoSlide => ({
       type: 'video',
@@ -53,11 +44,20 @@ const slides: Slide[] = [
       caption: videos[i].caption,
     }),
   ),
+  ...sources1x.map(
+    (s, i): ImageSlide => ({
+      type: 'image',
+      src: s.src,
+      srcset: `${s.src} 1x, ${sources2x[i].src} 2x`,
+      alt: images[i].alt ?? `${title} ${i + 1}`,
+      caption: images[i].caption,
+    }),
+  ),
 ];
 
 const thumbnails = [
-  ...images.map((image, i) => ({ kind: 'image' as const, index: i, image })),
-  ...videos.map((video, i) => ({ kind: 'video' as const, index: images.length + i, video })),
+  ...videos.map((video, i) => ({ kind: 'video' as const, index: i, video })),
+  ...images.map((image, i) => ({ kind: 'image' as const, index: videos.length + i, image })),
 ];
 ---
 <!-- Horizontally scrolling thumbnail strip -->
@@ -66,7 +66,7 @@ const thumbnails = [
   data-slides={JSON.stringify(slides)}
   class="flex overflow-x-auto border-b border-primary"
 >
-  {thumbnails.map((item) => (
+  {thumbnails.map((item, position) => (
     <button
       type="button"
       data-gallery-index={item.index}
@@ -85,7 +85,7 @@ const thumbnails = [
           widths={[450, 1000]}
           sizes="225px"
           class="w-full h-full object-cover grayscale-hover"
-          loading={item.index === 0 ? 'eager' : 'lazy'}
+          loading={position === 0 ? 'eager' : 'lazy'}
         />
       ) : (
         <>
@@ -96,7 +96,7 @@ const thumbnails = [
             widths={[450, 1000]}
             sizes="225px"
             class="w-full h-full object-cover grayscale-hover"
-            loading="lazy"
+            loading={position === 0 ? 'eager' : 'lazy'}
           />
           <span class="absolute inset-0 flex items-center justify-center bg-black/30 text-white text-lg" aria-hidden="true">▶</span>
         </>
@@ -133,7 +133,7 @@ const thumbnails = [
         </div>
         <p
           id="slideshow-caption"
-          class="order-3 sm:order-2 w-full sm:w-auto sm:flex-1 sm:max-w-md sm:mx-auto sm:text-center font-mono text-sm sm:text-base text-white/70 leading-snug"
+          class="order-3 sm:order-2 w-full sm:w-auto sm:flex-1 sm:mx-auto sm:text-center max-w-[min(80ch,100%_-_4rem)] font-body tracking-[0.01rem] text-sm sm:text-base text-white/70 leading-snug"
         ></p>
         <button
           id="slideshow-close"
