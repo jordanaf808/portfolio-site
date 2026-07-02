@@ -5,7 +5,7 @@
 ## 2026-07-01
 
 **Branch:** `feat/slideshow-ux-improvements`
-**Commit:** TBD
+**Commit:** `cfe12a7`
 **Change:** Rename asset directory from `projects/` to `jobs/`, add new video media, and enrich job role media metadata
 
 **Files touched:** `src/assets/jobs/` (new), `src/assets/projects/` (removed), `src/data/jobRoles.ts`, `TODO.md`
