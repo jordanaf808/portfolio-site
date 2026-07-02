@@ -2,6 +2,22 @@
 
 ---
 
+## 2026-07-01
+
+**Branch:** `feat/slideshow-ux-improvements`
+**Commit:** TBD
+**Change:** Rename asset directory from `projects/` to `jobs/`, add new video media, and enrich job role media metadata
+
+**Files touched:** `src/assets/jobs/` (new), `src/assets/projects/` (removed), `src/data/jobRoles.ts`, `TODO.md`
+
+**What changed:** Moved all project media from `src/assets/projects/` into a new `src/assets/jobs/` directory to better reflect what the files represent (work samples tied to job roles, not standalone projects). Updated all import paths in `jobRoles.ts` to match. Added three new media files: a Tesler Salon GSAP animation video (`tesler-salon_gsap-animations.mp4`), its poster image, and a Simplehuman PDP configuration video (`simplehuman-PDP-configuration.mp4`). Added a Vintage October client testimonial screenshot. Enriched all image objects with `alt` and `caption` fields across JordanAF Dev, Undefined Agency, Staze, and Simplehuman roles. Added `videos` arrays to the Undefined Agency and Simplehuman roles to wire in the new video media.
+
+**Why:** The `projects/` directory name was a misnomer — these assets belong to job role detail pages, not the project archive. The rename makes the directory structure self-documenting. The new videos and testimonial image fill out media galleries that previously had only static screenshots, and the alt/caption enrichment unblocks `MediaGallery.astro` from showing meaningful captions in the slideshow (previously those fields were absent from the data).
+
+**Verified:** `pnpm type-check`, `pnpm lint`, `pnpm build` all pass.
+
+---
+
 ## 2026-06-29
 
 **Branch:** `feat/slideshow-ux-improvements`

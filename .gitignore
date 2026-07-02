@@ -41,3 +41,6 @@ pnpm-debug.log*
 
 # design assets not used in the build
 8-bit-badges/
+
+# VSCode workspace files (personal/machine-specific)
+*.code-workspace

@@ -1,5 +1,9 @@
 # To-Do:
 
+put Hayley Fisk in Undefined Agency
+
+add projects!
+
 create zoom feature for slideshow gallery
 
 [✅] - Move Videos to first position (slides/thumbnails arrays in MediaGallery.astro now build videos before images; eager-loading on the thumbnail strip switched from "first image" to "first rendered thumbnail" so LCP isn't lost when a video leads)
